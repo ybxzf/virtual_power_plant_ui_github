@@ -243,6 +243,7 @@ export default {
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
+      border-radius: 5px;
       position: relative;
       cursor: pointer;
       height: 26px;

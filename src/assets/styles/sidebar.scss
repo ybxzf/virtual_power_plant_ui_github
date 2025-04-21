@@ -114,7 +114,7 @@
 
     & .theme-dark .is-active.submenu-title-noDropdown {//外层选中
       color: #ffffff !important;
-      background: linear-gradient(to bottom, #005FED, #0BDED7) !important;
+      background: linear-gradient(to bottom right, #005FED, #0BDED7) !important;
       // margin-right: 10px;
     }
 
@@ -143,6 +143,10 @@
       width: 100%;
       border-radius: 10px !important;
       margin-top: 10px;
+
+      .el-submenu__icon-arrow {
+        right: 40px;
+      }
     }
 
     & .theme-dark .nest-menu .el-submenu>.el-submenu__title,
@@ -159,11 +163,11 @@
 
     & .theme-dark .nest-menu .is-active {//内层选中
       color: #fff !important;
-      background: linear-gradient(to bottom, #005FED, #0BDED7) !important;
+      background: linear-gradient(to bottom right, #005FED, #0BDED7) !important;
     }
 
     & .theme-dark .nest-menu .el-submenu.is-active {//内层列表同时匹配多个类名
-      background-color: $base-sub-menu-background !important;
+      background: $base-sub-menu-background !important;
     }
 
   }
@@ -291,4 +295,12 @@
       border-radius: 20px;
     }
   }
+}
+
+.el-button {
+  font-weight: 600;
+}
+.el-button--primary {
+  background: linear-gradient(to bottom right, #005FED, #0BDED7);
+  color: #fff;
 }

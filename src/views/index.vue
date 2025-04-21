@@ -1,19 +1,34 @@
 <template>
   <div class="app-container home">
+    <el-button type="primary">确认</el-button>
+    <el-button>取消</el-button>
+    <div>
+      <custome-tabs :active="1" :tabList="tabs" @change="changeTab"></custome-tabs>
+    </div>
     欢迎访问！
   </div>
 </template>
 
 <script>
+
 export default {
   name: "Index",
   data() {
     return {
       // 版本号
-      version: "1.0.0"
+      version: "1.0.0",
+      tabs: [
+        { label: '基础档案', value: '基础档案', },
+        { label: '档案结构', value: '档案结构', },
+        { label: '总监组配置阿萨德撒大声地', value: '总监组配置' },
+        { label: '接入量配置', value: '接入量配置' },
+      ]
     };
   },
   methods: {
+    changeTab(val) {
+      console.log(val)
+    },
     goTarget(href) {
       window.open(href, "_blank");
     }
@@ -29,12 +44,14 @@ export default {
     font-size: 17.5px;
     border-left: 5px solid #eee;
   }
+
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
   }
+
   .col-item {
     margin-bottom: 20px;
   }
@@ -44,7 +61,11 @@ export default {
     margin: 0;
   }
 
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "open sans",
+  "Helvetica Neue",
+  Helvetica,
+  Arial,
+  sans-serif;
   font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;
@@ -84,4 +105,3 @@ export default {
   }
 }
 </style>
-
