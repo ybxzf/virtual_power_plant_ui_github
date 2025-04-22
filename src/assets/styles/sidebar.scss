@@ -300,7 +300,16 @@
 .el-button {
   font-weight: 600;
 }
+
 .el-button--primary {
   background: linear-gradient(to bottom right, #005FED, #0BDED7);
   color: #fff;
+}
+
+/* 设置所有内联表单中相同宽度 */
+.el-form--inline .el-form-item__content .el-input,
+.el-form--inline .el-form-item__content .el-textarea,
+.el-form--inline .el-form-item__content .el-radio-group,
+.el-form--inline .el-form-item__content .el-select {
+  width: 220px; /* 设置统一的宽度值 */
 }
