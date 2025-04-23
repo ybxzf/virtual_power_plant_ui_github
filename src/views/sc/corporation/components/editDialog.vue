@@ -4,16 +4,27 @@
             <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
         </div>
         <AddDialog v-if="active == 0" :formData="formData" @close="$emit('close')"></AddDialog>
-
+        <LoadInfo v-if="active == 1"  :formData="formData"></LoadInfo>
+        <LoopInfo v-if="active == 2"  :formData="formData"></LoopInfo>
+        <DeviceInfo v-if="active == 3"  :formData="formData"></DeviceInfo>
     </div>
 </template>
 <script>
 import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation } from "@/api/sc/corporation";
-import AddDialog from './addDialog.vue'
+import AddDialog from './addDialog.vue';
+import LoadInfo  from './loadInfo.vue';
+import LoopInfo  from './loopInfo.vue';
+import DeviceInfo from './deviceInfo.vue';
+
 export default {
     name: 'EditDialog',
     dicts: ['supply_voltage', 'industry_type', 'sys_yes_no', 'collection_state', 'electricity_state', 'corporation_state'],
-    components: { AddDialog },
+    components: { 
+      AddDialog,
+      LoadInfo,  
+      LoopInfo,
+      DeviceInfo,
+     },
     props: {
         formData: {
             type: Object,
