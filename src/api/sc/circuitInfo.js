@@ -9,6 +9,15 @@ export function listCircuitInfo(query) {
   })
 }
 
+// userId查询回路信息
+export function getCircuitByUserId(query) {
+  return request({
+    url: '/sc/circuitInfo/getCircuitByUserId',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询回路信息详细
 export function getCircuitInfo(id) {
   return request({

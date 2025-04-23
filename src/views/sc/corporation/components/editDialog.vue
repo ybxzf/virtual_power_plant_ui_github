@@ -4,7 +4,7 @@
             <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
         </div>
         <AddDialog v-if="active == 0" :formData="formData" @close="$emit('close')"></AddDialog>
-        <LoadInfo v-if="active == 1"  :formData="formData"></LoadInfo>
+        <LoadInfo v-if="active == 1"  :formData="formData" @close="$emit('close')"></LoadInfo>
         <LoopInfo v-if="active == 2"  :formData="formData"></LoopInfo>
         <DeviceInfo v-if="active == 3"  :formData="formData"></DeviceInfo>
     </div>
@@ -72,7 +72,7 @@ export default {
     methods: {
         changeTab(index) {
             console.log('index', index);
-
+            this.active = index;
         },
     }
 }

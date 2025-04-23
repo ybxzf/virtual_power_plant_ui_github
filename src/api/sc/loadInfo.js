@@ -9,6 +9,15 @@ export function listLoadInfo(query) {
   })
 }
 
+// userId查询负荷信息
+export function getLoadByUserId(query) {
+  return request({
+    url: '/sc/loadInfo/getLoadByUserId',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询负荷信息详细
 export function getLoadInfo(id) {
   return request({

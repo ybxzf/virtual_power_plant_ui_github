@@ -110,7 +110,8 @@
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
     <!-- 添加或修改企业用户信息对话框 -->
-    <el-dialog :title="title" :visible.sync="addOrEditVisible" width="1400px" append-to-body @close="close">
+    <el-dialog class="custom-dialog" :title="title" :visible.sync="addOrEditVisible" width="1400px" height="80%"
+      append-to-body @close="close">
       <AddDialog v-if="title == '新增'" :formData="form" @close="close"></AddDialog>
       <EditDialog v-else :formData="form" @close="close"></EditDialog>
     </el-dialog>
@@ -301,5 +302,12 @@ export default {
 .el-table {
   flex: 1;
   overflow: auto;
+}
+
+/* 使用深度选择器 */
+::v-deep .custom-dialog {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>

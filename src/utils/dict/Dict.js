@@ -77,6 +77,8 @@ function loadDict(dict, dictMeta) {
       dicts.forEach(d => {
         Vue.set(dict.label[type], d.value, d.label)
       })
+      console.log('dicts',dicts);
+      
       return dicts
     })
 }
