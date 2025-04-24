@@ -4,6 +4,15 @@
     <el-button>取消</el-button>
     <div>
       <custome-tabs :active="1" :tabList="tabs" @change="changeTab"></custome-tabs>
+      <el-select placeholder="请选择省">
+        <el-option v-for="item in 5" :key="item" :label="item" :value="item"> </el-option>
+      </el-select>--
+      <el-select placeholder="请选择市">
+        <el-option v-for="item in 5" :key="item" :label="item" :value="item"> </el-option>
+      </el-select>--
+      <el-select placeholder="请选择区">
+        <el-option v-for="item in 5" :key="item" :label="item" :value="item"> </el-option>
+      </el-select>
     </div>
     欢迎访问！
   </div>

@@ -110,10 +110,12 @@
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
     <!-- 添加或修改企业用户信息对话框 -->
-    <el-dialog class="custom-dialog" :title="title" :visible.sync="addOrEditVisible" width="1400px" height="80%"
+    <el-dialog class="custom-dialog" :title="title" :visible.sync="addOrEditVisible" width="1380px" height="80%"
       append-to-body @close="close">
-      <AddDialog v-if="title == '新增'" :formData="form" @close="close"></AddDialog>
-      <EditDialog v-else :formData="form" @close="close"></EditDialog>
+      <template v-if="addOrEditVisible">
+        <AddDialog v-if="title == '新增'" :formData="form" @close="close"></AddDialog>
+        <EditDialog v-else :formData="form" @close="close"></EditDialog>
+      </template>
     </el-dialog>
   </div>
 </template>
