@@ -44,7 +44,10 @@ export default {
       this.activeTab = i;
       this.$emit('change', i);
     },
-  }
+  },
+  beforeDestroy() {
+    this.activeTab = 0;
+  },
 };
 </script>
 
