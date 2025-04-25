@@ -1,405 +1,137 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="所属用户ID" prop="userId">
-        <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入所属用户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="用户名称" prop="userName">
+        <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="所属回路ID" prop="circuitId">
-        <el-input
-          v-model="queryParams.circuitId"
-          placeholder="请输入所属回路ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="用户编号" prop="userCode">
+        <el-input v-model="queryParams.userCode" placeholder="请输入用户编号" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="最大负荷(KW)" prop="maxLoad">
-        <el-input
-          v-model="queryParams.maxLoad"
-          placeholder="请输入最大负荷(KW)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="早峰负荷(KW)" prop="morningPeak">
-        <el-input
-          v-model="queryParams.morningPeak"
-          placeholder="请输入早峰负荷(KW)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="腰峰负荷(KW)" prop="middayPeak">
-        <el-input
-          v-model="queryParams.middayPeak"
-          placeholder="请输入腰峰负荷(KW)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="晚峰负荷(KW)" prop="eveningPeak">
-        <el-input
-          v-model="queryParams.eveningPeak"
-          placeholder="请输入晚峰负荷(KW)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="调节方式" prop="adjustMethod">
-        <el-select v-model="queryParams.adjustMethod" placeholder="请选择调节方式" clearable>
-          <el-option
-            v-for="dict in dict.type.adjustment_method"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+      <el-form-item label="用户状态" prop="userStatus">
+        <el-select v-model="queryParams.userStatus" placeholder="请选择用户状态" clearable>
+          <el-option v-for="dict in dict.type.corporation_state" :key="dict.value" :label="dict.label"
+                     :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item label="最大可调节负荷(KW)" prop="maxAdjustableLoad">
-        <el-input
-          v-model="queryParams.maxAdjustableLoad"
-          placeholder="请输入最大可调节负荷(KW)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="可调节时段" prop="adjustablePeriod">
-        <el-select v-model="queryParams.adjustablePeriod" placeholder="请选择可调节时段" clearable>
-          <el-option
-            v-for="dict in dict.type.adjustment_period"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="可调节比例(%)" prop="adjustableRatio">
-        <el-input
-          v-model="queryParams.adjustableRatio"
-          placeholder="请输入可调节比例(%)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否保安负荷" prop="isSecurityLoad">
-        <el-select v-model="queryParams.isSecurityLoad" placeholder="请选择是否保安负荷" clearable>
-          <el-option
-            v-for="dict in dict.type.sys_yes_no"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="提前通知执行时间" prop="noticeTime">
-        <el-select v-model="queryParams.noticeTime" placeholder="请选择提前通知执行时间" clearable>
-          <el-option
-            v-for="dict in dict.type.advance_notice_time"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="最长连续调节时间" prop="maxAdjustHours">
-        <el-input
-          v-model="queryParams.maxAdjustHours"
-          placeholder="请输入最长连续调节时间"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="恢复生产时间" prop="recoveryHours">
-        <el-input
-          v-model="queryParams.recoveryHours"
-          placeholder="请输入恢复生产时间"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否可调节" prop="isAdjustable">
-        <el-select v-model="queryParams.isAdjustable" placeholder="请选择是否可调节" clearable>
-          <el-option
-            v-for="dict in dict.type.sys_yes_no"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="是否可控制" prop="isControllable">
-        <el-select v-model="queryParams.isControllable" placeholder="请选择是否可控制" clearable>
-          <el-option
-            v-for="dict in dict.type.sys_yes_no"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="预留字段1" prop="reserved1">
-        <el-input
-          v-model="queryParams.reserved1"
-          placeholder="请输入预留字段1"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="预留字段2" prop="reserved2">
-        <el-input
-          v-model="queryParams.reserved2"
-          placeholder="请输入预留字段2"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['sc:circuitLoadConfig:add']"
-        >新增</el-button>
+        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"
+                   v-hasPermi="['sc:corporation:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['sc:circuitLoadConfig:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+                   v-hasPermi="['sc:corporation:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['sc:circuitLoadConfig:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+                   v-hasPermi="['sc:corporation:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['sc:circuitLoadConfig:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+                   v-hasPermi="['sc:corporation:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
+    <div class="table-container">
+      <el-table border v-loading="loading" height="100%" :data="corporationList"
+                @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="50" fixed align="center" />
+        <!--      <el-table-column show-overflow-tooltip label="自增主键" align="center" prop="id" />-->
+        <el-table-column show-overflow-tooltip label="用户名称" align="center" prop="userName" min-width="150" />
+        <el-table-column show-overflow-tooltip label="统一社会信用代码" align="center" prop="creditCode" min-width="150" />
+        <el-table-column show-overflow-tooltip label="所属区域编码" align="center" prop="areaCode" min-width="120" />
+        <el-table-column show-overflow-tooltip label="注册资金(万元)" align="center" prop="registeredCapital"
+                         min-width="120" />
+        <el-table-column show-overflow-tooltip label="行业分类" align="center" prop="industryCategory" min-width="80">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.industry_type" :value="scope.row.industryCategory" />
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="用电类别" align="center" prop="powerCategory" min-width="100">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.electricity_state" :value="scope.row.powerCategory" />
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="供电电压" align="center" prop="supplyVoltage" min-width="80">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.supply_voltage" :value="scope.row.supplyVoltage" />
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="合约生效日期" align="center" prop="contractStart" width="100">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.contractStart, '{y}-{m}-{d}') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="联系人" align="center" prop="contactPerson" min-width="80" />
+        <el-table-column show-overflow-tooltip label="联系电话" align="center" prop="contactPhone" min-width="80" />
+        <el-table-column show-overflow-tooltip label="邮箱" align="center" prop="email" min-width="80" />
+        <el-table-column show-overflow-tooltip label="所属虚拟电厂id" align="center" prop="virtualPlant" min-width="120" />
+        <el-table-column show-overflow-tooltip label="所属线路" align="center" prop="circuit" min-width="80" />
+        <el-table-column show-overflow-tooltip label="用电地址" align="center" prop="powerAddress" min-width="120" />
+        <el-table-column show-overflow-tooltip label="用户编号" align="center" prop="userCode" min-width="80" />
+        <el-table-column show-overflow-tooltip label="用户状态" align="center" prop="userStatus" min-width="80">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.corporation_state" :value="scope.row.userStatus" />
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="用户采集分类" align="center" prop="collectCategory" min-width="100">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.collection_state" :value="scope.row.collectCategory" />
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="行业小类" align="center" prop="industrySubclass" min-width="80" />
+        <el-table-column show-overflow-tooltip label="是否需求响应签约用户" align="center" prop="isDemandResponse"
+                         min-width="160">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isDemandResponse" />
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="合约有效期(年)" align="center" prop="contractPeriod" min-width="110" />
+        <el-table-column show-overflow-tooltip label="所属变电站" align="center" prop="substation" min-width="90" />
+        <el-table-column show-overflow-tooltip label="所属虚拟电厂" align="center" prop="extend1" min-width="100" />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
+          <template slot-scope="scope">
+            <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+                       v-hasPermi="['sc:corporation:edit']">修改</el-button>
+            <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+                       v-hasPermi="['sc:corporation:remove']">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
 
-    <el-table v-loading="loading" :data="circuitLoadConfigList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键ID" align="center" prop="id" />
-      <el-table-column label="所属用户ID" align="center" prop="userId" />
-      <el-table-column label="所属回路ID" align="center" prop="circuitId" />
-      <el-table-column label="最大负荷(KW)" align="center" prop="maxLoad" />
-      <el-table-column label="早峰负荷(KW)" align="center" prop="morningPeak" />
-      <el-table-column label="腰峰负荷(KW)" align="center" prop="middayPeak" />
-      <el-table-column label="晚峰负荷(KW)" align="center" prop="eveningPeak" />
-      <el-table-column label="调节方式" align="center" prop="adjustMethod">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.adjustment_method" :value="scope.row.adjustMethod"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="最大可调节负荷(KW)" align="center" prop="maxAdjustableLoad" />
-      <el-table-column label="可调节时段" align="center" prop="adjustablePeriod">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.adjustment_period" :value="scope.row.adjustablePeriod"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="可调节比例(%)" align="center" prop="adjustableRatio" />
-      <el-table-column label="是否保安负荷" align="center" prop="isSecurityLoad">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isSecurityLoad"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="提前通知执行时间" align="center" prop="noticeTime">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.advance_notice_time" :value="scope.row.noticeTime"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="最长连续调节时间" align="center" prop="maxAdjustHours" />
-      <el-table-column label="恢复生产时间" align="center" prop="recoveryHours" />
-      <el-table-column label="是否可调节" align="center" prop="isAdjustable">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isAdjustable"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否可控制" align="center" prop="isControllable">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControllable"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="预留字段1" align="center" prop="reserved1" />
-      <el-table-column label="预留字段2" align="center" prop="reserved2" />
-      <el-table-column label="备注信息" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['sc:circuitLoadConfig:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['sc:circuitLoadConfig:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 添加或修改回路负荷配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="所属用户ID" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入所属用户ID" />
-        </el-form-item>
-        <el-form-item label="所属回路ID" prop="circuitId">
-          <el-input v-model="form.circuitId" placeholder="请输入所属回路ID" />
-        </el-form-item>
-        <el-form-item label="最大负荷(KW)" prop="maxLoad">
-          <el-input v-model="form.maxLoad" placeholder="请输入最大负荷(KW)" />
-        </el-form-item>
-        <el-form-item label="早峰负荷(KW)" prop="morningPeak">
-          <el-input v-model="form.morningPeak" placeholder="请输入早峰负荷(KW)" />
-        </el-form-item>
-        <el-form-item label="腰峰负荷(KW)" prop="middayPeak">
-          <el-input v-model="form.middayPeak" placeholder="请输入腰峰负荷(KW)" />
-        </el-form-item>
-        <el-form-item label="晚峰负荷(KW)" prop="eveningPeak">
-          <el-input v-model="form.eveningPeak" placeholder="请输入晚峰负荷(KW)" />
-        </el-form-item>
-        <el-form-item label="调节方式" prop="adjustMethod">
-          <el-select v-model="form.adjustMethod" placeholder="请选择调节方式">
-            <el-option
-              v-for="dict in dict.type.adjustment_method"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="最大可调节负荷(KW)" prop="maxAdjustableLoad">
-          <el-input v-model="form.maxAdjustableLoad" placeholder="请输入最大可调节负荷(KW)" />
-        </el-form-item>
-        <el-form-item label="可调节时段" prop="adjustablePeriod">
-          <el-select v-model="form.adjustablePeriod" placeholder="请选择可调节时段">
-            <el-option
-              v-for="dict in dict.type.adjustment_period"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="可调节比例(%)" prop="adjustableRatio">
-          <el-input v-model="form.adjustableRatio" placeholder="请输入可调节比例(%)" />
-        </el-form-item>
-        <el-form-item label="是否保安负荷" prop="isSecurityLoad">
-          <el-select v-model="form.isSecurityLoad" placeholder="请选择是否保安负荷">
-            <el-option
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="提前通知执行时间" prop="noticeTime">
-          <el-select v-model="form.noticeTime" placeholder="请选择提前通知执行时间">
-            <el-option
-              v-for="dict in dict.type.advance_notice_time"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="最长连续调节时间" prop="maxAdjustHours">
-          <el-input v-model="form.maxAdjustHours" placeholder="请输入最长连续调节时间" />
-        </el-form-item>
-        <el-form-item label="恢复生产时间" prop="recoveryHours">
-          <el-input v-model="form.recoveryHours" placeholder="请输入恢复生产时间" />
-        </el-form-item>
-        <el-form-item label="是否可调节" prop="isAdjustable">
-          <el-select v-model="form.isAdjustable" placeholder="请选择是否可调节">
-            <el-option
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否可控制" prop="isControllable">
-          <el-select v-model="form.isControllable" placeholder="请选择是否可控制">
-            <el-option
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="预留字段1" prop="reserved1">
-          <el-input v-model="form.reserved1" placeholder="请输入预留字段1" />
-        </el-form-item>
-        <el-form-item label="预留字段2" prop="reserved2">
-          <el-input v-model="form.reserved2" placeholder="请输入预留字段2" />
-        </el-form-item>
-        <el-form-item label="备注信息" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+                @pagination="getList" />
+    <!-- 添加或修改企业用户信息对话框 -->
+    <el-dialog class="custom-dialog" :title="title" :visible.sync="addOrEditVisible" width="1380px" height="60%"
+               append-to-body @close="close">
+      <template v-if="addOrEditVisible">
+        <AddDialog v-if="title == '新增'" :formData="form" @close="close"></AddDialog>
+        <EditDialog v-else :formData="form" @close="close"></EditDialog>
+      </template>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { listCircuitLoadConfig, getCircuitLoadConfig, delCircuitLoadConfig, addCircuitLoadConfig, updateCircuitLoadConfig } from "@/api/sc/circuitLoadConfig";
+import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation } from "@/api/sc/corporation";
+import AddDialog from "./components/addDialog";
+import EditDialog from "./components/editDialog";
 
 export default {
-  name: "CircuitLoadConfig",
-  dicts: ['advance_notice_time', 'adjustment_period', 'sys_yes_no', 'adjustment_method'],
+  name: "Corporation",
+  dicts: ['supply_voltage', 'industry_type', 'sys_yes_no', 'collection_state', 'electricity_state', 'corporation_state'],
+  components: {
+    AddDialog,//新增弹窗
+    EditDialog,//编辑弹窗
+  },
   data() {
     return {
       // 遮罩层
@@ -414,84 +146,89 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 回路负荷配置表格数据
-      circuitLoadConfigList: [],
-      // 弹出层标题
-      title: "",
+      // 企业用户信息表格数据
+      corporationList: [],
+      addOrEditVisible: false,//新增弹窗
+      title: "",//弹窗标题
       // 是否显示弹出层
       open: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: null,
-        circuitId: null,
-        maxLoad: null,
-        morningPeak: null,
-        middayPeak: null,
-        eveningPeak: null,
-        adjustMethod: null,
-        maxAdjustableLoad: null,
-        adjustablePeriod: null,
-        adjustableRatio: null,
-        isSecurityLoad: null,
-        noticeTime: null,
-        maxAdjustHours: null,
-        recoveryHours: null,
-        isAdjustable: null,
-        isControllable: null,
-        reserved1: null,
-        reserved2: null,
+        userName: null,
+        creditCode: null,
+        areaCode: null,
+        registeredCapital: null,
+        industryCategory: null,
+        powerCategory: null,
+        supplyVoltage: null,
+        contractStart: null,
+        contactPerson: null,
+        contactPhone: null,
+        email: null,
+        virtualPlant: null,
+        circuit: null,
+        powerAddress: null,
+        userCode: null,
+        userStatus: null,
+        collectCategory: null,
+        industrySubclass: null,
+        isDemandResponse: null,
+        contractPeriod: null,
+        substation: null,
+        extend1: null,
+        extend2: null,
       },
       // 表单参数
       form: {},
-      // 表单校验
-      rules: {
-      }
     };
   },
   created() {
     this.getList();
   },
   methods: {
-    /** 查询回路负荷配置列表 */
+    /** 查询企业用户信息列表 */
     getList() {
       this.loading = true;
-      listCircuitLoadConfig(this.queryParams).then(response => {
-        this.circuitLoadConfigList = response.rows;
+      listCorporation(this.queryParams).then(response => {
+        this.corporationList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
     },
     // 取消按钮
     cancel() {
-      this.open = false;
+      this.addOrEditVisible = false;
       this.reset();
     },
     // 表单重置
     reset() {
       this.form = {
         id: null,
-        userId: null,
-        circuitId: null,
-        maxLoad: null,
-        morningPeak: null,
-        middayPeak: null,
-        eveningPeak: null,
-        adjustMethod: null,
-        maxAdjustableLoad: null,
-        adjustablePeriod: null,
-        adjustableRatio: null,
-        isSecurityLoad: null,
-        noticeTime: null,
-        maxAdjustHours: null,
-        recoveryHours: null,
-        isAdjustable: null,
-        isControllable: null,
-        updateBy: null,
-        updateTime: null,
-        reserved1: null,
-        reserved2: null,
+        userName: null,
+        creditCode: null,
+        areaCode: null,
+        registeredCapital: null,
+        industryCategory: null,
+        powerCategory: null,
+        supplyVoltage: null,
+        contractStart: null,
+        contactPerson: null,
+        contactPhone: null,
+        email: null,
+        virtualPlant: null,
+        circuit: null,
+        powerAddress: null,
+        userCode: null,
+        userStatus: null,
+        collectCategory: null,
+        industrySubclass: null,
+        isDemandResponse: null,
+        contractPeriod: null,
+        substation: null,
+        extend1: null,
+        extend2: null,
         remark: null
       };
       this.resetForm("form");
@@ -509,61 +246,70 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
-      this.title = "添加回路负荷配置";
+      this.title = "新增"
+      this.addOrEditVisible = true;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getCircuitLoadConfig(id).then(response => {
+      getCorporation(id).then(response => {
+        this.title = "修改"
         this.form = response.data;
-        this.open = true;
-        this.title = "修改回路负荷配置";
+        this.addOrEditVisible = true;
       });
     },
-    /** 提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.form.id != null) {
-            updateCircuitLoadConfig(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addCircuitLoadConfig(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
+    // 查询数据
+    close() {
+      this.addOrEditVisible = false;
+      this.getList();
     },
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除回路负荷配置编号为"' + ids + '"的数据项？').then(function() {
-        return delCircuitLoadConfig(ids);
+      this.$modal.confirm('是否确认删除企业用户信息编号为"' + ids + '"的数据项？').then(function () {
+        return delCorporation(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('sc/circuitLoadConfig/export', {
+      this.download('sc/corporation/export', {
         ...this.queryParams
-      }, `circuitLoadConfig_${new Date().getTime()}.xlsx`)
+      }, `corporation_${new Date().getTime()}.xlsx`)
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.table-container {
+  height: 70vh;
+  min-height: 10vh;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/* 确保表格填满容器 */
+.el-table {
+  flex: 1;
+  overflow: auto;
+}
+
+/* 使用深度选择器 */
+::v-deep .custom-dialog {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+</style>
