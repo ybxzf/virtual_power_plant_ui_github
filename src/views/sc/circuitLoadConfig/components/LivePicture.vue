@@ -40,6 +40,9 @@ export default {
 .live-picture {
   display: flex;
   flex-wrap: wrap;
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   .live-picture__item {
     width: 100%;
     .live-picture_img {
