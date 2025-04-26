@@ -18,8 +18,15 @@
         <el-form-item label="所属用户ID" prop="userId">
           <el-input disabled v-model="form.userId" placeholder="请输入所属用户ID" clearable />
         </el-form-item>
-        <el-form-item label="所属设备ID" prop="deviceId">
-          <el-input v-model="form.deviceId" placeholder="请输入所属设备ID" clearable />
+        <el-form-item label="所属设备" prop="deviceId">
+          <el-select v-model="form.deviceId" placeholder="请选择所属设备" clearable @change="handleDevice">
+            <el-option
+              v-for="dict in deviceOptions"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
 <!--        <el-form-item label="设备所属回路ID" prop="circuitId">
           <el-input v-model="form.circuitId" placeholder="请输入设备所属回路ID" clearable />
@@ -229,6 +236,7 @@ import {
   delDeviceLoadConfig,
   addDeviceLoadConfig,
   updateDeviceLoadConfig,
+  getDeviceOption,
 } from "@/api/sc/deviceLoadConfig";
 import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
 import LoadInfo from "@/views/sc/circuitLoadConfig/components/loadInfo.vue";
@@ -310,6 +318,7 @@ export default {
       // 表单校验
       rules: {},
       isEdit: false,
+      deviceOptions: [],
     };
   },
   created() {
@@ -317,8 +326,18 @@ export default {
   },
   mounted() {
     this.getList();
+    getDeviceOption(this.formData.id).then((response) => {
+      this.deviceOptions = response.data;
+    });
   },
   methods: {
+    // 回路选择
+    handleDevice(val) {
+      const filter = this.deviceOptions.filter((item) => item.value === val);
+      if (filter.length > 0) {
+        this.form.reserved1 = filter[0].label;
+      }
+    },
     /** 查询设备负荷配置列表 */
     getList() {
       this.loading = true;

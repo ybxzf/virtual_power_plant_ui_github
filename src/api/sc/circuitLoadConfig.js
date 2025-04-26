@@ -42,3 +42,14 @@ export function delCircuitLoadConfig(id) {
     method: 'delete'
   })
 }
+
+// 获取所属设备信息
+export function getCircuitOption(id) {
+  return request({
+    url: '/sc/circuitInfo/getCircuitOption',
+    method: 'get',
+    params:{
+      userId: id,
+    }
+  })
+}

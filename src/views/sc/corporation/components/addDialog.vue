@@ -72,10 +72,10 @@
         </el-select>
         <el-input v-model="form.virtualPlant" placeholder="请输入所属虚拟电厂id" />
       </el-form-item> -->
-      <el-form-item label="所属虚拟电厂" prop="extend1">
-        <el-select v-model="form.extend1" placeholder="请选择所属虚拟电厂" @change="handleExtend1">
+      <el-form-item label="所属虚拟电厂" prop="virtualPlant">
+        <el-select v-model="form.virtualPlant" placeholder="请选择所属虚拟电厂" @change="handleExtend1">
           <el-option v-for="item in companyOptions" :key="item.value" :label="item.label"
-            :value="item.label"></el-option>
+            :value="item.value"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="所属变电站" prop="substation">
@@ -184,9 +184,9 @@ export default {
   methods: {
     //虚拟电厂选择
     handleExtend1(val) {
-      const filter = this.companyOptions.filter(item => item.label == val) || [];
+      const filter = this.companyOptions.filter(item => item.value == val) || [];
       if (filter.length > 0) {
-        this.form.virtualPlant = filter[0].value;
+        this.form.extend1 = filter[0].label;
       }
     },
     /** 提交按钮 */

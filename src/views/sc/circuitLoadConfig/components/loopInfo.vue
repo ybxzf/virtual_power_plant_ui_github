@@ -23,12 +23,15 @@
             clearable
           />
         </el-form-item>
-        <el-form-item label="所属回路ID" prop="circuitId">
-          <el-input
-            v-model="form.circuitId"
-            placeholder="请输入所属回路ID"
-            clearable
-          />
+        <el-form-item label="所属回路" prop="circuitId">
+          <el-select v-model="form.circuitId" placeholder="请选择所属回路" clearable @change="handleCircuit">
+            <el-option
+              v-for="dict in circuitOptions"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="最大负荷(KW)" prop="maxLoad">
           <el-input
@@ -307,6 +310,7 @@ import {
   delCircuitLoadConfig,
   addCircuitLoadConfig,
   updateCircuitLoadConfig,
+  getCircuitOption,
 } from "@/api/sc/circuitLoadConfig";
 import LabelTitle from "./LabelTitle.vue";
 import LoadInfo from "./loadInfo.vue";
@@ -395,6 +399,7 @@ export default {
       // 表单校验
       rules: {},
       isEdit: false,
+      circuitOptions: [],
     };
   },
   created() {
@@ -402,8 +407,18 @@ export default {
   },
   mounted() {
     this.getList();
+    getCircuitOption(this.formData.id).then((response) => {
+      this.circuitOptions = response.data;
+    });
   },
   methods: {
+    // 回路选择
+    handleCircuit(val) {
+      const filter = this.circuitOptions.filter((item) => item.value === val);
+      if (filter.length > 0) {
+        this.form.reserved1 = filter[0].label;
+      }
+    },
     /** 查询回路负荷配置列表 */
     getList() {
       this.loading = true;
