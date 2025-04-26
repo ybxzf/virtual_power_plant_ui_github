@@ -16,17 +16,22 @@
         label-width="150px"
       >
         <el-form-item label="所属用户ID" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入所属用户ID" clearable />
+          <el-input disabled v-model="form.userId" placeholder="请输入所属用户ID" clearable />
         </el-form-item>
         <el-form-item label="所属设备ID" prop="deviceId">
           <el-input v-model="form.deviceId" placeholder="请输入所属设备ID" clearable />
         </el-form-item>
-        <el-form-item label="设备所属回路ID" prop="circuitId">
+<!--        <el-form-item label="设备所属回路ID" prop="circuitId">
           <el-input v-model="form.circuitId" placeholder="请输入设备所属回路ID" clearable />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="调节方式" prop="adjustMethod">
           <el-input v-model="form.adjustMethod" placeholder="请输入调节方式" clearable />
         </el-form-item>
+<!--        <el-table-column label="调节方式" align="center" prop="adjustMethod">-->
+<!--          <template slot-scope="scope">-->
+<!--            <dict-tag :options="dict.type.adjustment_method" :value="scope.row.adjustMethod" />-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-form-item label="最大可调节负荷(KW)" prop="maxAdjustableLoad">
           <el-input
             v-model="form.maxAdjustableLoad"
@@ -83,12 +88,12 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="预留字段1" prop="reserved1">
+<!--        <el-form-item label="预留字段1" prop="reserved1">
           <el-input v-model="form.reserved1" placeholder="请输入预留字段1" clearable />
         </el-form-item>
         <el-form-item label="预留字段2" prop="reserved2">
           <el-input v-model="form.reserved2" placeholder="请输入预留字段2" clearable />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="备注信息" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
@@ -141,7 +146,7 @@
             >删除</el-button
           >
         </el-col>
-        <el-col :span="1.5">
+<!--        <el-col :span="1.5">
           <el-button
             type="warning"
             plain
@@ -151,7 +156,7 @@
             v-hasPermi="['sc:deviceLoadConfig:export']"
             >导出</el-button
           >
-        </el-col>
+        </el-col>-->
       </el-row>
 
       <el-table
@@ -160,11 +165,16 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="主键ID" align="center" prop="id" />
-        <el-table-column label="所属用户ID" align="center" prop="userId" />
+<!--        <el-table-column label="主键ID" align="center" prop="id" />-->
+<!--        <el-table-column label="所属用户ID" align="center" prop="userId" />-->
         <el-table-column label="所属设备ID" align="center" prop="deviceId" />
-        <el-table-column label="设备所属回路ID" align="center" prop="circuitId" />
+<!--        <el-table-column label="设备所属回路ID" align="center" prop="circuitId" />-->
         <el-table-column label="调节方式" align="center" prop="adjustMethod" />
+<!--        <el-table-column label="调节方式" align="center" prop="adjustMethod">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.adjustment_method" :value="scope.row.adjustMethod" />
+          </template>
+        </el-table-column>-->
         <el-table-column label="最大可调节负荷(KW)" align="center" prop="maxAdjustableLoad" />
         <el-table-column label="可调节时段" align="center" prop="adjustablePeriod">
           <template slot-scope="scope">
@@ -189,9 +199,9 @@
             <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControllable" />
           </template>
         </el-table-column>
-        <el-table-column label="预留字段1" align="center" prop="reserved1" />
+<!--        <el-table-column label="预留字段1" align="center" prop="reserved1" />
         <el-table-column label="预留字段2" align="center" prop="reserved2" />
-        <el-table-column label="备注信息" align="center" prop="remark" />
+        <el-table-column label="备注信息" align="center" prop="remark" />-->
       </el-table>
 
       <pagination
@@ -240,7 +250,7 @@ const default_form = {
 export default {
   name: "DeviceLoadConfig",
   components: { LoadInfo, LabelTitle },
-  dicts: ["advance_notice_time", "adjustment_period", "sys_yes_no"],
+  dicts: ["advance_notice_time", "adjustment_period", "sys_yes_no","adjustment_method"],
   props: {
     formData: {
       type: Object,

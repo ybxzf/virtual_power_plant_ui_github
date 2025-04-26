@@ -99,7 +99,21 @@
     <template v-else>
       <el-descriptions title="" :column="5" border>
         <el-descriptions-item label="所属用户ID">{{ form.userId }}</el-descriptions-item>
-        <el-descriptions-item label="年用电量(KWH)">{{ form.annualElectricity }}</el-descriptions-item>
+        <el-descriptions-item label="保安负荷容量(kWV)">{{ form.securityLoad }}</el-descriptions-item>
+        <el-descriptions-item label="保安负荷设备名称">{{ form.securityDevice }}</el-descriptions-item>
+        <el-descriptions-item label="总配数量(个)">{{ form.totalDistribution }}</el-descriptions-item>
+        <el-descriptions-item label="总配电压等级(KV)">{{ form.totalVoltage }}</el-descriptions-item>
+        <el-descriptions-item label="总配出线数量(个)">{{ form.totalOutlet }}</el-descriptions-item>
+        <el-descriptions-item label="分配数量(个)">{{ form.subDistribution }}</el-descriptions-item>
+        <el-descriptions-item label="分配电压等级(KV)">{{ form.distributionVoltage }}</el-descriptions-item>
+        <el-descriptions-item label="分配出线数量(个)">{{ form.subOutlet }}</el-descriptions-item>
+        <el-descriptions-item label="高压馈线数量(个)">{{ form.highVoltageLines }}</el-descriptions-item>
+        <el-descriptions-item label="高压馈线电压等级(KV)">{{ form.hvFeederVoltage }}</el-descriptions-item>
+        <el-descriptions-item label="可调节高压馈线数量(个)">{{ form.adjustableHighLines }}</el-descriptions-item>
+        <el-descriptions-item label="低压馈线数量(个)">{{ form.lvFeederCount }}</el-descriptions-item>
+        <el-descriptions-item label="可调节低压馈线数量(个)">{{ form.adjustableLowLines }}</el-descriptions-item>
+
+<!--        <el-descriptions-item label="年用电量(KWH)">{{ form.annualElectricity }}</el-descriptions-item>
         <el-descriptions-item label="合同容量(KVA)">{{ form.contractCapacity }}</el-descriptions-item>
         <el-descriptions-item label="运行容量">{{ form.runningCapacity }}</el-descriptions-item>
         <el-descriptions-item label="近三年夏季最大负荷(kw)">{{ form.summerMaxLoad }}</el-descriptions-item>
@@ -109,20 +123,7 @@
         <el-descriptions-item label="需求响应任务量(kW)">{{ form.demandResponse }}</el-descriptions-item>
         <el-descriptions-item label="实际响应量(kW)">{{ form.actualResponse }}</el-descriptions-item>
         <el-descriptions-item label="每年生产时段">{{ form.productionPeriod }}</el-descriptions-item>
-        <el-descriptions-item label="保安负荷容量(kWV)">{{ form.securityLoad }}</el-descriptions-item>
-        <el-descriptions-item label="总配数量(个)">{{ form.totalDistribution }}</el-descriptions-item>
-        <el-descriptions-item label="总配出线数量(个)">{{ form.totalOutlet }}</el-descriptions-item>
-        <el-descriptions-item label="分配电压等级(KV)">{{ form.distributionVoltage }}</el-descriptions-item>
-        <el-descriptions-item label="高压馈线数量(个)">{{ form.highVoltageLines }}</el-descriptions-item>
-        <el-descriptions-item label="可调节高压馈线数量(个)">{{ form.adjustableHighLines }}</el-descriptions-item>
-        <el-descriptions-item label="可调节低压馈线数量(个)">{{ form.adjustableLowLines }}</el-descriptions-item>
-        <el-descriptions-item label="保安负荷设备名称">{{ form.securityDevice }}</el-descriptions-item>
-        <el-descriptions-item label="总配电压等级(KV)">{{ form.totalVoltage }}</el-descriptions-item>
-        <el-descriptions-item label="分配数量(个)">{{ form.subDistribution }}</el-descriptions-item>
-        <el-descriptions-item label="分配出线数量(个)">{{ form.subOutlet }}</el-descriptions-item>
-        <el-descriptions-item label="高压馈线电压等级(KV)">{{ form.hvFeederVoltage }}</el-descriptions-item>
-        <el-descriptions-item label="低压馈线数量(个)">{{ form.lvFeederCount }}</el-descriptions-item>
-        <el-descriptions-item label="备注信息">{{ form.remark }}</el-descriptions-item>
+        <el-descriptions-item label="备注信息">{{ form.remark }}</el-descriptions-item>-->
       </el-descriptions>
     </template>
   </div>

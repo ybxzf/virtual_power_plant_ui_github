@@ -39,11 +39,11 @@ export default {
             active: 0,
             tabs: [
                 {
-                    label: '负荷信息',
+                    label: '基础档案',
                     value: 0
                 },
                 {
-                    label: '可调资源配置',
+                    label: '回路负荷配置',
                     value: 1
                 },
                 {

@@ -5,7 +5,7 @@
       <LoadInfo formType="description" :form-data="formData"></LoadInfo>
     </div>
     <div class="circuit-load-config_item">
-      <LabelTitle title="可调资源配置"></LabelTitle>
+      <LabelTitle title="回路负荷配置"></LabelTitle>
       <el-form
         :model="form"
         ref="form"
@@ -17,6 +17,7 @@
       >
         <el-form-item label="所属用户ID" prop="userId">
           <el-input
+            disabled
             v-model="form.userId"
             placeholder="请输入所属用户ID"
             clearable
@@ -157,7 +158,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="预留字段1" prop="reserved1">
+<!--        <el-form-item label="预留字段1" prop="reserved1">
           <el-input
             v-model="form.reserved1"
             placeholder="请输入预留字段1"
@@ -170,7 +171,7 @@
             placeholder="请输入预留字段2"
             clearable
           />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="备注信息" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
@@ -223,7 +224,7 @@
             >删除</el-button
           >
         </el-col>
-        <el-col :span="1.5">
+<!--        <el-col :span="1.5">
           <el-button
             type="warning"
             plain
@@ -233,7 +234,7 @@
             v-hasPermi="['sc:circuitLoadConfig:export']"
             >导出</el-button
           >
-        </el-col>
+        </el-col>-->
       </el-row>
 
       <el-table
@@ -242,8 +243,8 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="主键ID" align="center" prop="id" />
-        <el-table-column label="所属用户ID" align="center" prop="userId" />
+<!--        <el-table-column label="主键ID" align="center" prop="id" />-->
+<!--        <el-table-column label="所属用户ID" align="center" prop="userId" />-->
         <el-table-column label="所属回路ID" align="center" prop="circuitId" />
         <el-table-column label="最大负荷(KW)" align="center" prop="maxLoad" />
         <el-table-column label="早峰负荷(KW)" align="center" prop="morningPeak" />
@@ -283,9 +284,9 @@
             <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControllable" />
           </template>
         </el-table-column>
-        <el-table-column label="预留字段1" align="center" prop="reserved1" />
+<!--        <el-table-column label="预留字段1" align="center" prop="reserved1" />
         <el-table-column label="预留字段2" align="center" prop="reserved2" />
-        <el-table-column label="备注信息" align="center" prop="remark" />
+        <el-table-column label="备注信息" align="center" prop="remark" />-->
       </el-table>
 
       <pagination
