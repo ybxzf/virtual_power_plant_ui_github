@@ -10,7 +10,7 @@
       <el-form-item label="用户状态" prop="userStatus">
         <el-select v-model="queryParams.userStatus" placeholder="请选择用户状态" clearable>
           <el-option v-for="dict in dict.type.corporation_state" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
+                     :value="dict.value" />
         </el-select>
       </el-form-item>
 
@@ -23,32 +23,32 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['sc:corporation:add']">新增</el-button>
+                   v-hasPermi="['sc:corporation:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['sc:corporation:edit']">修改</el-button>
+                   v-hasPermi="['sc:corporation:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['sc:corporation:remove']">删除</el-button>
+                   v-hasPermi="['sc:corporation:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['sc:corporation:export']">导出</el-button>
+                   v-hasPermi="['sc:corporation:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <div class="table-container">
       <el-table border v-loading="loading" height="100%" :data="corporationList"
-        @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50" fixed align="center" />
         <!--      <el-table-column show-overflow-tooltip label="自增主键" align="center" prop="id" />-->
         <el-table-column show-overflow-tooltip label="用户名称" align="center" prop="userName" min-width="150" />
         <el-table-column show-overflow-tooltip label="统一社会信用代码" align="center" prop="creditCode" min-width="150" />
         <el-table-column show-overflow-tooltip label="所属区域编码" align="center" prop="areaCode" min-width="120" />
         <el-table-column show-overflow-tooltip label="注册资金(万元)" align="center" prop="registeredCapital"
-          min-width="120" />
+                         min-width="120" />
         <el-table-column show-overflow-tooltip label="行业分类" align="center" prop="industryCategory" min-width="80">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.industry_type" :value="scope.row.industryCategory" />
@@ -88,7 +88,7 @@
         </el-table-column>
         <el-table-column show-overflow-tooltip label="行业小类" align="center" prop="industrySubclass" min-width="80" />
         <el-table-column show-overflow-tooltip label="是否需求响应签约用户" align="center" prop="isDemandResponse"
-          min-width="160">
+                         min-width="160">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isDemandResponse" />
           </template>
@@ -99,19 +99,19 @@
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
           <template slot-scope="scope">
             <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['sc:corporation:edit']">修改</el-button>
+                       v-hasPermi="['sc:corporation:edit']">修改</el-button>
             <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-              v-hasPermi="['sc:corporation:remove']">删除</el-button>
+                       v-hasPermi="['sc:corporation:remove']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
-      @pagination="getList" />
+                @pagination="getList" />
     <!-- 添加或修改企业用户信息对话框 -->
-    <el-dialog class="custom-dialog" :title="title" :visible.sync="addOrEditVisible" width="1380px" height="80%"
-      append-to-body @close="close">
+    <el-dialog class="custom-dialog" :title="title" :visible.sync="addOrEditVisible" width="1380px" height="60%"
+               append-to-body @close="close">
       <template v-if="addOrEditVisible">
         <AddDialog v-if="title == '新增'" :formData="form" @close="close"></AddDialog>
         <EditDialog v-else :formData="form" @close="close"></EditDialog>
