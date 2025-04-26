@@ -45,18 +45,15 @@
         <el-table-column type="selection" width="50" fixed align="center" />
         <!--      <el-table-column show-overflow-tooltip label="自增主键" align="center" prop="id" />-->
         <el-table-column show-overflow-tooltip label="用户名称" align="center" prop="userName" min-width="150" />
+        <el-table-column show-overflow-tooltip label="用户编号" align="center" prop="userCode" min-width="80" />
         <el-table-column show-overflow-tooltip label="统一社会信用代码" align="center" prop="creditCode" min-width="150" />
-        <el-table-column show-overflow-tooltip label="所属区域编码" align="center" prop="areaCode" min-width="120" />
-        <el-table-column show-overflow-tooltip label="注册资金(万元)" align="center" prop="registeredCapital"
-          min-width="120" />
+        <el-table-column show-overflow-tooltip label="所属区域" align="center" prop="areaCode" min-width="120" />
+        <el-table-column show-overflow-tooltip label="用电地址" align="center" prop="powerAddress" min-width="120" />
+<!--        <el-table-column show-overflow-tooltip label="注册资金(万元)" align="center" prop="registeredCapital"
+          min-width="120" />-->
         <el-table-column show-overflow-tooltip label="行业分类" align="center" prop="industryCategory" min-width="80">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.industry_type" :value="scope.row.industryCategory" />
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip label="用电类别" align="center" prop="powerCategory" min-width="100">
-          <template slot-scope="scope">
-            <dict-tag :options="dict.type.electricity_state" :value="scope.row.powerCategory" />
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="供电电压" align="center" prop="supplyVoltage" min-width="80">
@@ -64,38 +61,42 @@
             <dict-tag :options="dict.type.supply_voltage" :value="scope.row.supplyVoltage" />
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip label="合约生效日期" align="center" prop="contractStart" width="100">
-          <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.contractStart, '{y}-{m}-{d}') }}</span>
-          </template>
-        </el-table-column>
         <el-table-column show-overflow-tooltip label="联系人" align="center" prop="contactPerson" min-width="80" />
         <el-table-column show-overflow-tooltip label="联系电话" align="center" prop="contactPhone" min-width="80" />
-        <el-table-column show-overflow-tooltip label="邮箱" align="center" prop="email" min-width="80" />
-        <el-table-column show-overflow-tooltip label="所属虚拟电厂id" align="center" prop="virtualPlant" min-width="120" />
-        <el-table-column show-overflow-tooltip label="所属线路" align="center" prop="circuit" min-width="80" />
-        <el-table-column show-overflow-tooltip label="用电地址" align="center" prop="powerAddress" min-width="120" />
-        <el-table-column show-overflow-tooltip label="用户编号" align="center" prop="userCode" min-width="80" />
+        <el-table-column show-overflow-tooltip label="是否需求响应签约用户" align="center" prop="isDemandResponse"
+                         min-width="160">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isDemandResponse" />
+          </template>
+        </el-table-column>
         <el-table-column show-overflow-tooltip label="用户状态" align="center" prop="userStatus" min-width="80">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.corporation_state" :value="scope.row.userStatus" />
           </template>
         </el-table-column>
+        <el-table-column show-overflow-tooltip label="用电类别" align="center" prop="powerCategory" min-width="100">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.electricity_state" :value="scope.row.powerCategory" />
+          </template>
+        </el-table-column>
+
+<!--        <el-table-column show-overflow-tooltip label="合约生效日期" align="center" prop="contractStart" width="100">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.contractStart, '{y}-{m}-{d}') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="邮箱" align="center" prop="email" min-width="80" />
+        <el-table-column show-overflow-tooltip label="所属虚拟电厂id" align="center" prop="virtualPlant" min-width="120" />
+        <el-table-column show-overflow-tooltip label="所属线路" align="center" prop="circuit" min-width="80" />
         <el-table-column show-overflow-tooltip label="用户采集分类" align="center" prop="collectCategory" min-width="100">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.collection_state" :value="scope.row.collectCategory" />
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="行业小类" align="center" prop="industrySubclass" min-width="80" />
-        <el-table-column show-overflow-tooltip label="是否需求响应签约用户" align="center" prop="isDemandResponse"
-          min-width="160">
-          <template slot-scope="scope">
-            <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isDemandResponse" />
-          </template>
-        </el-table-column>
         <el-table-column show-overflow-tooltip label="合约有效期(年)" align="center" prop="contractPeriod" min-width="110" />
         <el-table-column show-overflow-tooltip label="所属变电站" align="center" prop="substation" min-width="90" />
-        <el-table-column show-overflow-tooltip label="所属虚拟电厂" align="center" prop="extend1" min-width="100" />
+        <el-table-column show-overflow-tooltip label="所属虚拟电厂" align="center" prop="extend1" min-width="100" />-->
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
           <template slot-scope="scope">
             <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
