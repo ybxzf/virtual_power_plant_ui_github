@@ -1,95 +1,105 @@
 <template>
-    <div>
-        <el-form ref="form" :model="form" :rules="rules" label-width="180px" :inline="true">
-            <el-form-item label="用户名称" prop="userName">
-                <el-input v-model="form.userName" placeholder="请输入用户名称" />
-            </el-form-item>
-          <el-form-item label="用户编号" prop="userCode">
-            <el-input v-model="form.userCode" placeholder="请输入用户编号" />
-          </el-form-item>
-            <el-form-item label="统一社会信用代码" prop="creditCode">
-                <el-input v-model="form.creditCode" placeholder="请输入统一社会信用代码" />
-            </el-form-item>
-            <el-form-item label="所属区域" prop="areaCode">
-                <el-cascader v-model="form.areaCode" :options="areaOptions" clearable :props="{ expandTrigger: 'hover' }"
-                    @change="handleChange" placeholder="请选择所属区域"></el-cascader>
-            </el-form-item>
-            <el-form-item label="注册资金(万元)" prop="registeredCapital">
-                <el-input v-model="form.registeredCapital" type="number" :precision="2" placeholder="请输入注册资金(万元)" />
-            </el-form-item>
-          <el-form-item label="用电类别" prop="powerCategory">
-            <el-select v-model="form.powerCategory" placeholder="请选择用电类别">
-              <el-option v-for="dict in dict.type.electricity_state" :key="dict.value" :label="dict.label"
-                         :value="dict.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="供电电压" prop="supplyVoltage">
-            <el-select v-model="form.supplyVoltage" placeholder="请选择供电电压">
-              <el-option v-for="dict in dict.type.supply_voltage" :key="dict.value" :label="dict.label"
-                         :value="dict.value"></el-option>
-            </el-select>
-          </el-form-item>
-            <el-form-item label="行业分类" prop="industryCategory">
-                <el-select v-model="form.industryCategory" placeholder="请选择行业分类">
-                    <el-option v-for="dict in dict.type.industry_type" :key="dict.value" :label="dict.label"
-                        :value="dict.value"></el-option>
-                </el-select>
-            </el-form-item>
-          <el-form-item label="行业小类" prop="industrySubclass">
-            <el-input v-model="form.industrySubclass" placeholder="请输入行业小类" />
-          </el-form-item>
-          <el-form-item label="是否需求响应签约" prop="isDemandResponse">
-            <el-radio-group v-model="form.isDemandResponse">
-              <el-radio v-for="dict in dict.type.sys_yes_no" :key="dict.value" :label="dict.value">{{ dict.label
-                }}</el-radio>
-            </el-radio-group>
-          </el-form-item>
-            <el-form-item label="合约生效日期" prop="contractStart">
-                <el-date-picker clearable v-model="form.contractStart" type="date" value-format="yyyy-MM-dd"
-                    placeholder="请选择合约生效日期">
-                </el-date-picker>
-            </el-form-item>
-          <el-form-item label="合约有效期(年)" prop="contractPeriod">
-            <el-input v-model="form.contractPeriod" placeholder="请输入合约有效期(年)" />
-          </el-form-item>
-            <el-form-item label="联系人" prop="contactPerson">
-                <el-input v-model="form.contactPerson" placeholder="请输入联系人" />
-            </el-form-item>
-            <el-form-item label="联系电话" prop="contactPhone">
-                <el-input v-model="form.contactPhone" placeholder="请输入联系电话" />
-            </el-form-item>
-            <el-form-item label="邮箱" prop="email">
-                <el-input v-model="form.email" placeholder="请输入邮箱" />
-            </el-form-item>
-            <el-form-item label="所属虚拟电厂ID" prop="virtualPlant">
-                <el-input v-model="form.virtualPlant" placeholder="请输入所属虚拟电厂id" />
-            </el-form-item>
-          <el-form-item label="所属变电站" prop="substation">
-            <el-input v-model="form.substation" placeholder="请输入所属变电站" />
-          </el-form-item>
-            <el-form-item label="所属线路" prop="circuit">
-                <el-input v-model="form.circuit" placeholder="请输入所属线路" />
-            </el-form-item>
-          <el-form-item label="用户采集分类" prop="collectCategory">
-            <el-select v-model="form.collectCategory" placeholder="请选择用户采集分类">
-              <el-option v-for="dict in dict.type.collection_state" :key="dict.value" :label="dict.label"
-                         :value="dict.value"></el-option>
-            </el-select>
-          </el-form-item>
-            <el-form-item label="用电地址" prop="powerAddress">
-                <el-input v-model="form.powerAddress" placeholder="请输入用电地址" />
-            </el-form-item>
-            <el-form-item label="用户状态" prop="userStatus">
-                <el-select v-model="form.userStatus" placeholder="请选择用户状态">
-                    <el-option v-for="dict in dict.type.corporation_state" :key="dict.value" :label="dict.label"
-                        :value="dict.value"></el-option>
-                </el-select>
-            </el-form-item>
-
-
-
-
-            <!--        <el-form-item label="所属虚拟电厂" prop="extend1">
+  <div>
+    <el-form ref="form" :model="form" :rules="rules" label-width="180px" :inline="true">
+      <el-form-item label="用户名称" prop="userName">
+        <el-input v-model="form.userName" placeholder="请输入用户名称" />
+      </el-form-item>
+      <el-form-item label="用户编号" prop="userCode">
+        <el-input v-model="form.userCode" placeholder="请输入用户编号" />
+      </el-form-item>
+      <el-form-item label="统一社会信用代码" prop="creditCode">
+        <el-input v-model="form.creditCode" placeholder="请输入统一社会信用代码" />
+      </el-form-item>
+      <el-form-item label="所属区域" prop="areaCodePath">
+        <el-cascader v-model="areaCodePath" :options="areaOptions" clearable @change="handleChange"
+          placeholder="请选择所属区域" :props="{
+            checkStrictly: false,
+            // emitPath: false,
+            // expandTrigger: 'hover'
+          }"></el-cascader>
+      </el-form-item>
+      <el-form-item label="注册资金(万元)" prop="registeredCapital">
+        <el-input v-model="form.registeredCapital" type="number" :precision="2" placeholder="请输入注册资金(万元)" />
+      </el-form-item>
+      <el-form-item label="用电类别" prop="powerCategory">
+        <el-select v-model="form.powerCategory" placeholder="请选择用电类别">
+          <el-option v-for="dict in dict.type.electricity_state" :key="dict.value" :label="dict.label"
+            :value="dict.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="供电电压" prop="supplyVoltage">
+        <el-select v-model="form.supplyVoltage" placeholder="请选择供电电压">
+          <el-option v-for="dict in dict.type.supply_voltage" :key="dict.value" :label="dict.label"
+            :value="dict.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="行业分类" prop="industryCategory">
+        <el-select v-model="form.industryCategory" placeholder="请选择行业分类">
+          <el-option v-for="dict in dict.type.industry_type" :key="dict.value" :label="dict.label"
+            :value="dict.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="行业小类" prop="industrySubclass">
+        <el-input v-model="form.industrySubclass" placeholder="请输入行业小类" />
+      </el-form-item>
+      <el-form-item label="是否需求响应签约" prop="isDemandResponse">
+        <el-radio-group v-model="form.isDemandResponse">
+          <el-radio v-for="dict in dict.type.sys_yes_no" :key="dict.value" :label="dict.value">{{ dict.label
+          }}</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="合约生效日期" prop="contractStart">
+        <el-date-picker clearable v-model="form.contractStart" type="date" value-format="yyyy-MM-dd"
+          placeholder="请选择合约生效日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="合约有效期(年)" prop="contractPeriod">
+        <el-input v-model="form.contractPeriod" placeholder="请输入合约有效期(年)" />
+      </el-form-item>
+      <el-form-item label="联系人" prop="contactPerson">
+        <el-input v-model="form.contactPerson" placeholder="请输入联系人" />
+      </el-form-item>
+      <el-form-item label="联系电话" prop="contactPhone">
+        <el-input v-model="form.contactPhone" placeholder="请输入联系电话" />
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="form.email" placeholder="请输入邮箱" />
+      </el-form-item>
+      <!-- <el-form-item label="所属虚拟电厂ID" prop="virtualPlant">
+        <el-select v-model="form.virtualPlant">
+          <el-option v-for="item in companyOptions" :key="item.value" :label="item.label"
+            :value="item.value"></el-option>
+        </el-select>
+        <el-input v-model="form.virtualPlant" placeholder="请输入所属虚拟电厂id" />
+      </el-form-item> -->
+      <el-form-item label="所属虚拟电厂" prop="extend1">
+        <el-select v-model="form.extend1" placeholder="请选择所属虚拟电厂" @change="handleExtend1">
+          <el-option v-for="item in companyOptions" :key="item.value" :label="item.label"
+            :value="item.label"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="所属变电站" prop="substation">
+        <el-input v-model="form.substation" placeholder="请输入所属变电站" />
+      </el-form-item>
+      <el-form-item label="所属线路" prop="circuit">
+        <el-input v-model="form.circuit" placeholder="请输入所属线路" />
+      </el-form-item>
+      <el-form-item label="用户采集分类" prop="collectCategory">
+        <el-select v-model="form.collectCategory" placeholder="请选择用户采集分类">
+          <el-option v-for="dict in dict.type.collection_state" :key="dict.value" :label="dict.label"
+            :value="dict.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="用电地址" prop="powerAddress">
+        <el-input v-model="form.powerAddress" placeholder="请输入用电地址" />
+      </el-form-item>
+      <el-form-item label="用户状态" prop="userStatus">
+        <el-select v-model="form.userStatus" placeholder="请选择用户状态">
+          <el-option v-for="dict in dict.type.corporation_state" :key="dict.value" :label="dict.label"
+            :value="dict.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <!--        <el-form-item label="所属虚拟电厂" prop="extend1">
           <el-input v-model="form.extend1" placeholder="请输入所属虚拟电厂" />
         </el-form-item>
         <el-form-item label="扩展2" prop="extend2">
@@ -106,7 +116,7 @@
   </div>
 </template>
 <script>
-import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation } from "@/api/sc/corporation";
+import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation, getAreaTree, getCompanyOption } from "@/api/sc/corporation";
 import { chinaCity } from './chinaCity.js'
 
 export default {
@@ -134,9 +144,10 @@ export default {
           { required: true, message: "是否需求响应签约用户不能为空", trigger: "change" }
         ],
       },
-      areaOptions: chinaCity,
-      areaCodePath: [],//级联选择器存储的所有值
+      areaOptions: [],//省市区列表
+      areaCodePath: [],//省市区存储的所有值
       form: {},
+      companyOptions: [],//虚拟电厂列表
     }
   },
   computed: {
@@ -146,7 +157,15 @@ export default {
     form: {
       handler(newVal, oldVal) {
         if (newVal.areaCode !== oldVal.areaCode) {
-          this.areaCodePath = this.findFullPath(newVal.areaCode, chinaCity) || [];
+          if (this.areaOptions.length == 0) {
+            //获取区域信息
+            getAreaTree().then(response => {
+              this.areaOptions = response.data;
+              this.areaCodePath = this.findFullPath(newVal.areaCode, this.areaOptions) || [];
+            });
+          } else {
+            this.areaCodePath = this.findFullPath(newVal.areaCode, this.areaOptions) || [];
+          }
         }
       },
       deep: true,
@@ -157,10 +176,19 @@ export default {
     this.form = JSON.parse(JSON.stringify(this.formData));
   },
   mounted() {
-
+    getCompanyOption().then(response => {
+      this.companyOptions = response.data;
+    })
   },
 
   methods: {
+    //虚拟电厂选择
+    handleExtend1(val) {
+      const filter = this.companyOptions.filter(item => item.label == val) || [];
+      if (filter.length > 0) {
+        this.form.virtualPlant = filter[0].value;
+      }
+    },
     /** 提交按钮 */
     submitForm() {
       console.log('this.form', this.form);

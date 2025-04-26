@@ -45,7 +45,7 @@
     <el-table v-loading="loading" :data="companyList" border @selection-change="handleSelectionChange"
       @row-dblclick="handleRowDblClick">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
+<!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="公司全称" align="center" prop="companyName" />
       <el-table-column label="公司编号" align="center" prop="companyCode" />
       <el-table-column label="公司类型" align="center" prop="companyType">

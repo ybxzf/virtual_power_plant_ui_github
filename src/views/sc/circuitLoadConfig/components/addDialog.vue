@@ -7,12 +7,12 @@
       <el-form-item label="统一社会信用代码" prop="creditCode">
         <el-input v-model="form.creditCode" placeholder="请输入统一社会信用代码" />
       </el-form-item>
-      <el-form-item label="所属区域编码" prop="areaCode">
+      <el-form-item label="所属区域编码" prop="areaCodePath">
         <el-cascader v-model="areaCodePath" :options="areaOptions" clearable @change="handleChange"
           placeholder="请选择所属区域编码" :props="{
             checkStrictly: false,
             // emitPath: false,
-            expandTrigger: 'hover'
+            // expandTrigger: 'hover'
           }"></el-cascader>
       </el-form-item>
       <el-form-item label="注册资金(万元)" prop="registeredCapital">
@@ -50,8 +50,18 @@
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="form.email" placeholder="请输入邮箱" />
       </el-form-item>
-      <el-form-item label="所属虚拟电厂id" prop="virtualPlant">
+      <!-- <el-form-item label="所属虚拟电厂ID" prop="virtualPlant">
+        <el-select v-model="form.virtualPlant">
+          <el-option v-for="item in companyOptions" :key="item.value" :label="item.label"
+            :value="item.value"></el-option>
+        </el-select>
         <el-input v-model="form.virtualPlant" placeholder="请输入所属虚拟电厂id" />
+      </el-form-item> -->
+      <el-form-item label="所属虚拟电厂" prop="extend1">
+        <el-select v-model="form.extend1" placeholder="请选择所属虚拟电厂" @change="handleExtend1">
+          <el-option v-for="item in companyOptions" :key="item.value" :label="item.label"
+            :value="item.label"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="所属线路" prop="circuit">
         <el-input v-model="form.circuit" placeholder="请输入所属线路" />
@@ -80,7 +90,7 @@
       <el-form-item label="是否需求响应签约用户" prop="isDemandResponse">
         <el-radio-group v-model="form.isDemandResponse">
           <el-radio v-for="dict in dict.type.sys_yes_no" :key="dict.value" :label="dict.value">{{ dict.label
-            }}</el-radio>
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="合约有效期(年)" prop="contractPeriod">
@@ -106,7 +116,7 @@
   </div>
 </template>
 <script>
-import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation } from "@/api/sc/corporation";
+import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation, getAreaTree, getCompanyOption } from "@/api/sc/corporation";
 import { chinaCity } from './chinaCity.js'
 
 export default {
@@ -134,9 +144,10 @@ export default {
           { required: true, message: "是否需求响应签约用户不能为空", trigger: "change" }
         ],
       },
-      areaOptions: chinaCity,
-      areaCodePath: [],//级联选择器存储的所有值
+      areaOptions: [],//省市区列表
+      areaCodePath: [],//省市区存储的所有值
       form: {},
+      companyOptions: [],//虚拟电厂列表
     }
   },
   computed: {
@@ -146,7 +157,15 @@ export default {
     form: {
       handler(newVal, oldVal) {
         if (newVal.areaCode !== oldVal.areaCode) {
-          this.areaCodePath = this.findFullPath(newVal.areaCode, chinaCity) || [];
+          if (this.areaOptions.length == 0) {
+            //获取区域信息
+            getAreaTree().then(response => {
+              this.areaOptions = response.data;
+              this.areaCodePath = this.findFullPath(newVal.areaCode, this.areaOptions) || [];
+            });
+          } else {
+            this.areaCodePath = this.findFullPath(newVal.areaCode, this.areaOptions) || [];
+          }
         }
       },
       deep: true,
@@ -155,12 +174,25 @@ export default {
   },
   created() {
     this.form = JSON.parse(JSON.stringify(this.formData));
+    //获取区域信息
+    getAreaTree().then(response => {
+      this.areaOptions = response.data;
+    });
   },
   mounted() {
-
+    getCompanyOption().then(response => {
+      this.companyOptions = response.data;
+    })
   },
 
   methods: {
+    //虚拟电厂选择
+    handleExtend1(val) {
+      const filter = this.companyOptions.filter(item => item.label == val) || [];
+      if (filter.length > 0) {
+        this.form.virtualPlant = filter[0].value;
+      }
+    },
     /** 提交按钮 */
     submitForm() {
       console.log('this.form', this.form);

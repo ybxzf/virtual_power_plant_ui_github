@@ -11,6 +11,9 @@
       <el-form-item label="配电室名称" prop="distributionRoom">
         <el-input v-model="form.distributionRoom" placeholder="请输入配电室名称" />
       </el-form-item>
+      <el-form-item label="供电线路" prop="powerLine">
+        <el-input v-model="form.powerLine" placeholder="请输入供电线路" />
+      </el-form-item>
       <el-form-item label="电压等级" prop="voltageLevel">
         <el-select v-model="form.voltageLevel" placeholder="请选择电压等级">
           <el-option v-for="dict in dict.type.supply_voltage" :key="dict.value" :label="dict.label"
@@ -23,12 +26,10 @@
             :value="dict.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="所属区域" prop="area">
+<!--      <el-form-item label="所属区域" prop="area">
         <el-input v-model="form.area" placeholder="请输入所属区域" />
-      </el-form-item>
-      <el-form-item label="供电线路" prop="powerLine">
-        <el-input v-model="form.powerLine" placeholder="请输入供电线路" />
-      </el-form-item>
+      </el-form-item>-->
+
       <el-form-item label="开关类型" prop="switchType">
         <el-input v-model="form.switchType" placeholder="请输入开关类型" />
       </el-form-item>
@@ -54,35 +55,35 @@
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
           v-hasPermi="['sc:circuitInfo:remove']">删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+<!--      <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
           v-hasPermi="['sc:circuitInfo:export']">导出</el-button>
-      </el-col>
+      </el-col>-->
       <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
     </el-row>
 
     <el-table v-loading="loading" :data="circuitInfoList" @selection-change="handleSelectionChange" height="300">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键ID" align="center" prop="id" />
-      <el-table-column label="所属用户ID" align="center" prop="userId" />
+<!--      <el-table-column label="主键ID" align="center" prop="id" />
+      <el-table-column label="所属用户ID" align="center" prop="userId" />-->
       <el-table-column label="配电回路名称" align="center" prop="circuitName" />
+      <el-table-column label="所属区域" align="center" prop="area" />
       <el-table-column label="配电室名称" align="center" prop="distributionRoom" />
+      <el-table-column label="配电室类型" align="center" prop="roomType" />
       <el-table-column label="电压等级" align="center" prop="voltageLevel">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.supply_voltage" :value="scope.row.voltageLevel" />
         </template>
       </el-table-column>
+      <el-table-column label="供电线路" align="center" prop="powerLine" />
       <el-table-column label="是否可控回路" align="center" prop="isControllable">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControllable" />
         </template>
       </el-table-column>
-      <el-table-column label="所属区域" align="center" prop="area" />
-      <el-table-column label="配电室类型" align="center" prop="roomType" />
-      <el-table-column label="供电线路" align="center" prop="powerLine" />
       <el-table-column label="开关类型" align="center" prop="switchType" />
       <el-table-column label="开关型号" align="center" prop="switchModel" />
-      <el-table-column label="备注信息" align="center" prop="remark" />
+<!--      <el-table-column label="备注信息" align="center" prop="remark" />-->
       <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"

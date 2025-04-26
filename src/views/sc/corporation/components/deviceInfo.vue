@@ -17,13 +17,13 @@
             :value="dict.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="所属区域" prop="area">
+<!--      <el-form-item label="所属区域" prop="area">
         <el-input v-model="form.area" placeholder="请输入所属区域" />
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="额定功率KW" prop="ratedPower">
         <el-input v-model="form.ratedPower" placeholder="请输入额定功率(KW)" />
       </el-form-item>
-      <el-form-item label="所属回路ID" prop="circuitId">
+      <el-form-item label="所属回路" prop="circuitId">
         <el-input v-model="form.circuitId" placeholder="请输入所属回路ID" />
       </el-form-item>
       <el-form-item label="备注信息" prop="remark">
@@ -45,27 +45,27 @@
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
           v-hasPermi="['sc:deviceInfo:remove']">删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+<!--      <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
           v-hasPermi="['sc:deviceInfo:export']">导出</el-button>
-      </el-col>
+      </el-col>-->
       <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
     </el-row>
 
     <el-table v-loading="loading" :data="deviceInfoList" @selection-change="handleSelectionChange" height="300">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键ID" align="center" prop="id" />
-      <el-table-column label="所属用户ID" align="center" prop="userId" />
+<!--      <el-table-column label="主键ID" align="center" prop="id" />
+      <el-table-column label="所属用户ID" align="center" prop="userId" />-->
       <el-table-column label="设备名称" align="center" prop="deviceName" />
+      <el-table-column label="所属区域" align="center" prop="area" />
       <el-table-column label="设备类别" align="center" prop="deviceType" />
       <el-table-column label="额定电压(KV)" align="center" prop="ratedVoltage">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.supply_voltage" :value="scope.row.ratedVoltage" />
         </template>
       </el-table-column>
-      <el-table-column label="所属区域" align="center" prop="area" />
       <el-table-column label="额定功率(KW)" align="center" prop="ratedPower" />
-      <el-table-column label="所属回路ID" align="center" prop="circuitId" />
+      <el-table-column label="所属回路" align="center" prop="circuitId" />
       <el-table-column label="备注信息" align="center" prop="remark" />
       <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

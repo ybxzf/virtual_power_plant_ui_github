@@ -16,8 +16,13 @@
             <el-form-item label="统一社会信用代码" prop="creditCode">
                 <el-input v-model="form.creditCode" placeholder="请输入统一社会信用代码" />
             </el-form-item>
-            <el-form-item label="区域编码" prop="subordinateAreaCode">
-                <el-input v-model="form.subordinateAreaCode" placeholder="请输入区域编码" />
+            <el-form-item label="区域编码" prop="areaCodePath">
+                <el-cascader v-model="areaCodePath" :options="areaOptions" clearable @change="handleChange"
+                    placeholder="请选择所属区域" :props="{
+                        checkStrictly: false,
+                        // emitPath: false,
+                        // expandTrigger: 'hover'
+                    }"></el-cascader>
             </el-form-item>
             <el-form-item label="详细注册地址" prop="registeredAddress">
                 <el-input v-model="form.registeredAddress" placeholder="请输入详细注册地址" />
@@ -44,6 +49,7 @@
 </template>
 <script>
 import { listCompany, getCompany, delCompany, addCompany, updateCompany } from "@/api/sc/company";
+import { getAreaTree } from "@/api/sc/corporation";
 
 export default {
     name: 'AddOrEditDialog',
@@ -88,6 +94,8 @@ export default {
                     { required: true, message: "注册资金(万元)不能为空", trigger: "blur" }
                 ],
             },
+            areaOptions: [],
+            areaCodePath: [],//级联选择器存储的所有值
             form: {},
         }
     },
@@ -95,6 +103,26 @@ export default {
 
     },
     watch: {
+        form: {
+            handler(newVal, oldVal) {
+                if (newVal.subordinateAreaCode !== oldVal.subordinateAreaCode) {
+                    if (this.areaOptions.length == 0) {
+                        //获取区域信息
+                        getAreaTree().then(response => {
+                            this.areaOptions = response.data;
+                            this.areaCodePath = this.findFullPath(newVal.subordinateAreaCode, this.areaOptions) || [];
+                            console.log('this.newVal', newVal);
+                            console.log('this.areaOptions', this.areaOptions);
+                            console.log('this.areaCodePath', this.areaCodePath);
+                        });
+                    } else {
+                        this.areaCodePath = this.findFullPath(newVal.subordinateAreaCode, this.areaOptions) || [];
+                    }
+                }
+            },
+            deep: true,
+            immidiate: true,
+        },
     },
     created() {
         this.form = JSON.parse(JSON.stringify(this.formData));
@@ -129,8 +157,8 @@ export default {
         // 级联选择器值改变时触发
         handleChange(val) {
             console.log('val', val);
-            this.form.areaCode = val[val.length - 1]; // 获取最后一级的值
-            // this.form.areaCode = val;
+            this.form.subordinateAreaCode = val[val.length - 1]; // 获取最后一级的值
+            // this.form.subordinateAreaCode = val;
         },
         // 根据最后一级的值查找完整路径
         findFullPath(targetValue, options) {
