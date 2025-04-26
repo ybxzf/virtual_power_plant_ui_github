@@ -25,7 +25,14 @@
           <el-input v-model="form.circuitId" placeholder="请输入设备所属回路ID" clearable />
         </el-form-item>-->
         <el-form-item label="调节方式" prop="adjustMethod">
-          <el-input v-model="form.adjustMethod" placeholder="请输入调节方式" clearable />
+          <el-select v-model="form.adjustMethod" placeholder="请选择调节方式" clearable>
+            <el-option
+              v-for="dict in dict.type.adjustment_method"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
 <!--        <el-table-column label="调节方式" align="center" prop="adjustMethod">-->
 <!--          <template slot-scope="scope">-->
