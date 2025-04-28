@@ -181,14 +181,15 @@
         <el-table-column type="selection" width="55" align="center" />
 <!--        <el-table-column label="主键ID" align="center" prop="id" />-->
 <!--        <el-table-column label="所属用户ID" align="center" prop="userId" />-->
-        <el-table-column label="所属设备ID" align="center" prop="deviceId" />
+<!--        <el-table-column label="所属设备ID" align="center" prop="deviceId" />-->
+        <el-table-column label="所属设备" align="center" prop="reserved1" />
 <!--        <el-table-column label="设备所属回路ID" align="center" prop="circuitId" />-->
-        <el-table-column label="调节方式" align="center" prop="adjustMethod" />
-<!--        <el-table-column label="调节方式" align="center" prop="adjustMethod">
+<!--        <el-table-column label="调节方式1" align="center" prop="adjustMethod" />-->
+        <el-table-column label="调节方式" align="center" prop="adjustMethod">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.adjustment_method" :value="scope.row.adjustMethod" />
           </template>
-        </el-table-column>-->
+        </el-table-column>
         <el-table-column label="最大可调节负荷(KW)" align="center" prop="maxAdjustableLoad" />
         <el-table-column label="可调节时段" align="center" prop="adjustablePeriod">
           <template slot-scope="scope">

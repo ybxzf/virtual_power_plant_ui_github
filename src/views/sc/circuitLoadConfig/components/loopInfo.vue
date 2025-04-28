@@ -248,7 +248,8 @@
         <el-table-column type="selection" width="55" align="center" />
 <!--        <el-table-column label="主键ID" align="center" prop="id" />-->
 <!--        <el-table-column label="所属用户ID" align="center" prop="userId" />-->
-        <el-table-column label="所属回路ID" align="center" prop="circuitId" />
+<!--        <el-table-column label="所属回路ID" align="center" prop="circuitId" />-->
+        <el-table-column label="所属回路" align="center" prop="reserved1" />
         <el-table-column label="最大负荷(KW)" align="center" prop="maxLoad" />
         <el-table-column label="早峰负荷(KW)" align="center" prop="morningPeak" />
         <el-table-column label="腰峰负荷(KW)" align="center" prop="middayPeak" />
