@@ -33,6 +33,16 @@
       <el-table-column label="所属回路ID" min-width="90" align="center" prop="circuitId" />
       <el-table-column label="主设备品牌和型号" min-width="130" align="center" prop="deviceModel" />
       <el-table-column label="备注信息" min-width="80" align="center" prop="remark" />
+      <el-table-column label="是否可调节" min-width="90" align="center" prop="isAdjust">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isAdjust" />
+        </template>
+      </el-table-column>
+      <el-table-column label="是否可控制" min-width="90" align="center" prop="isControl">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControl" />
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -51,8 +61,8 @@
 import { listPv, getPv, delPv, addPv, updatePv } from "@/api/sc/pv";
 
 export default {
-  name: "PvInfo",
-  dicts: ['regulation_mode', 'advance_notice_time', 'adjustment_period', 'power_source_type'],
+  name: "Pv",
+  dicts: ['regulation_mode', 'advance_notice_time', 'adjustment_period', 'sys_yes_no', 'power_source_type'],
   data() {
     return {
       // 遮罩层
@@ -90,6 +100,10 @@ export default {
         adjustPeriod: null,
         circuitId: null,
         deviceModel: null,
+        reserved1: null,
+        reserved2: null,
+        isAdjust: null,
+        isControl: null
       },
       // 表单参数
       form: {},
@@ -135,7 +149,11 @@ export default {
         deviceModel: null,
         reserved1: null,
         reserved2: null,
-        remark: null
+        remark: null,
+        updateBy: null,
+        updateTime: null,
+        isAdjust: null,
+        isControl: null
       };
       this.resetForm("form");
     },

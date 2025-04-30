@@ -21,6 +21,16 @@
       <el-table-column label="日常放电时段" min-width="120" align="center" prop="dailyDischarge" />
       <el-table-column label="放电提前通知时间" min-width="130" align="center" prop="dischargeNotice" />
       <el-table-column label="备注信息" min-width="80" align="center" prop="remark" />
+      <el-table-column label="是否可调节" min-width="90" align="center" prop="isAdjust">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isAdjust" />
+        </template>
+      </el-table-column>
+      <el-table-column label="是否可控制" min-width="90" align="center" prop="isControl">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControl" />
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -40,8 +50,8 @@
 import { listEnergyStorage, getEnergyStorage, delEnergyStorage, addEnergyStorage, updateEnergyStorage } from "@/api/sc/energyStorage";
 
 export default {
-  name: "EnergyStorageInfo",
-  dicts: ['power_source_type'],
+  name: "EnergyStorage",
+  dicts: ['sys_yes_no', 'power_source_type'],
   data() {
     return {
       // 遮罩层
@@ -79,6 +89,10 @@ export default {
         chargeNotice: null,
         dailyDischarge: null,
         dischargeNotice: null,
+        reserved1: null,
+        reserved2: null,
+        isAdjust: null,
+        isControl: null
       },
       // 表单参数
       form: {},
@@ -124,7 +138,11 @@ export default {
         dischargeNotice: null,
         reserved1: null,
         reserved2: null,
-        remark: null
+        remark: null,
+        updateBy: null,
+        updateTime: null,
+        isAdjust: null,
+        isControl: null
       };
       this.resetForm("form");
     },

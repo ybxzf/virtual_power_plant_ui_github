@@ -14,7 +14,11 @@
       </el-table-column>
       <el-table-column label="装机容量" min-width="80" align="center" prop="capacity" />
       <el-table-column label="最大可出力" min-width="90" align="center" prop="maxOutput" />
-      <el-table-column label="并网电压等级" min-width="100" align="center" prop="gridVoltage" />
+      <el-table-column label="并网电压等级" min-width="100" align="center" prop="gridVoltage">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.supply_voltage" :value="scope.row.gridVoltage"/>
+        </template>
+      </el-table-column>
       <el-table-column label="发电类型" min-width="80" align="center" prop="generationType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.generation_type" :value="scope.row.generationType" />
@@ -38,6 +42,16 @@
         </template>
       </el-table-column>
       <el-table-column label="备注信息" min-width="80" align="center" prop="remark" />
+      <el-table-column label="是否可调节" min-width="90" align="center" prop="isAdjust">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isAdjust" />
+        </template>
+      </el-table-column>
+      <el-table-column label="是否可控制" min-width="90" align="center" prop="isControl">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControl" />
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -57,8 +71,8 @@
 import { listSelfPlant, getSelfPlant, delSelfPlant, addSelfPlant, updateSelfPlant } from "@/api/sc/selfPlant";
 
 export default {
-  name: "SelfPlantInfo",
-  dicts: ['advance_notice_time', 'adjustment_period', 'sys_yes_no', 'power_source_type', 'generation_type'],
+  name: "SelfPlant",
+  dicts: ['supply_voltage', 'advance_notice_time', 'adjustment_period', 'sys_yes_no', 'power_source_type', 'generation_type'],
   data() {
     return {
       // 遮罩层
@@ -97,6 +111,10 @@ export default {
         controlSystem: null,
         adjustPeriod: null,
         noticeTime: null,
+        reserved1: null,
+        reserved2: null,
+        isAdjust: null,
+        isControl: null
       },
       // 表单参数
       form: {},
@@ -143,7 +161,11 @@ export default {
         noticeTime: null,
         reserved1: null,
         reserved2: null,
-        remark: null
+        remark: null,
+        updateBy: null,
+        updateTime: null,
+        isAdjust: null,
+        isControl: null
       };
       this.resetForm("form");
     },
@@ -160,7 +182,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length !== 1
+      this.single = selection.length!==1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -202,12 +224,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除自备电厂编号为"' + ids + '"的数据项？').then(function () {
+      this.$modal.confirm('是否确认删除自备电厂编号为"' + ids + '"的数据项？').then(function() {
         return delSelfPlant(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => { });
+      }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
