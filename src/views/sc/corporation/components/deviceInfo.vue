@@ -37,10 +37,10 @@
         <el-button v-else type="primary" plain icon="el-icon-check" size="mini" @click="submitForm"
           v-hasPermi="['sc:circuitInfo:add']">确认</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
           v-hasPermi="['sc:deviceInfo:edit']">修改</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
           v-hasPermi="['sc:deviceInfo:remove']">删除</el-button>
@@ -52,7 +52,8 @@
       <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
     </el-row>
 
-    <el-table v-loading="loading" :data="deviceInfoList" @selection-change="handleSelectionChange" height="300">
+    <el-table v-loading="loading" :data="deviceInfoList" @selection-change="handleSelectionChange" height="300"
+      @row-dblclick="handleUpdate">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="主键ID" align="center" prop="id" />
       <el-table-column label="所属用户ID" align="center" prop="userId" />-->

@@ -136,7 +136,7 @@
             >确认</el-button
           >
         </el-col>
-        <el-col :span="1.5">
+        <!-- <el-col :span="1.5">
           <el-button
             type="success"
             plain
@@ -147,7 +147,7 @@
             v-hasPermi="['sc:deviceLoadConfig:edit']"
             >修改</el-button
           >
-        </el-col>
+        </el-col> -->
         <el-col :span="1.5">
           <el-button
             type="danger"
@@ -177,6 +177,7 @@
         v-loading="loading"
         :data="deviceLoadConfigList"
         @selection-change="handleSelectionChange"
+        @row-dblclick="handleUpdate"
       >
         <el-table-column type="selection" width="55" align="center" />
 <!--        <el-table-column label="主键ID" align="center" prop="id" />-->

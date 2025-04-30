@@ -25,10 +25,10 @@
         <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"
           v-hasPermi="['sc:corporation:add']">新增</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
           v-hasPermi="['sc:corporation:edit']">修改</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
           v-hasPermi="['sc:corporation:remove']">删除</el-button>
@@ -41,7 +41,7 @@
     </el-row>
     <div class="table-container">
       <el-table border v-loading="loading" height="100%" :data="corporationList"
-        @selection-change="handleSelectionChange">
+        @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
         <el-table-column type="selection" width="50" fixed align="center" />
         <!--      <el-table-column show-overflow-tooltip label="自增主键" align="center" prop="id" />-->
         <el-table-column show-overflow-tooltip label="用户名称" align="center" prop="userName" min-width="150" />
@@ -99,8 +99,8 @@
         <el-table-column show-overflow-tooltip label="所属虚拟电厂" align="center" prop="extend1" min-width="100" />-->
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
           <template slot-scope="scope">
-            <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['sc:corporation:edit']">修改</el-button>
+            <!-- <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+              v-hasPermi="['sc:corporation:edit']">修改</el-button> -->
             <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
               v-hasPermi="['sc:corporation:remove']">删除</el-button>
           </template>
