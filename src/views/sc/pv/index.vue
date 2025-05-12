@@ -89,8 +89,12 @@
         <el-form-item label="资产编号" prop="assetNo">
           <el-input v-model="form.assetNo" placeholder="请输入资产编号" />
         </el-form-item>
-        <el-form-item label="所属区域" prop="area">
-          <el-input v-model="form.area" placeholder="请输入所属区域" />
+        <el-form-item label="所属区域" prop="areaCodePath">
+          <el-cascader v-model="areaCodePath" :options="areaOptions" clearable @change="handleChange"
+          placeholder="请选择所属区域" :props="{
+            checkStrictly: false,
+          }"></el-cascader>
+          <!-- <el-input v-model="form.area" placeholder="请输入所属区域" /> -->
         </el-form-item>
 <!--        <el-form-item label="电源类型" prop="powerType">
           <el-select v-model="form.powerType" placeholder="请选择电源类型">
@@ -255,7 +259,7 @@
 <script>
 import { listPv, getPv, delPv, addPv, updatePv } from "@/api/sc/pv";
 
-import { listCorporation } from "@/api/sc/corporation";
+import { listCorporation, getAreaTree } from "@/api/sc/corporation";
 import { listCircuitInfo } from "@/api/sc/circuitInfo";
 import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
 
@@ -327,12 +331,33 @@ export default {
         isAdjust: null,
         isControl: null
       },
+      areaOptions: [],//省市区列表
+      areaCodePath: [],//省市区存储的所有值
       // 表单参数
       form: {},
       // 表单校验
       rules: {
       }
     };
+  },
+  watch: {
+    form: {
+      handler(newVal, oldVal) {
+        if (newVal.area !== oldVal.area) {
+          if (this.areaOptions.length == 0) {
+            //获取区域信息
+            getAreaTree().then(response => {
+              this.areaOptions = response.data;
+              this.areaCodePath = this.findFullPath(newVal.area, this.areaOptions) || [];
+            });
+          } else {
+            this.areaCodePath = this.findFullPath(newVal.area, this.areaOptions) || [];
+          }
+        }
+      },
+      deep: true,
+      immidiate: true,
+    },
   },
   created() {
     this.getList();
@@ -371,7 +396,31 @@ export default {
         this.form.reserved2 = null;
       }
     },
-
+    // 级联选择器值改变时触发
+    handleChange(val) {
+      console.log('val', val);
+      this.form.area = val[val.length - 1]; // 获取最后一级的值
+      // this.form.area = val;
+    },
+    // 根据最后一级的值查找完整路径
+    findFullPath(targetValue, options) {
+      // 递归查找函数
+      function findPath(nodes, path = []) {
+        for (const node of nodes) {
+          // 如果当前节点值匹配，返回当前路径
+          if (node.value == targetValue) {
+            return [...path, node.value];
+          }
+          // 如果有子节点，递归查找
+          if (node.children && node.children.length > 0) {
+            const foundPath = findPath(node.children, [...path, node.value]);
+            if (foundPath) return foundPath;
+          }
+        }
+        return null; // 未找到返回null
+      }
+      return findPath(options) || []; // 返回找到的路径或空数组
+    },
     // 回路选择相关方法
     handleCircuitSelect() {
       if (!this.form.userId) {

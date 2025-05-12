@@ -1,66 +1,5 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
-      <el-form-item label="测量点名称" prop="cjMeterName">
-        <el-input
-          v-model="queryParams.cjMeterName"
-          placeholder="请输入测量点名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['sc:mp:add']"
-        >新增</el-button>
-      </el-col>
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['sc:mp:edit']"
-        >修改</el-button>
-      </el-col> -->
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['sc:mp:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['sc:mp:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
     <el-table v-loading="loading" :data="mpList" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="测量点标识" align="center" width="100" prop="cjMpId" />
@@ -68,12 +7,12 @@
       <el-table-column label="所属区域" align="center" prop="areaId" />
       <el-table-column label="运行状态" align="center" prop="runStatus">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.operational_status" :value="scope.row.runStatus"/>
+          <dict-tag :options="dict.type.operational_status" :value="scope.row.runStatus" />
         </template>
       </el-table-column>
       <el-table-column label="测量类型" align="center" prop="mpType">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.measurement_type" :value="scope.row.mpType"/>
+          <dict-tag :options="dict.type.measurement_type" :value="scope.row.mpType" />
         </template>
       </el-table-column>
       <el-table-column label="电能表资产编号" align="center" width="120" prop="assetNo" />
@@ -83,45 +22,45 @@
       <el-table-column label="电表通信地址" align="center" width="120" prop="commAddr" />
       <el-table-column label="电表开关状态" align="center" width="120" prop="meterSwitchStatus">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.meter_switch_status" :value="scope.row.meterSwitchStatus"/>
+          <dict-tag :options="dict.type.meter_switch_status" :value="scope.row.meterSwitchStatus" />
         </template>
       </el-table-column>
       <el-table-column label="下发状态" align="center" prop="isOnline">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.issue_status" :value="scope.row.isOnline"/>
+          <dict-tag :options="dict.type.issue_status" :value="scope.row.isOnline" />
         </template>
       </el-table-column>
       <el-table-column label="电表型号" align="center" prop="meterModelId" />
       <el-table-column label="接线方式" align="center" prop="wiringMode">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.wiring_mode" :value="scope.row.wiringMode"/>
+          <dict-tag :options="dict.type.wiring_mode" :value="scope.row.wiringMode" />
         </template>
       </el-table-column>
       <el-table-column label="计量方式" align="center" prop="measMode">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.measurement_mode" :value="scope.row.measMode"/>
+          <dict-tag :options="dict.type.measurement_mode" :value="scope.row.measMode" />
         </template>
       </el-table-column>
       <el-table-column label="PT变比值" align="center" prop="ptRatio">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.pt_ratio" :value="scope.row.ptRatio"/>
+          <dict-tag :options="dict.type.pt_ratio" :value="scope.row.ptRatio" />
         </template>
       </el-table-column>
       <el-table-column label="CT 变比值" align="center" prop="ctRatio">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.ct_ratio" :value="scope.row.ctRatio"/>
+          <dict-tag :options="dict.type.ct_ratio" :value="scope.row.ctRatio" />
         </template>
       </el-table-column>
       <el-table-column label="综合倍率" align="center" prop="tFactor" />
       <el-table-column label="计量方向" align="center" prop="bothWayCalc">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.measurement_direction" :value="scope.row.bothWayCalc"/>
+          <dict-tag :options="dict.type.measurement_direction" :value="scope.row.bothWayCalc" />
         </template>
       </el-table-column>
       <el-table-column label="用户标识" align="center" prop="cjConsId" />
       <el-table-column label="是否总表" align="center" prop="cjTgTotal">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.cjTgTotal"/>
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.cjTgTotal" />
         </template>
       </el-table-column>
       <el-table-column label="安装位置" align="center" prop="instLoc" />
@@ -153,204 +92,14 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sc:mp:edit']"
           >修改</el-button> -->
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['sc:mp:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['sc:mp:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 添加或修改测量点对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1250px" height="80%" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" :inline="true" label-width="160px">
-        <LabelTitle title="通讯信息" style="margin-bottom: 20px"/>
-        <el-form-item label="测量点名称" prop="cjMeterName">
-          <el-input v-model="form.cjMeterName" placeholder="请输入测量点名称" />
-        </el-form-item>
-        <el-form-item label="所属区域" prop="areaCodePath">
-          <el-cascader v-model="areaCodePath" :options="areaOptions" clearable @change="handleChange"
-          placeholder="请选择所属区域" :props="{
-            checkStrictly: false,
-          }"></el-cascader>
-          <!-- <el-input v-model="form.areaId" placeholder="请输入所属区域" /> -->
-        </el-form-item>
-        <el-form-item label="运行状态" prop="runStatus">
-          <el-select v-model="form.runStatus" placeholder="请选择运行状态">
-            <el-option
-              v-for="dict in dict.type.operational_status"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="测量类型" prop="mpType">
-          <el-select v-model="form.mpType" placeholder="请选择测量类型">
-            <el-option
-              v-for="dict in dict.type.measurement_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="电能表资产编号" prop="assetNo">
-          <el-input v-model="form.assetNo" placeholder="请输入电能表资产编号" />
-        </el-form-item>
-        <el-form-item label="采集点标识" prop="cjCpNo">
-          <el-input v-model="form.cjCpNo" placeholder="请输入采集点标识" />
-        </el-form-item>
-        <el-form-item label="在终端内的测量点号" prop="innerId">
-          <el-input v-model="form.innerId" placeholder="请输入在终端内的测量点号" />
-        </el-form-item>
-        <el-form-item label="通讯参数模板标识" prop="mpParaTmpId">
-          <el-input v-model="form.mpParaTmpId" placeholder="请输入测量点通讯参数模板标识" />
-        </el-form-item>
-        <el-form-item label="电表通信地址" prop="commAddr">
-          <el-input v-model="form.commAddr" placeholder="请输入电表通信地址" />
-        </el-form-item>
-        <el-form-item label="电表开关状态" prop="meterSwitchStatus">
-          <el-radio-group v-model="form.meterSwitchStatus">
-            <el-radio
-              v-for="dict in dict.type.meter_switch_status"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="下发状态" prop="isOnline">
-          <el-input v-model="form.isOnline" placeholder="请输入下发状态" />
-        </el-form-item>
-        <el-form-item label="电表型号" prop="meterModelId">
-          <el-input v-model="form.meterModelId" placeholder="请输入电表型号" />
-        </el-form-item>
-        <el-form-item label="接线方式" prop="wiringMode">
-          <el-select v-model="form.wiringMode" placeholder="请选择接线方式">
-            <el-option
-              v-for="dict in dict.type.wiring_mode"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="计量方式" prop="measMode">
-          <el-select v-model="form.measMode" placeholder="请选择计量方式">
-            <el-option
-              v-for="dict in dict.type.measurement_mode"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="PT变比值" prop="ptRatio">
-          <el-select v-model="form.ptRatio" placeholder="请选择PT变比值">
-            <el-option
-              v-for="dict in dict.type.pt_ratio"
-              :key="dict.value"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="CT 变比值" prop="ctRatio">
-          <el-select v-model="form.ctRatio" placeholder="请选择CT 变比值">
-            <el-option
-              v-for="dict in dict.type.ct_ratio"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="综合倍率" prop="tFactor">
-          <el-input v-model="form.tFactor" placeholder="请输入综合倍率" />
-        </el-form-item>
-        <el-form-item label="计量方向" prop="bothWayCalc">
-          <el-select v-model="form.bothWayCalc" placeholder="请选择计量方向">
-            <el-option
-              v-for="dict in dict.type.measurement_direction"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="用户标识" prop="cjConsId">
-          <el-input v-model="form.cjConsId" placeholder="请输入用户标识" />
-        </el-form-item>
-        <el-form-item label="是否总表" prop="cjTgTotal">
-          <el-select v-model="form.cjTgTotal" placeholder="请选择是否总表">
-            <el-option
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="安装位置" prop="instLoc">
-          <el-input v-model="form.instLoc" placeholder="请输入安装位置" />
-        </el-form-item>
-        <el-form-item label="安装日期" prop="instDate">
-          <el-date-picker clearable
-            v-model="form.instDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择安装日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="安装人" prop="installerNo">
-          <el-input v-model="form.installerNo" placeholder="请输入安装人" />
-        </el-form-item>
-        <el-form-item label="投运日期" prop="runDate">
-          <el-date-picker clearable
-            v-model="form.runDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择投运日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="显示序号" prop="sortNo">
-          <el-input v-model="form.sortNo" placeholder="请输入显示序号" />
-        </el-form-item>
-        <el-form-item label="记录最后保存时间" prop="writeDate">
-          <el-date-picker clearable
-            v-model="form.writeDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择记录最后保存时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="数据来源" prop="dataSource">
-          <el-input v-model="form.dataSource" placeholder="请输入数据来源" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
-        </el-form-item>
-        <LabelTitle title="配置信息" style="margin-bottom: 20px"/>
-
-        <LabelTitle title="其他信息" style="margin-bottom: 20px"/>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
   </div>
 </template>
 
@@ -360,7 +109,7 @@ import { getAreaTree } from "@/api/sc/corporation";
 import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
 
 export default {
-  name: "Mp",
+  name: "MpInfo",
   components: { LabelTitle },
   dicts: ['meter_switch_status', 'measurement_type', 'measurement_mode', 'ct_ratio', 'sys_yes_no', 'measurement_direction', 'wiring_mode', 'pt_ratio', 'operational_status'],
   data() {
@@ -591,7 +340,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.cjMpId)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -633,12 +382,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const cjMpIds = row.cjMpId || this.ids;
-      this.$modal.confirm('是否确认删除测量点编号为"' + cjMpIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除测量点编号为"' + cjMpIds + '"的数据项？').then(function () {
         return delMp(cjMpIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {

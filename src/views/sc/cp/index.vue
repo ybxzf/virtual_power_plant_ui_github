@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="采集点编号" prop="cpNo">
         <el-input
           v-model="queryParams.cpNo"
@@ -34,7 +34,7 @@
           v-hasPermi="['sc:cp:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           type="success"
           plain
@@ -44,7 +44,7 @@
           @click="handleUpdate"
           v-hasPermi="['sc:cp:edit']"
         >修改</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -69,37 +69,37 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="cpList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="cpList" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="采集点标识" align="center" prop="cjCpNo" />
-      <el-table-column label="采集点编号" align="center" prop="cpNo" />
-      <el-table-column label="采集点名称" align="center" prop="cpName" />
+      <el-table-column label="采集点标识" align="center" width="100" prop="cjCpNo" />
+      <el-table-column label="采集点编号" align="center" width="100" prop="cpNo" />
+      <el-table-column label="采集点名称" align="center" width="100" prop="cpName" />
       <el-table-column label="所属区域" align="center" prop="areaId" />
-      <el-table-column label="采集点运行状态" align="center" prop="statusCode">
+      <el-table-column label="采集点运行状态" align="center" width="120" prop="statusCode">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.collection_point_status" :value="scope.row.statusCode"/>
         </template>
       </el-table-column>
       <el-table-column label="终端型号" align="center" prop="modelCode" />
-      <el-table-column label="终端资产编号" align="center" prop="assetNo" />
-      <el-table-column label="采集点类型" align="center" prop="cpTypeCode">
+      <el-table-column label="终端资产编号" align="center" width="120" prop="assetNo" />
+      <el-table-column label="采集点类型" align="center" width="100" prop="cpTypeCode">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.collection_point_type" :value="scope.row.cpTypeCode"/>
         </template>
       </el-table-column>
-      <el-table-column label="采集点安装地址" align="center" prop="cpAddr" />
+      <el-table-column label="采集点安装地址" align="center" width="120" prop="cpAddr" />
       <el-table-column label="行政编码" align="center" prop="districtCode" />
       <el-table-column label="地址编码" align="center" prop="addrCode" />
       <el-table-column label="终端地址" align="center" prop="trmAddr" />
-      <el-table-column label="通讯规约序列" align="center" prop="protocolCode" />
+      <el-table-column label="通讯规约序列" align="center" width="120" prop="protocolCode" />
       <el-table-column label="端口号" align="center" prop="port" />
-      <el-table-column label="子通讯规约" align="center" prop="subProtocolCode">
+      <el-table-column label="子通讯规约" align="center" width="100" prop="subProtocolCode">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sub_protocol_1" :value="scope.row.subProtocolCode"/>
         </template>
       </el-table-column>
       <el-table-column label="模板组ID" align="center" prop="tmpGroupId" />
-      <el-table-column label="主通讯方式" align="center" prop="chnMain">
+      <el-table-column label="主通讯方式" align="center" width="100" prop="chnMain">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.communication_mode" :value="scope.row.chnMain"/>
         </template>
@@ -108,18 +108,18 @@
       <el-table-column label="串口参数" align="center" prop="comPara" />
       <el-table-column label="电话号码" align="center" prop="phone1" />
       <el-table-column label="SIM卡ID" align="center" prop="simId" />
-      <el-table-column label="投运日期" align="center" prop="instDate" width="180">
+      <el-table-column label="投运日期" align="center" prop="instDate" width="80">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.instDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="建档日期" align="center" prop="docCreateDate" width="180">
+      <el-table-column label="建档日期" align="center" prop="docCreateDate" width="80">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.docCreateDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="建档人" align="center" prop="docCreatorNo" />
-      <el-table-column label="安装日期" align="center" prop="installDate" width="180">
+      <el-table-column label="安装日期" align="center" prop="installDate" width="80">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.installDate, '{y}-{m}-{d}') }}</span>
         </template>
@@ -127,21 +127,21 @@
       <el-table-column label="安装人" align="center" prop="installerNo" />
       <el-table-column label="GPS经度" align="center" prop="gpsLongitude" />
       <el-table-column label="显示序号" align="center" prop="sortNo" />
-      <el-table-column label="记录最后保存时间" align="center" prop="writeDate" width="180">
+      <el-table-column label="记录最后保存时间" align="center" prop="writeDate" width="150">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.writeDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="数据来源" align="center" prop="dataSource" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
         <template slot-scope="scope">
-          <el-button
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sc:cp:edit']"
-          >修改</el-button>
+          >修改</el-button> -->
           <el-button
             size="mini"
             type="text"
@@ -162,16 +162,24 @@
     />
 
     <!-- 添加或修改采集点对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="1250px" height="80%" append-to-body>
+      <div style="background: #F5F5F5;margin-bottom: 20px;" v-if="title.includes('修改')">
+          <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
+      </div>
+      <el-form v-if="active == 0" ref="form" :model="form" :rules="rules" :inline="true" label-width="160px">
+        <LabelTitle title="通讯信息" style="margin-bottom: 20px"/>
         <el-form-item label="采集点编号" prop="cpNo">
           <el-input v-model="form.cpNo" placeholder="请输入采集点编号" />
         </el-form-item>
         <el-form-item label="采集点名称" prop="cpName">
           <el-input v-model="form.cpName" placeholder="请输入采集点名称" />
         </el-form-item>
-        <el-form-item label="所属区域" prop="areaId">
-          <el-input v-model="form.areaId" placeholder="请输入所属区域" />
+        <el-form-item label="所属区域" prop="areaCodePath">
+          <el-cascader v-model="areaCodePath" :options="areaOptions" clearable @change="handleChange"
+          placeholder="请选择所属区域" :props="{
+            checkStrictly: false,
+          }"></el-cascader>
+          <!-- <el-input v-model="form.areaId" placeholder="请输入所属区域" /> -->
         </el-form-item>
         <el-form-item label="采集点运行状态" prop="statusCode">
           <el-select v-model="form.statusCode" placeholder="请选择采集点运行状态">
@@ -292,8 +300,13 @@
         <el-form-item label="数据来源" prop="dataSource">
           <el-input v-model="form.dataSource" placeholder="请输入数据来源" />
         </el-form-item>
+        <LabelTitle title="配置信息" style="margin-bottom: 20px"/>
+
+        <LabelTitle title="其他信息" style="margin-bottom: 20px"/>
+
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <MpInfo v-if="active == 1"></MpInfo>
+      <div v-if="active == 0" slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
@@ -303,9 +316,13 @@
 
 <script>
 import { listCp, getCp, delCp, addCp, updateCp } from "@/api/sc/cp";
+import {  getAreaTree } from "@/api/sc/corporation";
+import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
+import MpInfo from "./mpInfo.vue";
 
 export default {
   name: "Cp",
+  components: { LabelTitle, MpInfo },
   dicts: ['sub_protocol_1', 'collection_point_status', 'collection_point_type'],
   data() {
     return {
@@ -361,6 +378,8 @@ export default {
         writeDate: null,
         dataSource: null
       },
+      areaOptions: [],//省市区列表
+      areaCodePath: [],//省市区存储的所有值
       // 表单参数
       form: {},
       // 表单校验
@@ -416,8 +435,38 @@ export default {
         gpsLongitude: [
           { required: true, message: "GPS经度不能为空", trigger: "blur" }
         ],
-      }
+      },
+      active: 0,
+        tabs: [
+            {
+                label: '采集点',
+                value: 0
+            },
+            {
+                label: '测量点',
+                value: 1
+            },
+        ],
     };
+  },
+  watch: {
+    form: {
+      handler(newVal, oldVal) {
+        if (newVal.areaId !== oldVal.areaId) {
+          if (this.areaOptions.length == 0) {
+            //获取区域信息
+            getAreaTree().then(response => {
+              this.areaOptions = response.data;
+              this.areaCodePath = this.findFullPath(newVal.areaId, this.areaOptions) || [];
+            });
+          } else {
+            this.areaCodePath = this.findFullPath(newVal.areaId, this.areaOptions) || [];
+          }
+        }
+      },
+      deep: true,
+      immidiate: true,
+    },
   },
   created() {
     this.getList();
@@ -472,6 +521,35 @@ export default {
         dataSource: null
       };
       this.resetForm("form");
+    },
+    //切换tab页
+    changeTab(index) {
+      this.active = index;
+    },
+    // 级联选择器值改变时触发
+    handleChange(val) {
+      console.log('val', val);
+      this.form.areaId = val[val.length - 1]; // 获取最后一级的值
+      // this.form.areaId = val;
+    },
+    // 根据最后一级的值查找完整路径
+    findFullPath(targetValue, options) {
+      // 递归查找函数
+      function findPath(nodes, path = []) {
+        for (const node of nodes) {
+          // 如果当前节点值匹配，返回当前路径
+          if (node.value == targetValue) {
+            return [...path, node.value];
+          }
+          // 如果有子节点，递归查找
+          if (node.children && node.children.length > 0) {
+            const foundPath = findPath(node.children, [...path, node.value]);
+            if (foundPath) return foundPath;
+          }
+        }
+        return null; // 未找到返回null
+      }
+      return findPath(options) || []; // 返回找到的路径或空数组
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -544,3 +622,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.el-dialog .el-form {
+  height: 60vh;
+  overflow: auto;
+}
+</style>

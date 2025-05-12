@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="充电桩名称" prop="chargerName">
         <el-input
           v-model="queryParams.chargerName"
@@ -237,7 +237,7 @@
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControl"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
         <template slot-scope="scope">
 <!--          <el-button
             size="mini"
@@ -266,16 +266,21 @@
     />
 
     <!-- 添加或修改充电桩对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="1250px" height="80%" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" :inline="true" label-width="160px">
+        <LabelTitle title="基础信息" style="margin-bottom: 20px"/>
         <el-form-item label="充电桩名称" prop="chargerName">
           <el-input v-model="form.chargerName" placeholder="请输入充电桩名称" />
         </el-form-item>
         <el-form-item label="资产编号" prop="assetNo">
           <el-input v-model="form.assetNo" placeholder="请输入资产编号" />
         </el-form-item>
-        <el-form-item label="所属区域" prop="area">
-          <el-input v-model="form.area" placeholder="请输入所属区域" />
+        <el-form-item label="所属区域" prop="areaCodePath">
+          <el-cascader v-model="areaCodePath" :options="areaOptions" clearable @change="handleChange"
+          placeholder="请选择所属区域" :props="{
+            checkStrictly: false,
+          }"></el-cascader>
+          <!-- <el-input v-model="form.area" placeholder="请输入所属区域" /> -->
         </el-form-item>
         <el-form-item label="充电桩类型" prop="chargerType">
           <el-select v-model="form.chargerType" placeholder="请选择充电桩类型">
@@ -338,9 +343,6 @@
         <el-form-item label="预留字段2" prop="reserved2">
           <el-input v-model="form.reserved2" placeholder="请输入预留字段2" />
         </el-form-item>
-        <el-form-item label="备注信息" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
         <el-form-item label="是否可调节" prop="isAdjust">
           <el-select v-model="form.isAdjust" placeholder="请选择是否可调节">
             <el-option
@@ -361,6 +363,11 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="备注信息" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+        <LabelTitle title="设备配置" style="margin-bottom: 20px"/>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -372,9 +379,12 @@
 
 <script>
 import { listChargingPile, getChargingPile, delChargingPile, addChargingPile, updateChargingPile } from "@/api/sc/chargingPile";
+import { getAreaTree } from "@/api/sc/corporation";
+import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
 
 export default {
   name: "ChargingPile",
+  components: { LabelTitle },
   dicts: ['supply_voltage', 'advance_notice_time', 'adjustment_period', 'sys_yes_no', 'generation_type'],
   data() {
     return {
@@ -417,12 +427,33 @@ export default {
         isAdjust: null,
         isControl: null
       },
+      areaOptions: [],//省市区列表
+      areaCodePath: [],//省市区存储的所有值
       // 表单参数
       form: {},
       // 表单校验
       rules: {
       }
     };
+  },
+  watch: {
+    form: {
+      handler(newVal, oldVal) {
+        if (newVal.area !== oldVal.area) {
+          if (this.areaOptions.length == 0) {
+            //获取区域信息
+            getAreaTree().then(response => {
+              this.areaOptions = response.data;
+              this.areaCodePath = this.findFullPath(newVal.area, this.areaOptions) || [];
+            });
+          } else {
+            this.areaCodePath = this.findFullPath(newVal.area, this.areaOptions) || [];
+          }
+        }
+      },
+      deep: true,
+      immidiate: true,
+    },
   },
   created() {
     this.getList();
@@ -495,7 +526,31 @@ export default {
       // 调用原有的修改方法
       this.handleUpdate(row);
     },
-
+    // 级联选择器值改变时触发
+    handleChange(val) {
+      console.log('val', val);
+      this.form.area = val[val.length - 1]; // 获取最后一级的值
+      // this.form.area = val;
+    },
+    // 根据最后一级的值查找完整路径
+    findFullPath(targetValue, options) {
+      // 递归查找函数
+      function findPath(nodes, path = []) {
+        for (const node of nodes) {
+          // 如果当前节点值匹配，返回当前路径
+          if (node.value == targetValue) {
+            return [...path, node.value];
+          }
+          // 如果有子节点，递归查找
+          if (node.children && node.children.length > 0) {
+            const foundPath = findPath(node.children, [...path, node.value]);
+            if (foundPath) return foundPath;
+          }
+        }
+        return null; // 未找到返回null
+      }
+      return findPath(options) || []; // 返回找到的路径或空数组
+    },
     // 修改原有的handleUpdate方法
     handleUpdate(row) {
       this.reset();

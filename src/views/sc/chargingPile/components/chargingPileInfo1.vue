@@ -1,0 +1,299 @@
+<template>
+  <div class="app-container">
+    <el-table v-loading="loading" :data="chargingPileList" @selection-change="handleSelectionChange">
+      <el-table-column label="序号" type="index" width="55" align="center" />
+      <!--      <el-table-column label="主键ID" align="center" prop="id" />-->
+      <el-table-column label="充电桩名称" align="center" prop="chargerName" />
+      <el-table-column label="资产编号" align="center" prop="assetNo" />
+      <el-table-column label="所属区域" align="center" prop="area" />
+      <el-table-column label="充电桩类型" align="center" prop="chargerType">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.generation_type" :value="scope.row.chargerType" />
+        </template>
+      </el-table-column>
+      <!--      <el-table-column label="供电电压(KV)" align="center" prop="supplyVoltage">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <dict-tag :options="dict.type.supply_voltage" :value="scope.row.supplyVoltage"/>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <el-table-column label="充电桩功率(KW)" align="center" prop="power" />
+      <el-table-column label="主设备品牌" align="center" prop="deviceBrand" />
+      <el-table-column label="主设备型号" align="center" prop="deviceModel" />
+      <!--      <el-table-column label="所属用户ID" align="center" prop="userId" />
+      <el-table-column label="所属回路ID" align="center" prop="circuitId" />
+      <el-table-column label="调节时段" align="center" prop="adjustPeriod">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.adjustment_period" :value="scope.row.adjustPeriod"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="提前通知执行时间" align="center" prop="noticeTime">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.advance_notice_time" :value="scope.row.noticeTime"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="预留字段1" align="center" prop="reserved1" />
+      <el-table-column label="预留字段2" align="center" prop="reserved2" />
+      <el-table-column label="备注信息" align="center" prop="remark" />-->
+      <el-table-column label="是否可调节" align="center" prop="isAdjust">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isAdjust" />
+        </template>
+      </el-table-column>
+      <el-table-column label="是否可控制" align="center" prop="isControl">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControl" />
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['sc:chargingPile:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['sc:chargingPile:remove']">删除</el-button>
+        </template>
+      </el-table-column> -->
+    </el-table>
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
+  </div>
+</template>
+
+<script>
+import { listChargingPile, getChargingPile, delChargingPile, addChargingPile, updateChargingPile } from "@/api/sc/chargingPile";
+import { getAreaTree } from "@/api/sc/corporation";
+import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
+
+export default {
+  name: "ChargingPile",
+  components: { LabelTitle },
+  dicts: ['supply_voltage', 'advance_notice_time', 'adjustment_period', 'sys_yes_no', 'generation_type'],
+  data() {
+    return {
+      // 遮罩层
+      loading: true,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 显示搜索条件
+      showSearch: true,
+      // 总条数
+      total: 0,
+      // 充电桩表格数据
+      chargingPileList: [],
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        chargerName: null,
+        assetNo: null,
+        area: null,
+        chargerType: null,
+        supplyVoltage: null,
+        power: null,
+        userId: null,
+        circuitId: null,
+        deviceBrand: null,
+        deviceModel: null,
+        adjustPeriod: null,
+        noticeTime: null,
+        reserved1: null,
+        reserved2: null,
+        isAdjust: null,
+        isControl: null
+      },
+      areaOptions: [],//省市区列表
+      areaCodePath: [],//省市区存储的所有值
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+      }
+    };
+  },
+  watch: {
+    form: {
+      handler(newVal, oldVal) {
+        if (newVal.area !== oldVal.area) {
+          if (this.areaOptions.length == 0) {
+            //获取区域信息
+            getAreaTree().then(response => {
+              this.areaOptions = response.data;
+              this.areaCodePath = this.findFullPath(newVal.area, this.areaOptions) || [];
+            });
+          } else {
+            this.areaCodePath = this.findFullPath(newVal.area, this.areaOptions) || [];
+          }
+        }
+      },
+      deep: true,
+      immidiate: true,
+    },
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    /** 查询充电桩列表 */
+    getList() {
+      this.loading = true;
+      listChargingPile(this.queryParams).then(response => {
+        this.chargingPileList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        id: null,
+        chargerName: null,
+        assetNo: null,
+        area: null,
+        chargerType: null,
+        supplyVoltage: null,
+        power: null,
+        userId: null,
+        circuitId: null,
+        deviceBrand: null,
+        deviceModel: null,
+        adjustPeriod: null,
+        noticeTime: null,
+        reserved1: null,
+        reserved2: null,
+        remark: null,
+        updateBy: null,
+        updateTime: null,
+        isAdjust: null,
+        isControl: null
+      };
+      this.resetForm("form");
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length !== 1
+      this.multiple = !selection.length
+    },
+    /** 新增按钮操作 */
+    handleAdd() {
+      this.reset();
+      this.open = true;
+      this.title = "添加充电桩";
+    },
+    // 新增双击行处理
+    handleRowDblClick(row) {
+      // 调用原有的修改方法
+      this.handleUpdate(row);
+    },
+    // 级联选择器值改变时触发
+    handleChange(val) {
+      console.log('val', val);
+      this.form.area = val[val.length - 1]; // 获取最后一级的值
+      // this.form.area = val;
+    },
+    // 根据最后一级的值查找完整路径
+    findFullPath(targetValue, options) {
+      // 递归查找函数
+      function findPath(nodes, path = []) {
+        for (const node of nodes) {
+          // 如果当前节点值匹配，返回当前路径
+          if (node.value == targetValue) {
+            return [...path, node.value];
+          }
+          // 如果有子节点，递归查找
+          if (node.children && node.children.length > 0) {
+            const foundPath = findPath(node.children, [...path, node.value]);
+            if (foundPath) return foundPath;
+          }
+        }
+        return null; // 未找到返回null
+      }
+      return findPath(options) || []; // 返回找到的路径或空数组
+    },
+    // 修改原有的handleUpdate方法
+    handleUpdate(row) {
+      this.reset();
+      // 确保无论是按钮点击还是行双击都使用row.id
+      const id = row.id || (this.ids.length === 1 ? this.ids[0] : null);
+      if (!id) {
+        this.$modal.msgWarning("请选择一条要修改的数据");
+        return;
+      }
+      getChargingPile(id).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改充电桩";
+      });
+    },
+    /** 修改按钮操作 */
+    /*handleUpdate(row) {
+      this.reset();
+      const id = row.id || this.ids
+      getChargingPile(id).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改充电桩";
+      });
+    },*/
+    /** 提交按钮 */
+    submitForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.id != null) {
+            updateChargingPile(this.form).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
+          } else {
+            addChargingPile(this.form).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
+          }
+        }
+      });
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const ids = row.id || this.ids;
+      this.$modal.confirm('是否确认删除充电桩编号为"' + ids + '"的数据项？').then(function () {
+        return delChargingPile(ids);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => { });
+    },
+    /** 导出按钮操作 */
+    handleExport() {
+      this.download('sc/chargingPile/export', {
+        ...this.queryParams
+      }, `chargingPile_${new Date().getTime()}.xlsx`)
+    }
+  }
+};
+</script>
