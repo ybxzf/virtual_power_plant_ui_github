@@ -17,15 +17,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="所属区域" prop="area">
-        <el-input
-          v-model="queryParams.area"
-          placeholder="请输入所属区域"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="充电桩类型" prop="chargerType">
+<!--      <el-form-item label="所属区域" prop="area">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.area"-->
+<!--          placeholder="请输入所属区域"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="充电桩类型" prop="chargerType">
         <el-select v-model="queryParams.chargerType" placeholder="请选择充电桩类型" clearable>
           <el-option
             v-for="dict in dict.type.generation_type"
@@ -140,7 +140,7 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -158,7 +158,7 @@
           v-hasPermi="['sc:chargingPile:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
+<!--      <el-col :span="1.5">
         <el-button
           type="success"
           plain
@@ -168,7 +168,7 @@
           @click="handleUpdate"
           v-hasPermi="['sc:chargingPile:edit']"
         >修改</el-button>
-      </el-col>
+      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -193,9 +193,9 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="chargingPileList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="chargingPileList" @selection-change="handleSelectionChange" @row-dblclick="handleRowDblClick">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键ID" align="center" prop="id" />
+<!--      <el-table-column label="主键ID" align="center" prop="id" />-->
       <el-table-column label="充电桩名称" align="center" prop="chargerName" />
       <el-table-column label="资产编号" align="center" prop="assetNo" />
       <el-table-column label="所属区域" align="center" prop="area" />
@@ -204,16 +204,16 @@
           <dict-tag :options="dict.type.generation_type" :value="scope.row.chargerType"/>
         </template>
       </el-table-column>
-      <el-table-column label="供电电压(KV)" align="center" prop="supplyVoltage">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.supply_voltage" :value="scope.row.supplyVoltage"/>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="供电电压(KV)" align="center" prop="supplyVoltage">-->
+<!--        <template slot-scope="scope">-->
+<!--          <dict-tag :options="dict.type.supply_voltage" :value="scope.row.supplyVoltage"/>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="充电桩功率(KW)" align="center" prop="power" />
-      <el-table-column label="所属用户ID" align="center" prop="userId" />
-      <el-table-column label="所属回路ID" align="center" prop="circuitId" />
       <el-table-column label="主设备品牌" align="center" prop="deviceBrand" />
       <el-table-column label="主设备型号" align="center" prop="deviceModel" />
+<!--      <el-table-column label="所属用户ID" align="center" prop="userId" />
+      <el-table-column label="所属回路ID" align="center" prop="circuitId" />
       <el-table-column label="调节时段" align="center" prop="adjustPeriod">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.adjustment_period" :value="scope.row.adjustPeriod"/>
@@ -226,7 +226,7 @@
       </el-table-column>
       <el-table-column label="预留字段1" align="center" prop="reserved1" />
       <el-table-column label="预留字段2" align="center" prop="reserved2" />
-      <el-table-column label="备注信息" align="center" prop="remark" />
+      <el-table-column label="备注信息" align="center" prop="remark" />-->
       <el-table-column label="是否可调节" align="center" prop="isAdjust">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isAdjust"/>
@@ -239,13 +239,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+<!--          <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['sc:chargingPile:edit']"
-          >修改</el-button>
+          >修改</el-button>-->
           <el-button
             size="mini"
             type="text"
@@ -490,8 +490,29 @@ export default {
       this.open = true;
       this.title = "添加充电桩";
     },
-    /** 修改按钮操作 */
+    // 新增双击行处理
+    handleRowDblClick(row) {
+      // 调用原有的修改方法
+      this.handleUpdate(row);
+    },
+
+    // 修改原有的handleUpdate方法
     handleUpdate(row) {
+      this.reset();
+      // 确保无论是按钮点击还是行双击都使用row.id
+      const id = row.id || (this.ids.length === 1 ? this.ids[0] : null);
+      if (!id) {
+        this.$modal.msgWarning("请选择一条要修改的数据");
+        return;
+      }
+      getChargingPile(id).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改充电桩";
+      });
+    },
+    /** 修改按钮操作 */
+    /*handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
       getChargingPile(id).then(response => {
@@ -499,7 +520,7 @@ export default {
         this.open = true;
         this.title = "修改充电桩";
       });
-    },
+    },*/
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
