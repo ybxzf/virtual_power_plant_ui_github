@@ -2,87 +2,54 @@
   <div class="app-container">
     <el-table v-loading="loading" :data="mpList" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="测量点标识" align="center" width="100" prop="cjMpId" />
       <el-table-column label="测量点名称" align="center" width="100" prop="cjMeterName" />
       <el-table-column label="所属区域" align="center" prop="areaId" />
       <el-table-column label="运行状态" align="center" prop="runStatus">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.operational_status" :value="scope.row.runStatus" />
-        </template>
-      </el-table-column>
-      <el-table-column label="测量类型" align="center" prop="mpType">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.measurement_type" :value="scope.row.mpType" />
+          <dict-tag :options="dict.type.operational_status" :value="scope.row.runStatus"/>
         </template>
       </el-table-column>
       <el-table-column label="电能表资产编号" align="center" width="120" prop="assetNo" />
-      <el-table-column label="采集点标识" align="center" width="100" prop="cjCpNo" />
-      <el-table-column label="在终端内的测量点号" align="center" width="140" prop="innerId" />
-      <el-table-column label="测量点通讯参数模板标识" align="center" width="170" prop="mpParaTmpId" />
-      <el-table-column label="电表通信地址" align="center" width="120" prop="commAddr" />
-      <el-table-column label="电表开关状态" align="center" width="120" prop="meterSwitchStatus">
+      <el-table-column label="测量类型" align="center" prop="mpType">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.meter_switch_status" :value="scope.row.meterSwitchStatus" />
+          <dict-tag :options="dict.type.measurement_type" :value="scope.row.mpType"/>
         </template>
       </el-table-column>
+      <!--      <el-table-column label="采集点标识" align="center" width="100" prop="cjCpNo" />-->
+      <!--      <el-table-column label="在终端内的测量点号" align="center" width="140" prop="innerId" />-->
+      <!--      <el-table-column label="测量点通讯参数模板标识" align="center" width="170" prop="mpParaTmpId" />-->
+      <el-table-column label="电表通信地址" align="center" width="120" prop="commAddr" />
+      <!--      <el-table-column label="电表开关状态" align="center" width="120" prop="meterSwitchStatus">
+              <template slot-scope="scope">
+                <dict-tag :options="dict.type.meter_switch_status" :value="scope.row.meterSwitchStatus"/>
+              </template>
+            </el-table-column>-->
       <el-table-column label="下发状态" align="center" prop="isOnline">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.issue_status" :value="scope.row.isOnline" />
+          <dict-tag :options="dict.type.issue_status" :value="scope.row.isOnline"/>
         </template>
       </el-table-column>
       <el-table-column label="电表型号" align="center" prop="meterModelId" />
       <el-table-column label="接线方式" align="center" prop="wiringMode">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.wiring_mode" :value="scope.row.wiringMode" />
+          <dict-tag :options="dict.type.wiring_mode" :value="scope.row.wiringMode"/>
         </template>
       </el-table-column>
-      <el-table-column label="计量方式" align="center" prop="measMode">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.measurement_mode" :value="scope.row.measMode" />
-        </template>
-      </el-table-column>
+      <!--      <el-table-column label="计量方式" align="center" prop="measMode">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <dict-tag :options="dict.type.measurement_mode" :value="scope.row.measMode"/>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="PT变比值" align="center" prop="ptRatio">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.pt_ratio" :value="scope.row.ptRatio" />
+          <dict-tag :options="dict.type.pt_ratio" :value="scope.row.ptRatio"/>
         </template>
       </el-table-column>
       <el-table-column label="CT 变比值" align="center" prop="ctRatio">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.ct_ratio" :value="scope.row.ctRatio" />
+          <dict-tag :options="dict.type.ct_ratio" :value="scope.row.ctRatio"/>
         </template>
       </el-table-column>
-      <el-table-column label="综合倍率" align="center" prop="tFactor" />
-      <el-table-column label="计量方向" align="center" prop="bothWayCalc">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.measurement_direction" :value="scope.row.bothWayCalc" />
-        </template>
-      </el-table-column>
-      <el-table-column label="用户标识" align="center" prop="cjConsId" />
-      <el-table-column label="是否总表" align="center" prop="cjTgTotal">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.cjTgTotal" />
-        </template>
-      </el-table-column>
-      <el-table-column label="安装位置" align="center" prop="instLoc" />
-      <el-table-column label="安装日期" align="center" prop="instDate" width="100">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.instDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="安装人" align="center" prop="installerNo" />
-      <el-table-column label="投运日期" align="center" prop="runDate" width="100">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.runDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="显示序号" align="center" prop="sortNo" />
-      <el-table-column label="记录最后保存时间" align="center" prop="writeDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.writeDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="数据来源" align="center" prop="dataSource" />
-      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
         <template slot-scope="scope">
           <!-- <el-button

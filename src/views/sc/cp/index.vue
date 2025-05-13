@@ -71,7 +71,7 @@
 
     <el-table v-loading="loading" :data="cpList" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="采集点标识" align="center" width="100" prop="cjCpNo" />
+<!--      <el-table-column label="采集点标识" align="center" width="100" prop="cjCpNo" />-->
       <el-table-column label="采集点编号" align="center" width="100" prop="cpNo" />
       <el-table-column label="采集点名称" align="center" width="100" prop="cpName" />
       <el-table-column label="所属区域" align="center" prop="areaId" />
@@ -80,18 +80,24 @@
           <dict-tag :options="dict.type.collection_point_status" :value="scope.row.statusCode"/>
         </template>
       </el-table-column>
+      <el-table-column label="主通讯方式" align="center" width="100" prop="chnMain">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.communication_mode" :value="scope.row.chnMain"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="地址编码" align="center" prop="addrCode" />
+      <el-table-column label="通讯规约序列" align="center" width="120" prop="protocolCode" />
+      <el-table-column label="电话号码" align="center" prop="phone1" />
       <el-table-column label="终端型号" align="center" prop="modelCode" />
+      <el-table-column label="终端地址" align="center" prop="trmAddr" />
       <el-table-column label="终端资产编号" align="center" width="120" prop="assetNo" />
-      <el-table-column label="采集点类型" align="center" width="100" prop="cpTypeCode">
+<!--      <el-table-column label="采集点类型" align="center" width="100" prop="cpTypeCode">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.collection_point_type" :value="scope.row.cpTypeCode"/>
         </template>
       </el-table-column>
       <el-table-column label="采集点安装地址" align="center" width="120" prop="cpAddr" />
       <el-table-column label="行政编码" align="center" prop="districtCode" />
-      <el-table-column label="地址编码" align="center" prop="addrCode" />
-      <el-table-column label="终端地址" align="center" prop="trmAddr" />
-      <el-table-column label="通讯规约序列" align="center" width="120" prop="protocolCode" />
       <el-table-column label="端口号" align="center" prop="port" />
       <el-table-column label="子通讯规约" align="center" width="100" prop="subProtocolCode">
         <template slot-scope="scope">
@@ -99,14 +105,10 @@
         </template>
       </el-table-column>
       <el-table-column label="模板组ID" align="center" prop="tmpGroupId" />
-      <el-table-column label="主通讯方式" align="center" width="100" prop="chnMain">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.communication_mode" :value="scope.row.chnMain"/>
-        </template>
-      </el-table-column>
+
       <el-table-column label="IP地址" align="center" prop="ipAddr" />
       <el-table-column label="串口参数" align="center" prop="comPara" />
-      <el-table-column label="电话号码" align="center" prop="phone1" />
+
       <el-table-column label="SIM卡ID" align="center" prop="simId" />
       <el-table-column label="投运日期" align="center" prop="instDate" width="80">
         <template slot-scope="scope">
@@ -132,7 +134,7 @@
           <span>{{ parseTime(scope.row.writeDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="数据来源" align="center" prop="dataSource" />
+      <el-table-column label="数据来源" align="center" prop="dataSource" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
         <template slot-scope="scope">
           <!-- <el-button
@@ -167,7 +169,7 @@
           <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
       </div>
       <el-form v-if="active == 0" ref="form" :model="form" :rules="rules" :inline="true" label-width="160px">
-        <LabelTitle title="通讯信息" style="margin-bottom: 20px"/>
+        <LabelTitle title="基础信息" style="margin-bottom: 20px"/>
         <el-form-item label="采集点编号" prop="cpNo">
           <el-input v-model="form.cpNo" placeholder="请输入采集点编号" />
         </el-form-item>
@@ -181,7 +183,17 @@
           }"></el-cascader>
           <!-- <el-input v-model="form.areaId" placeholder="请输入所属区域" /> -->
         </el-form-item>
-        <el-form-item label="采集点运行状态" prop="statusCode">
+        <el-form-item label="采集点类型" prop="cpTypeCode">
+          <el-select v-model="form.cpTypeCode" placeholder="请选择采集点类型">
+            <el-option
+              v-for="dict in dict.type.collection_point_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="运行状态" prop="statusCode">
           <el-select v-model="form.statusCode" placeholder="请选择采集点运行状态">
             <el-option
               v-for="dict in dict.type.collection_point_status"
@@ -194,21 +206,9 @@
         <el-form-item label="终端型号" prop="modelCode">
           <el-input v-model="form.modelCode" placeholder="请输入终端型号" />
         </el-form-item>
-        <el-form-item label="终端资产编号" prop="assetNo">
-          <el-input v-model="form.assetNo" placeholder="请输入终端资产编号" />
-        </el-form-item>
-        <el-form-item label="采集点类型" prop="cpTypeCode">
-          <el-select v-model="form.cpTypeCode" placeholder="请选择采集点类型">
-            <el-option
-              v-for="dict in dict.type.collection_point_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="采集点安装地址" prop="cpAddr">
-          <el-input v-model="form.cpAddr" placeholder="请输入采集点安装地址" />
+        <LabelTitle title="通讯信息" style="margin-bottom: 20px"/>
+        <el-form-item label="主通讯方式" prop="chnMain">
+          <el-input v-model="form.chnMain" placeholder="请输入主通讯方式" />
         </el-form-item>
         <el-form-item label="行政编码" prop="districtCode">
           <el-input v-model="form.districtCode" placeholder="请输入行政编码" />
@@ -216,14 +216,20 @@
         <el-form-item label="地址编码" prop="addrCode">
           <el-input v-model="form.addrCode" placeholder="请输入地址编码" />
         </el-form-item>
-        <el-form-item label="终端地址" prop="trmAddr">
-          <el-input v-model="form.trmAddr" placeholder="请输入终端地址" />
+        <el-form-item label="IP地址" prop="ipAddr">
+          <el-input v-model="form.ipAddr" placeholder="请输入IP地址" />
         </el-form-item>
-        <el-form-item label="通讯规约序列" prop="protocolCode">
-          <el-input v-model="form.protocolCode" placeholder="请输入通讯规约序列" />
+        <el-form-item label="串口参数" prop="comPara">
+          <el-input v-model="form.comPara" placeholder="请输入串口参数" />
+        </el-form-item>
+        <el-form-item label="电话号码" prop="phone1">
+          <el-input v-model="form.phone1" placeholder="请输入电话号码" />
         </el-form-item>
         <el-form-item label="端口号" prop="port">
           <el-input v-model="form.port" placeholder="请输入端口号" />
+        </el-form-item>
+        <el-form-item label="通讯规约序列" prop="protocolCode">
+          <el-input v-model="form.protocolCode" placeholder="请输入通讯规约序列" />
         </el-form-item>
         <el-form-item label="子通讯规约" prop="subProtocolCode">
           <el-select v-model="form.subProtocolCode" placeholder="请选择子通讯规约">
@@ -235,24 +241,23 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="模板组ID" prop="tmpGroupId">
+        <LabelTitle title="其他信息" style="margin-bottom: 20px"/>
+        <el-form-item label="终端资产编号" prop="assetNo">
+          <el-input v-model="form.assetNo" placeholder="请输入终端资产编号" />
+        </el-form-item>
+        <el-form-item label="采集点安装地址" prop="cpAddr">
+          <el-input v-model="form.cpAddr" placeholder="请输入采集点安装地址" />
+        </el-form-item>
+        <el-form-item label="终端地址" prop="trmAddr">
+          <el-input v-model="form.trmAddr" placeholder="请输入终端地址" />
+        </el-form-item>
+<!--        <el-form-item label="模板组ID" prop="tmpGroupId">
           <el-input v-model="form.tmpGroupId" placeholder="请输入模板组ID" />
-        </el-form-item>
-        <el-form-item label="主通讯方式" prop="chnMain">
-          <el-input v-model="form.chnMain" placeholder="请输入主通讯方式" />
-        </el-form-item>
-        <el-form-item label="IP地址" prop="ipAddr">
-          <el-input v-model="form.ipAddr" placeholder="请输入IP地址" />
-        </el-form-item>
-        <el-form-item label="串口参数" prop="comPara">
-          <el-input v-model="form.comPara" placeholder="请输入串口参数" />
-        </el-form-item>
-        <el-form-item label="电话号码" prop="phone1">
-          <el-input v-model="form.phone1" placeholder="请输入电话号码" />
-        </el-form-item>
-        <el-form-item label="SIM卡ID" prop="simId">
-          <el-input v-model="form.simId" placeholder="请输入SIM卡ID" />
-        </el-form-item>
+        </el-form-item>-->
+
+<!--        <el-form-item label="SIM卡ID" prop="simId">-->
+<!--          <el-input v-model="form.simId" placeholder="请输入SIM卡ID" />-->
+<!--        </el-form-item>-->
         <el-form-item label="投运日期" prop="instDate">
           <el-date-picker clearable
             v-model="form.instDate"
@@ -286,9 +291,9 @@
         <el-form-item label="GPS经度" prop="gpsLongitude">
           <el-input v-model="form.gpsLongitude" placeholder="请输入GPS经度" />
         </el-form-item>
-        <el-form-item label="显示序号" prop="sortNo">
+<!--        <el-form-item label="显示序号" prop="sortNo">
           <el-input v-model="form.sortNo" placeholder="请输入显示序号" />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="记录最后保存时间" prop="writeDate">
           <el-date-picker clearable
             v-model="form.writeDate"
@@ -297,13 +302,9 @@
             placeholder="请选择记录最后保存时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="数据来源" prop="dataSource">
+<!--        <el-form-item label="数据来源" prop="dataSource">
           <el-input v-model="form.dataSource" placeholder="请输入数据来源" />
-        </el-form-item>
-        <LabelTitle title="配置信息" style="margin-bottom: 20px"/>
-
-        <LabelTitle title="其他信息" style="margin-bottom: 20px"/>
-
+        </el-form-item>-->
       </el-form>
       <MpInfo v-if="active == 1"></MpInfo>
       <div v-if="active == 0" slot="footer" class="dialog-footer">
