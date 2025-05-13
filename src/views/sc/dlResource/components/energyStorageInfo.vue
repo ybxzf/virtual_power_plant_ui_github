@@ -12,7 +12,7 @@
           <dict-tag :options="dict.type.power_source_type" :value="scope.row.powerType" />
         </template>
       </el-table-column>
-      <el-table-column label="装机容量" min-width="80" align="center" prop="capacity" />
+      <el-table-column label="装机容量(KW)" min-width="80" align="center" prop="capacity" />
       <el-table-column label="最大充电能力" min-width="100" align="center" prop="maxCharge" />
       <el-table-column label="最大放电能力" min-width="100" align="center" prop="maxDischarge" />
       <el-table-column label="所属回路ID" min-width="100" align="center" prop="circuitId" />

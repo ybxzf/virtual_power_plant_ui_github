@@ -152,7 +152,7 @@
 <!--          <dict-tag :options="dict.type.power_source_type" :value="scope.row.powerType" />-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="装机容量(KWH)" min-width="80" align="center" prop="capacity" />
+      <el-table-column label="装机容量(KW)" min-width="80" align="center" prop="capacity" />
       <el-table-column label="最大可出力(KW)" min-width="90" align="center" prop="maxOutput" />
       <el-table-column label="并网电压等级" min-width="100" align="center" prop="gridVoltage">
         <template slot-scope="scope">
@@ -229,7 +229,7 @@
               :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="装机容量(KWH)" prop="capacity">
+        <el-form-item label="装机容量(KW)" prop="capacity">
           <el-input v-model="form.capacity" placeholder="请输入装机容量" />
         </el-form-item>
         <el-form-item label="最大可出力(KW)" prop="maxOutput">

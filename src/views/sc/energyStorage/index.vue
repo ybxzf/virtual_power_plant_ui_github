@@ -136,7 +136,7 @@
           <dict-tag :options="dict.type.power_source_type" :value="scope.row.powerType" />
         </template>
       </el-table-column>-->
-      <el-table-column label="装机容量" min-width="80" align="center" prop="capacity" />
+      <el-table-column label="装机容量(KW)" min-width="80" align="center" prop="capacity" />
       <el-table-column label="最大充电能力(KW)" min-width="100" align="center" prop="maxCharge" />
       <el-table-column label="最大放电能力(KW)" min-width="100" align="center" prop="maxDischarge" />
 <!--      <el-table-column label="所属回路ID" min-width="100" align="center" prop="circuitId" />
@@ -191,7 +191,7 @@
               :value="dict.value"></el-option>
           </el-select>
         </el-form-item>-->
-        <el-form-item label="装机容量(KWH)" prop="capacity">
+        <el-form-item label="装机容量(KW)" prop="capacity">
           <el-input v-model="form.capacity" placeholder="请输入装机容量" />
         </el-form-item>
         <el-form-item label="最大充电能力(KW)" prop="maxCharge">
