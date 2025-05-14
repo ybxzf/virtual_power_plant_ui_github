@@ -1,286 +1,126 @@
 <template>
   <div class="app-container">
-    <el-form
-      :model="queryParams"
-      ref="queryForm"
-      size="small"
-      :inline="true"
-      v-show="showSearch"
-      label-width="68px"
-    >
-      <el-form-item label="采集点标识" prop="cjCpNo">
-        <el-input
-          v-model="queryParams.cjCpNo"
-          placeholder="请输入采集点标识"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+      <el-form-item label="采集点编号" prop="cpNo">
+        <el-input v-model="queryParams.cpNo" placeholder="请输入采集点编号" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="采集点类型" prop="cpTypeCode">
-        <el-input
-          v-model="queryParams.cpTypeCode"
-          placeholder="请输入采集点类型"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="采集点名称" prop="cpName">
+        <el-input v-model="queryParams.cpName" placeholder="请输入采集点名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery"
-          >搜索</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <!--      <el-col :span="1.5">-->
-      <!--        <el-button-->
-      <!--          type="primary"-->
-      <!--          plain-->
-      <!--          icon="el-icon-plus"-->
-      <!--          size="mini"-->
-      <!--          @click="handleAdd"-->
-      <!--          v-hasPermi="['sc:cpOnlineStat:add']"-->
-      <!--        >新增</el-button>-->
-      <!--      </el-col>-->
-      <!--      <el-col :span="1.5">-->
-      <!--        <el-button-->
-      <!--          type="success"-->
-      <!--          plain-->
-      <!--          icon="el-icon-edit"-->
-      <!--          size="mini"-->
-      <!--          :disabled="single"-->
-      <!--          @click="handleUpdate"-->
-      <!--          v-hasPermi="['sc:cpOnlineStat:edit']"-->
-      <!--        >修改</el-button>-->
-      <!--      </el-col>-->
-      <!--      <el-col :span="1.5">-->
-      <!--        <el-button-->
-      <!--          type="danger"-->
-      <!--          plain-->
-      <!--          icon="el-icon-delete"-->
-      <!--          size="mini"-->
-      <!--          :disabled="multiple"-->
-      <!--          @click="handleDelete"-->
-      <!--          v-hasPermi="['sc:cpOnlineStat:remove']"-->
-      <!--        >删除</el-button>-->
-      <!--      </el-col>-->
-      <!--      <el-col :span="1.5">-->
-      <!--        <el-button-->
-      <!--          type="warning"-->
-      <!--          plain-->
-      <!--          icon="el-icon-download"-->
-      <!--          size="mini"-->
-      <!--          @click="handleExport"-->
-      <!--          v-hasPermi="['sc:cpOnlineStat:export']"-->
-      <!--        >导出</el-button>-->
-      <!--      </el-col>-->
+      <!-- <el-col :span="1.5">
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['sc:cp:add']">新增</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['sc:cp:edit']">修改</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['sc:cp:remove']">删除</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['sc:cp:export']">导出</el-button>
+      </el-col> -->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table
-      v-loading="loading"
-      :data="cpOnlineStatList"
-      @selection-change="handleSelectionChange"
-      @row-dblclick="handleRowDbClick"
-    >
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="采集点标识" align="center" prop="cjCpNo" />
-      <el-table-column label="采集点类型" align="center" prop="cpTypeCode" />
-      <el-table-column label="终端型号" align="center" prop="modelCode" />
-      <el-table-column label="数据日期" align="center" prop="dataDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.dataDate, "{y}-{m}-{d}") }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="采集点状态" align="center" prop="statusCode">
+    <el-table v-loading="loading" :data="cpList" @selection-change="handleSelectionChange"
+      @row-dblclick="handleRowDbClick">
+      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+      <el-table-column type="index" label="序号" width="55" align="center" />
+      <!--      <el-table-column label="采集点标识" align="center" width="100" prop="cjCpNo" />-->
+      <el-table-column label="采集点编号" align="center" width="100" prop="cpNo" />
+      <el-table-column label="采集点名称" align="center" width="100" prop="cpName" />
+      <el-table-column label="所属区域" align="center" prop="areaId" />
+      <el-table-column label="采集点运行状态" align="center" width="120" prop="statusCode">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.collection_point_status" :value="scope.row.statusCode" />
         </template>
       </el-table-column>
-      <el-table-column label="开始统计时间" align="center" prop="startTime" width="180">
+      <el-table-column label="主通讯方式" align="center" width="100" prop="chnMain">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.startTime, "{y}-{m}-{d}") }}</span>
+          <dict-tag :options="dict.type.communication_mode" :value="scope.row.chnMain" />
         </template>
       </el-table-column>
-      <el-table-column label="结束统计时间" align="center" prop="endTime" width="180">
+      <el-table-column label="地址编码" align="center" prop="addrCode" />
+      <el-table-column label="通讯规约序列" align="center" width="120" prop="protocolCode" />
+      <el-table-column label="电话号码" align="center" prop="phone1" />
+      <el-table-column label="终端型号" align="center" prop="modelCode" />
+      <el-table-column label="终端地址" align="center" prop="trmAddr" />
+      <el-table-column label="终端资产编号" align="center" width="120" prop="assetNo" />
+      <!--      <el-table-column label="采集点类型" align="center" width="100" prop="cpTypeCode">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.endTime, "{y}-{m}-{d}") }}</span>
+          <dict-tag :options="dict.type.collection_point_type" :value="scope.row.cpTypeCode"/>
         </template>
       </el-table-column>
-      <el-table-column label="写入日期" align="center" prop="writeDate" width="180">
+      <el-table-column label="采集点安装地址" align="center" width="120" prop="cpAddr" />
+      <el-table-column label="行政编码" align="center" prop="districtCode" />
+      <el-table-column label="端口号" align="center" prop="port" />
+      <el-table-column label="子通讯规约" align="center" width="100" prop="subProtocolCode">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.writeDate, "{y}-{m}-{d}") }}</span>
+          <dict-tag :options="dict.type.sub_protocol_1" :value="scope.row.subProtocolCode"/>
         </template>
       </el-table-column>
-      <el-table-column label="累计统计时间" align="center" prop="totalTime" />
-      <el-table-column label="在线时间" align="center" prop="onlineTime" />
-      <el-table-column label="掉线时间" align="center" prop="offlineTime" />
-      <el-table-column label="掉线次数" align="center" prop="offlineTimes" />
-      <el-table-column label="在线率" align="center" prop="onlineRate" />
-      <el-table-column label="通信次数" align="center" prop="commNumber" />
-      <el-table-column label="通信成功率" align="center" prop="commRate" />
-      <el-table-column label="统计时是否有当天的数据" align="center" prop="dataFlag" />
-      <el-table-column label="日登录次数" align="center" prop="loginTimes" />
-      <el-table-column label="累计流量" align="center" prop="totalFlux" />
-      <el-table-column label="累计上行流量" align="center" prop="upflux" />
-      <el-table-column label="累计下行流量" align="center" prop="dnflux" />
-      <el-table-column label="心跳登陆流量" align="center" prop="hbtFlux" />
-      <el-table-column label="接入运行测量点数" align="center" prop="mpRunCount" />
-      <el-table-column label="有数据测量点数" align="center" prop="mpDataCount" />
-      <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-      <!--        <template slot-scope="scope">-->
-      <!--          <el-button-->
-      <!--            size="mini"-->
-      <!--            type="text"-->
-      <!--            icon="el-icon-edit"-->
-      <!--            @click="handleUpdate(scope.row)"-->
-      <!--            v-hasPermi="['sc:cpOnlineStat:edit']"-->
-      <!--          >修改</el-button>-->
-      <!--          <el-button-->
-      <!--            size="mini"-->
-      <!--            type="text"-->
-      <!--            icon="el-icon-delete"-->
-      <!--            @click="handleDelete(scope.row)"-->
-      <!--            v-hasPermi="['sc:cpOnlineStat:remove']"-->
-      <!--          >删除</el-button>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
+      <el-table-column label="模板组ID" align="center" prop="tmpGroupId" />
+
+      <el-table-column label="IP地址" align="center" prop="ipAddr" />
+      <el-table-column label="串口参数" align="center" prop="comPara" />
+
+      <el-table-column label="SIM卡ID" align="center" prop="simId" />
+      <el-table-column label="投运日期" align="center" prop="instDate" width="80">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.instDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="建档日期" align="center" prop="docCreateDate" width="80">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.docCreateDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="建档人" align="center" prop="docCreatorNo" />
+      <el-table-column label="安装日期" align="center" prop="installDate" width="80">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.installDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="安装人" align="center" prop="installerNo" />
+      <el-table-column label="GPS经度" align="center" prop="gpsLongitude" />
+      <el-table-column label="显示序号" align="center" prop="sortNo" />
+      <el-table-column label="记录最后保存时间" align="center" prop="writeDate" width="150">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.writeDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="数据来源" align="center" prop="dataSource" />-->
+      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['sc:cp:edit']"
+          >修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['sc:cp:remove']">删除</el-button>
+        </template>
+      </el-table-column> -->
     </el-table>
 
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
-    <!-- 添加或修改终端日在线情况对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="采集点标识" prop="cjCpNo">
-          <el-input v-model="form.cjCpNo" placeholder="请输入采集点标识" />
-        </el-form-item>
-        <el-form-item label="采集点类型" prop="cpTypeCode">
-          <el-input v-model="form.cpTypeCode" placeholder="请输入采集点类型" />
-        </el-form-item>
-        <el-form-item label="终端型号" prop="modelCode">
-          <el-input v-model="form.modelCode" placeholder="请输入终端型号" />
-        </el-form-item>
-        <el-form-item label="数据日期" prop="dataDate">
-          <el-date-picker
-            clearable
-            v-model="form.dataDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择数据日期"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="采集点状态" prop="statusCode">
-          <el-select v-model="form.statusCode" placeholder="请选择采集点状态">
-            <el-option
-              v-for="dict in dict.type.collection_point_status"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="开始统计时间" prop="startTime">
-          <el-date-picker
-            clearable
-            v-model="form.startTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择开始统计时间"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="结束统计时间" prop="endTime">
-          <el-date-picker
-            clearable
-            v-model="form.endTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择结束统计时间"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="写入日期" prop="writeDate">
-          <el-date-picker
-            clearable
-            v-model="form.writeDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择写入日期"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="累计统计时间" prop="totalTime">
-          <el-input v-model="form.totalTime" placeholder="请输入累计统计时间" />
-        </el-form-item>
-        <el-form-item label="在线时间" prop="onlineTime">
-          <el-input v-model="form.onlineTime" placeholder="请输入在线时间" />
-        </el-form-item>
-        <el-form-item label="掉线时间" prop="offlineTime">
-          <el-input v-model="form.offlineTime" placeholder="请输入掉线时间" />
-        </el-form-item>
-        <el-form-item label="掉线次数" prop="offlineTimes">
-          <el-input v-model="form.offlineTimes" placeholder="请输入掉线次数" />
-        </el-form-item>
-        <el-form-item label="在线率" prop="onlineRate">
-          <el-input v-model="form.onlineRate" placeholder="请输入在线率" />
-        </el-form-item>
-        <el-form-item label="通信次数" prop="commNumber">
-          <el-input v-model="form.commNumber" placeholder="请输入通信次数" />
-        </el-form-item>
-        <el-form-item label="通信成功率" prop="commRate">
-          <el-input v-model="form.commRate" placeholder="请输入通信成功率" />
-        </el-form-item>
-        <el-form-item label="统计时是否有当天的数据" prop="dataFlag">
-          <el-input v-model="form.dataFlag" placeholder="请输入统计时是否有当天的数据" />
-        </el-form-item>
-        <el-form-item label="日登录次数" prop="loginTimes">
-          <el-input v-model="form.loginTimes" placeholder="请输入日登录次数" />
-        </el-form-item>
-        <el-form-item label="累计流量" prop="totalFlux">
-          <el-input v-model="form.totalFlux" placeholder="请输入累计流量" />
-        </el-form-item>
-        <el-form-item label="累计上行流量" prop="upflux">
-          <el-input v-model="form.upflux" placeholder="请输入累计上行流量" />
-        </el-form-item>
-        <el-form-item label="累计下行流量" prop="dnflux">
-          <el-input v-model="form.dnflux" placeholder="请输入累计下行流量" />
-        </el-form-item>
-        <el-form-item label="心跳登陆流量" prop="hbtFlux">
-          <el-input v-model="form.hbtFlux" placeholder="请输入心跳登陆流量" />
-        </el-form-item>
-        <el-form-item label="接入运行测量点数" prop="mpRunCount">
-          <el-input v-model="form.mpRunCount" placeholder="请输入接入运行测量点数" />
-        </el-form-item>
-        <el-form-item label="有数据测量点数" prop="mpDataCount">
-          <el-input v-model="form.mpDataCount" placeholder="请输入有数据测量点数" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog
-      class="device-online-dialog"
-      title="展示"
-      :visible.sync="visible"
-      width="1380px"
-      height="80%"
-      append-to-body
-      @close="tabCancel"
-    >
+    <el-dialog class="device-online-dialog" title="展示" :visible.sync="visible" width="1380px" height="80%"
+      append-to-body @close="tabCancel">
       <template v-if="visible">
         <EditDialog @close="tabCancel" :row="currentRow"></EditDialog>
       </template>
@@ -289,21 +129,19 @@
 </template>
 
 <script>
-import {
-  listCpOnlineStat,
-  getCpOnlineStat,
-  delCpOnlineStat,
-  addCpOnlineStat,
-  updateCpOnlineStat,
-} from "@/api/sc/cpOnlineStat";
+import { listCp, getCp, delCp, addCp, updateCp } from "@/api/sc/cp";
+import { getAreaTree } from "@/api/sc/corporation";
+import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
 import EditDialog from "./editDialog.vue";
 
 export default {
-  name: "CpOnlineStat",
-  components: { EditDialog },
-  dicts: ["collection_point_status"],
+  name: "Cp",
+  components: { LabelTitle, EditDialog },
+  dicts: ['sub_protocol_1', 'collection_point_status', 'collection_point_type'],
   data() {
     return {
+      currentRow: null,
+      visible: false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -316,8 +154,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 终端日在线情况表格数据
-      cpOnlineStatList: [],
+      // 采集点表格数据
+      cpList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -326,68 +164,135 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        cjCpNo: null,
-        cpTypeCode: null,
-        modelCode: null,
-        dataDate: null,
+        cpNo: null,
+        cpName: null,
+        areaId: null,
         statusCode: null,
-        startTime: null,
-        endTime: null,
+        modelCode: null,
+        assetNo: null,
+        cpTypeCode: null,
+        cpAddr: null,
+        districtCode: null,
+        addrCode: null,
+        trmAddr: null,
+        protocolCode: null,
+        port: null,
+        subProtocolCode: null,
+        tmpGroupId: null,
+        chnMain: null,
+        ipAddr: null,
+        comPara: null,
+        phone1: null,
+        simId: null,
+        instDate: null,
+        docCreateDate: null,
+        docCreatorNo: null,
+        installDate: null,
+        installerNo: null,
+        gpsLongitude: null,
+        sortNo: null,
         writeDate: null,
-        totalTime: null,
-        onlineTime: null,
-        offlineTime: null,
-        offlineTimes: null,
-        onlineRate: null,
-        commNumber: null,
-        commRate: null,
-        dataFlag: null,
-        loginTimes: null,
-        totalFlux: null,
-        upflux: null,
-        dnflux: null,
-        hbtFlux: null,
-        mpRunCount: null,
-        mpDataCount: null,
+        dataSource: null
       },
+      areaOptions: [],//省市区列表
+      areaCodePath: [],//省市区存储的所有值
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        cjCpNo: [{ required: true, message: "采集点标识不能为空", trigger: "blur" }],
-        startTime: [{ required: true, message: "开始统计时间不能为空", trigger: "blur" }],
-        endTime: [{ required: true, message: "结束统计时间不能为空", trigger: "blur" }],
-        writeDate: [{ required: true, message: "写入日期不能为空", trigger: "blur" }],
-        totalTime: [{ required: true, message: "累计统计时间不能为空", trigger: "blur" }],
-        onlineTime: [{ required: true, message: "在线时间不能为空", trigger: "blur" }],
-        offlineTime: [{ required: true, message: "掉线时间不能为空", trigger: "blur" }],
-        offlineTimes: [{ required: true, message: "掉线次数不能为空", trigger: "blur" }],
-        onlineRate: [{ required: true, message: "在线率不能为空", trigger: "blur" }],
-        commNumber: [{ required: true, message: "通信次数不能为空", trigger: "blur" }],
-        commRate: [{ required: true, message: "通信成功率不能为空", trigger: "blur" }],
-        dataFlag: [{ required: true, message: "统计时是否有当天的数据不能为空", trigger: "blur" }],
-        loginTimes: [{ required: true, message: "日登录次数不能为空", trigger: "blur" }],
-        totalFlux: [{ required: true, message: "累计流量不能为空", trigger: "blur" }],
-        upflux: [{ required: true, message: "累计上行流量不能为空", trigger: "blur" }],
-        dnflux: [{ required: true, message: "累计下行流量不能为空", trigger: "blur" }],
-        hbtFlux: [{ required: true, message: "心跳登陆流量不能为空", trigger: "blur" }],
-        mpRunCount: [{ required: true, message: "接入运行测量点数不能为空", trigger: "blur" }],
-        mpDataCount: [{ required: true, message: "有数据测量点数不能为空", trigger: "blur" }],
+        cpNo: [
+          { required: true, message: "采集点编号不能为空", trigger: "blur" }
+        ],
+        areaId: [
+          { required: true, message: "所属区域不能为空", trigger: "blur" }
+        ],
+        assetNo: [
+          { required: true, message: "终端资产编号不能为空", trigger: "blur" }
+        ],
+        cpAddr: [
+          { required: true, message: "采集点安装地址不能为空", trigger: "blur" }
+        ],
+        districtCode: [
+          { required: true, message: "行政编码不能为空", trigger: "blur" }
+        ],
+        port: [
+          { required: true, message: "端口号不能为空", trigger: "blur" }
+        ],
+        tmpGroupId: [
+          { required: true, message: "模板组ID不能为空", trigger: "blur" }
+        ],
+        ipAddr: [
+          { required: true, message: "IP地址不能为空", trigger: "blur" }
+        ],
+        comPara: [
+          { required: true, message: "串口参数不能为空", trigger: "blur" }
+        ],
+        phone1: [
+          { required: true, message: "电话号码不能为空", trigger: "blur" }
+        ],
+        simId: [
+          { required: true, message: "SIM卡ID不能为空", trigger: "blur" }
+        ],
+        instDate: [
+          { required: true, message: "投运日期不能为空", trigger: "blur" }
+        ],
+        docCreateDate: [
+          { required: true, message: "建档日期不能为空", trigger: "blur" }
+        ],
+        docCreatorNo: [
+          { required: true, message: "建档人不能为空", trigger: "blur" }
+        ],
+        installDate: [
+          { required: true, message: "安装日期不能为空", trigger: "blur" }
+        ],
+        installerNo: [
+          { required: true, message: "安装人不能为空", trigger: "blur" }
+        ],
+        gpsLongitude: [
+          { required: true, message: "GPS经度不能为空", trigger: "blur" }
+        ],
       },
-      currentRow: null,
-      visible: false,
-      activeName: "electricEnergyReading",
+      active: 0,
+      tabs: [
+        {
+          label: '采集点',
+          value: 0
+        },
+        {
+          label: '测量点',
+          value: 1
+        },
+      ],
     };
+  },
+  watch: {
+    form: {
+      handler(newVal, oldVal) {
+        if (newVal.areaId !== oldVal.areaId) {
+          if (this.areaOptions.length == 0) {
+            //获取区域信息
+            getAreaTree().then(response => {
+              this.areaOptions = response.data;
+              this.areaCodePath = this.findFullPath(newVal.areaId, this.areaOptions) || [];
+            });
+          } else {
+            this.areaCodePath = this.findFullPath(newVal.areaId, this.areaOptions) || [];
+          }
+        }
+      },
+      deep: true,
+      immidiate: true,
+    },
   },
   created() {
     this.getList();
   },
   methods: {
-    /** 查询终端日在线情况列表 */
+    /** 查询采集点列表 */
     getList() {
       this.loading = true;
-      listCpOnlineStat(this.queryParams).then((response) => {
-        this.cpOnlineStatList = response.rows;
+      listCp(this.queryParams).then(response => {
+        this.cpList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -400,32 +305,78 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        id: null,
         cjCpNo: null,
-        cpTypeCode: null,
-        modelCode: null,
-        dataDate: null,
+        cpNo: null,
+        cpName: null,
+        areaId: null,
         statusCode: null,
-        startTime: null,
-        endTime: null,
+        modelCode: null,
+        assetNo: null,
+        cpTypeCode: null,
+        cpAddr: null,
+        districtCode: null,
+        addrCode: null,
+        trmAddr: null,
+        protocolCode: null,
+        port: null,
+        subProtocolCode: null,
+        tmpGroupId: null,
+        chnMain: null,
+        ipAddr: null,
+        comPara: null,
+        phone1: null,
+        simId: null,
+        instDate: null,
+        docCreateDate: null,
+        docCreatorNo: null,
+        installDate: null,
+        installerNo: null,
+        gpsLongitude: null,
+        sortNo: null,
         writeDate: null,
-        totalTime: null,
-        onlineTime: null,
-        offlineTime: null,
-        offlineTimes: null,
-        onlineRate: null,
-        commNumber: null,
-        commRate: null,
-        dataFlag: null,
-        loginTimes: null,
-        totalFlux: null,
-        upflux: null,
-        dnflux: null,
-        hbtFlux: null,
-        mpRunCount: null,
-        mpDataCount: null,
+        dataSource: null
       };
       this.resetForm("form");
+    },
+    //打开详情
+    handleRowDbClick(value) {
+      console.log(value);
+
+      this.currentRow = value;
+      this.visible = true;
+    },
+    //关闭详情
+    tabCancel() {
+      this.visible = false;
+    },
+    //切换tab页
+    changeTab(index) {
+      this.active = index;
+    },
+    // 级联选择器值改变时触发
+    handleChange(val) {
+      console.log('val', val);
+      this.form.areaId = val[val.length - 1]; // 获取最后一级的值
+      // this.form.areaId = val;
+    },
+    // 根据最后一级的值查找完整路径
+    findFullPath(targetValue, options) {
+      // 递归查找函数
+      function findPath(nodes, path = []) {
+        for (const node of nodes) {
+          // 如果当前节点值匹配，返回当前路径
+          if (node.value == targetValue) {
+            return [...path, node.value];
+          }
+          // 如果有子节点，递归查找
+          if (node.children && node.children.length > 0) {
+            const foundPath = findPath(node.children, [...path, node.value]);
+            if (foundPath) return foundPath;
+          }
+        }
+        return null; // 未找到返回null
+      }
+      return findPath(options) || []; // 返回找到的路径或空数组
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -439,38 +390,38 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id);
-      this.single = selection.length !== 1;
-      this.multiple = !selection.length;
+      this.ids = selection.map(item => item.cjCpNo)
+      this.single = selection.length !== 1
+      this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加终端日在线情况";
+      this.title = "添加采集点";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const id = row.id || this.ids;
-      getCpOnlineStat(id).then((response) => {
+      const cjCpNo = row.cjCpNo || this.ids
+      getCp(cjCpNo).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改终端日在线情况";
+        this.title = "修改采集点";
       });
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate((valid) => {
+      this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.id != null) {
-            updateCpOnlineStat(this.form).then((response) => {
+          if (this.form.cjCpNo != null) {
+            updateCp(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addCpOnlineStat(this.form).then((response) => {
+            addCp(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -481,46 +432,26 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal
-        .confirm('是否确认删除终端日在线情况编号为"' + ids + '"的数据项？')
-        .then(function () {
-          return delCpOnlineStat(ids);
-        })
-        .then(() => {
-          this.getList();
-          this.$modal.msgSuccess("删除成功");
-        })
-        .catch(() => {});
+      const cjCpNos = row.cjCpNo || this.ids;
+      this.$modal.confirm('是否确认删除采集点编号为"' + cjCpNos + '"的数据项？').then(function () {
+        return delCp(cjCpNos);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download(
-        "sc/cpOnlineStat/export",
-        {
-          ...this.queryParams,
-        },
-        `cpOnlineStat_${new Date().getTime()}.xlsx`
-      );
-    },
-    handleRowDbClick(value) {
-      this.currentRow = value;
-      this.visible = true;
-    },
-
-    tabCancel() {
-      this.visible = false;
-    },
-  },
-};
-</script>
-<style lang="scss">
-.device-online-dialog {
-  .el-dialog__body {
-    .content {
-      max-height: 600px;
-      overflow-y: auto;
+      this.download('sc/cp/export', {
+        ...this.queryParams
+      }, `cp_${new Date().getTime()}.xlsx`)
     }
   }
+};
+</script>
+<style lang="scss" scoped>
+.el-dialog .el-form {
+  height: 60vh;
+  overflow: auto;
 }
 </style>

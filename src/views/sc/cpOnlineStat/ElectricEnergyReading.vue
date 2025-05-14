@@ -59,7 +59,7 @@ export default {
     }
   },
   mounted() {
-    this.getOptionList(this.currentData.id);
+    this.getOptionList(this.currentData.cjCpNo);
   },
   methods: {
     getParams(type=0){
