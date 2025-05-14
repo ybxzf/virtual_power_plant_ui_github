@@ -3,8 +3,8 @@
     <div style="background: #f5f5f5; margin-bottom: 20px">
       <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
     </div>
-    <ElectricEnergyReading v-if="active===0"></ElectricEnergyReading>
-    <InstantaneousData v-if="active===1"></InstantaneousData>
+    <ElectricEnergyReading v-if="active===0" :current-data="row"></ElectricEnergyReading>
+    <InstantaneousData v-if="active===1" :current-data="row"></InstantaneousData>
   </div>
 </template>
 <script>
@@ -20,11 +20,16 @@ export default {
     "electricity_state",
     "corporation_state",
   ],
+  props: {
+      row: {
+        type: Object,
+        default: {},
+      }
+  },
   components: {
     ElectricEnergyReading,
     InstantaneousData
   },
-  props: {},
   data() {
     return {
       active: 0,
@@ -43,8 +48,8 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
-
+  mounted() {
+  },
   methods: {
     changeTab(index) {
       console.log("index", index);

@@ -282,7 +282,7 @@
       @close="tabCancel"
     >
       <template v-if="visible">
-        <EditDialog @close="tabCancel"></EditDialog>
+        <EditDialog @close="tabCancel" :row="currentRow"></EditDialog>
       </template>
     </el-dialog>
   </div>
@@ -387,7 +387,7 @@ export default {
     getList() {
       this.loading = true;
       listCpOnlineStat(this.queryParams).then((response) => {
-        this.cpOnlineStatList = [{ id: 1 }] || response.rows;
+        this.cpOnlineStatList = response.rows;
         this.total = response.total;
         this.loading = false;
       });

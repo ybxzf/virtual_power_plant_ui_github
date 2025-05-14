@@ -42,3 +42,49 @@ export function delCpOnlineStat(id) {
     method: 'delete'
   })
 }
+
+// 根据采集点id查询测量点
+export function getOptionList(id) {
+  return request({
+    url: `/sc/mp/getMpByCpIdOptions?cpId=${id}`,
+    method: 'get'
+  })
+}
+export function getQxList(data) {
+  const formdata = new URLSearchParams(data).toString();
+  return request({
+    url: `/sc/mpYcRead/getQxList?${formdata}`,
+    method: 'get',
+    params: data,
+  })
+}
+export function getQxChartData(data) {
+  const formdata = new URLSearchParams(data).toString();
+  return request({
+    url: `/sc/mpYcRead/getQxByChart?${formdata}`,
+    method: 'get',
+    data,
+  })
+}
+export function getDNList(data) {
+  const formdata = new URLSearchParams(data).toString();
+  return request({
+    url: `/sc/mpReadCurve/getQxList?${formdata}`,
+    method: 'get',
+    data,
+  })
+}
+export function getDNChart(data) {
+  const formdata = new URLSearchParams(data).toString();
+  return request({
+    url: `/sc/mpReadCurve/getQxByChart?${formdata}`,
+    method: 'get',
+    data,
+  })
+}
+
+
+
+
+
+

@@ -1,18 +1,22 @@
 <script>
-import { chartOption, curveList, data1, echartData } from '@/views/sc/cpOnlineStat/const'
+import { chartOption, curveList, data1, echartData, oneList } from '@/views/sc/cpOnlineStat/const'
 import * as echarts from "echarts";
 import { listMpYcRead } from '@/api/sc/mpYcRead'
+import { getOptionList, getQxChartData, getQxList } from '@/api/sc/cpOnlineStat'
 
 export default {
   name: "ElectricEnergyReading",
   data() {
     return {
-      cjPoint: "中央空调计量点",
+      cjPoint: "",
       dataDate: "",
       curveValue: 1, // 曲线
       curveList,
+      oneToTwo: 1,
+      oneList,
       currentShow: true, // 表格
       loading: false,
+      optionsData:[],
       tableData: [],
       ids: [],
       total: 0, //总条数
@@ -63,38 +67,79 @@ export default {
       ]
     };
   },
+  props: {
+    currentData: {
+      type: Object,
+      default: {}
+    }
+  },
+  mounted() {
+    this.getOptionList(this.currentData.id);
+  },
   methods: {
+    getOptionList(id){
+      getOptionList(id).then(response => {
+        if (response.code === 200) {
+          this.optionsData = response.data;
+        }
+      });
+    },
+    getParams(type=0){
+      const formData = new FormData();
+      formData.append('cjMpId', this.cjPoint);
+      formData.append('dataDate',  this.queryParams.dataDate);
+      formData.append('oneTwo', this.oneToTwo);
+      formData.append('type', this.curveValue);
+      if (type) {
+        formData.append('pageNum', this.queryParams.pageNum);
+        formData.append('pageSize', this.queryParams.pageSize);
+      }
+      return formData;
+    },
     handleQuery() {
+      if (!this.cjPoint || !this.dataDate) {
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: '请选择搜索项'
+        });
+        return;
+      }
       this.getList();
     },
     resetQuery() {
+      this.cjPoint = "";
+      this.oneToTwo=1;
       this.dataDate = "";
       this.curveValue = 1;
     },
     getDataList(){
-      const data = data1;
-      const xData = data.map(dataItem=>{
-         return dataItem.dataDate.split(' ')[1].substring(0, 5)
-      });
-      this.myCharts.map(myChart=>{
-        myChart.option.legend.data = myChart.legendData;
-        myChart.option.xAxis.data = xData;
-        myChart.legendData.map((legendItem)=>{
-          const seriesData = {
-            type: "line",
-            name: legendItem,
-            data: []
-          };
-          data.map(dataItem=>{
-            seriesData.data.push(Number(dataItem['data'][legendItem] || 0));
-          });
-          myChart.option.series.push(seriesData);
+      const params = this.getParams(0);
+      getQxChartData(params).then(response => {
+        const data = response.data;
+        const xData = data.map(dataItem=>{
+          return dataItem.dataDate.split(' ')[1].substring(0, 5)
+        });
+        this.myCharts.map(myChart=>{
+          myChart.option.legend.data = myChart.legendData;
+          myChart.option.xAxis.data = xData;
+          myChart.legendData.map((legendItem)=>{
+            const seriesData = {
+              type: "line",
+              name: legendItem,
+              data: []
+            };
+            data.map(dataItem=>{
+              seriesData.data.push(Number(dataItem['data'][legendItem] || 0));
+            });
+            myChart.option.series.push(seriesData);
+          })
+          myChart.echartDom.setOption(myChart.option);
         })
-        myChart.echartDom.setOption(myChart.option);
       })
+
     },
     initEchart(){
-      console.log(document.getElementById("echarts-line-chart-1"))
       this.myCharts[0].echartDom = echarts.init(document.getElementById("echarts-line-chart-1"));
       this.myCharts[1].echartDom = echarts.init(document.getElementById("echarts-line-chart-2"));
       this.myCharts[2].echartDom = echarts.init(document.getElementById("echarts-line-chart-3"));
@@ -102,7 +147,23 @@ export default {
       this.myCharts[4].echartDom = echarts.init(document.getElementById("echarts-line-chart-5"));
       this.getDataList();
     },
+    handleDateChange(value){
+      const date = new Date(value);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const formattedDateNative = `${year}-${month}-${day}`;
+      this.queryParams.dataDate = formattedDateNative;
+    },
     changeShow(){
+      if (!this.cjPoint || !this.dataDate) {
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: '请选择搜索项后切换'
+        });
+        return;
+      }
       this.currentShow = !this.currentShow;
       if (!this.currentShow && !this.myChart) {
         this.$nextTick(()=>{
@@ -118,7 +179,8 @@ export default {
     },
     getList() {
       this.loading = true;
-      listMpYcRead(this.queryParams).then(response => {
+      const params = this.getParams(1);
+      getQxList(params).then(response => {
         this.tableData = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -135,14 +197,29 @@ export default {
         <el-col :span="18" class="header-left">
           <div class="item-common">
             <label>采集点:</label>
-            <el-input v-model="cjPoint" disabled />
+            <el-select v-model="cjPoint">
+              <el-option v-for="option in optionsData"
+                         :key="option.value"
+                         :label="option.label"
+                         :value="option.value"
+              ></el-option>
+            </el-select>
           </div>
           <div class="item-common">
             <label>时间:</label>
-            <el-date-picker v-model="dataDate" type="date" placeholder="选择日期"> </el-date-picker>
+            <el-date-picker v-model="dataDate" type="date" @change="handleDateChange" placeholder="选择日期"> </el-date-picker>
             <el-select v-model="curveValue" placeholder="请选择">
               <el-option
                 v-for="item in curveList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            <el-select v-model="oneToTwo" placeholder="请选择">
+              <el-option
+                v-for="item in oneList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -156,25 +233,27 @@ export default {
             >搜索</el-button
           >
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          <el-button icon="el-icon-sort" size="mini" @click="changeShow">{{currentShow?"切换图像":"切换表格"}}</el-button>
+          <el-button icon="el-icon-sort" size="mini" @click="changeShow">{{
+            currentShow ? "切换图像" : "切换表格"
+          }}</el-button>
         </el-col>
       </el-row>
     </div>
     <div class="content">
       <template v-if="currentShow">
         <el-table v-loading="loading" :data="tableData">
-<!--          <el-table-column type="selection" width="55" align="center" />-->
+          <!--          <el-table-column type="selection" width="55" align="center" />-->
           <el-table-column label="ID" align="center" prop="id" />
           <el-table-column label="测量点标识" align="center" prop="cjMpId" />
           <el-table-column label="数据时标" align="center" prop="dataDate" width="180">
             <template slot-scope="scope">
-              <span>{{ parseTime(scope.row.dataDate, '{y}-{m}-{d}') }}</span>
+              <span>{{ parseTime(scope.row.dataDate, "{y}-{m}-{d}") }}</span>
             </template>
           </el-table-column>
           <el-table-column label="数据来源" align="center" prop="dataSource" />
           <el-table-column label="写入日期" align="center" prop="writeDate" width="180">
             <template slot-scope="scope">
-              <span>{{ parseTime(scope.row.writeDate, '{y}-{m}-{d}') }}</span>
+              <span>{{ parseTime(scope.row.writeDate, "{y}-{m}-{d}") }}</span>
             </template>
           </el-table-column>
           <el-table-column label="总有功功率" align="center" prop="pz" />
@@ -199,28 +278,28 @@ export default {
           <el-table-column label="PT变比值" align="center" prop="ptRatio" />
           <el-table-column label="CT 变比值" align="center" prop="ctRatio" />
           <el-table-column label="综合倍率" align="center" prop="tFactor" />
-<!--          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-button-->
-<!--                size="mini"-->
-<!--                type="text"-->
-<!--                icon="el-icon-edit"-->
-<!--                @click="handleUpdate(scope.row)"-->
-<!--                v-hasPermi="['sc:mpYcRead:edit']"-->
-<!--              >修改</el-button>-->
-<!--              <el-button-->
-<!--                size="mini"-->
-<!--                type="text"-->
-<!--                icon="el-icon-delete"-->
-<!--                @click="handleDelete(scope.row)"-->
-<!--                v-hasPermi="['sc:mpYcRead:remove']"-->
-<!--              >删除</el-button>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
+          <!--          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+          <!--            <template slot-scope="scope">-->
+          <!--              <el-button-->
+          <!--                size="mini"-->
+          <!--                type="text"-->
+          <!--                icon="el-icon-edit"-->
+          <!--                @click="handleUpdate(scope.row)"-->
+          <!--                v-hasPermi="['sc:mpYcRead:edit']"-->
+          <!--              >修改</el-button>-->
+          <!--              <el-button-->
+          <!--                size="mini"-->
+          <!--                type="text"-->
+          <!--                icon="el-icon-delete"-->
+          <!--                @click="handleDelete(scope.row)"-->
+          <!--                v-hasPermi="['sc:mpYcRead:remove']"-->
+          <!--              >删除</el-button>-->
+          <!--            </template>-->
+          <!--          </el-table-column>-->
         </el-table>
 
         <pagination
-          v-show="total>0"
+          v-show="total > 0"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"

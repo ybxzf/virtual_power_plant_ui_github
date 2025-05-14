@@ -1,16 +1,19 @@
 <script>
-import { curveList, echartData } from '@/views/sc/cpOnlineStat/const'
-import { listMpReadCurve } from "@/api/sc/mpReadCurve";
+import { curveList, echartData, oneList } from '@/views/sc/cpOnlineStat/const'
 import * as echarts from "echarts";
+import { getDNChart, getDNList, getOptionList } from '@/api/sc/cpOnlineStat'
 
 export default {
   name: "ElectricEnergyReading",
   data() {
     return {
-      cjPoint: "中央空调计量点",
+      cjPoint: "",
+      optionsData: [],
       dataDate: "",
       curveValue: 1, // 曲线
+      oneToTwo: 1,
       curveList,
+      oneList,
       currentShow: true, // 表格
       loading: false,
       tableData: [],
@@ -49,33 +52,75 @@ export default {
       ]
     };
   },
+  props: {
+    currentData: {
+      type: Object,
+      default: {}
+    }
+  },
+  mounted() {
+    this.getOptionList(this.currentData.id);
+  },
   methods: {
+    getParams(type=0){
+      const formData = new FormData();
+      formData.append('cjMpId', this.cjPoint);
+      formData.append('dataDate',  this.queryParams.dataDate);
+      formData.append('oneTwo', this.oneToTwo);
+      formData.append('type', this.curveValue);
+      if (type) {
+        formData.append('pageNum', this.queryParams.pageNum);
+        formData.append('pageSize', this.queryParams.pageSize);
+      }
+      return formData;
+    },
+    getOptionList(id){
+      getOptionList(id).then(response => {
+        if (response.code === 200) {
+          this.optionsData = response.data;
+        }
+      });
+    },
     handleQuery() {
+      if (!this.cjPoint || !this.dataDate) {
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: '请选择搜索项'
+        });
+        return;
+      }
       this.getList();
     },
     resetQuery() {
+      this.cjPoint = "";
+      this.oneToTwo=1;
       this.dataDate = "";
       this.curveValue = 1;
     },
     getDataList(){
-      const data = echartData;
-      const legendData = this.legendMap.map(legend=>legend.name);
-      const xData = data.map(dataItem=>{
-         return dataItem.dataDate.split(' ')[1].substring(0, 5)
-      });
-      const yData = this.legendMap.map(legend=> {
-        const obj = {
-          name: legend.name,
-          type: 'line',
-          data: [],
-        }
-        data.map((dataItem)=>{
-          const value = dataItem.data[legend.key] || 0;
-          obj.data.push(value);
+      const params = this.getParams();
+      getDNChart(params).then(response => {
+        const data = response.data;
+        const legendData = this.legendMap.map(legend=>legend.name);
+        const xData = data.map(dataItem=>{
+          return dataItem.dataDate.split(' ')[1].substring(0, 5)
         });
-        return obj;
-      });
-      this.drawEchart(legendData, xData, yData);
+        const yData = this.legendMap.map(legend=> {
+          const obj = {
+            name: legend.name,
+            type: 'line',
+            data: [],
+          }
+          data.map((dataItem)=>{
+            const value = dataItem.data[legend.key] || 0;
+            obj.data.push(value);
+          });
+          return obj;
+        });
+        this.drawEchart(legendData, xData, yData);
+      })
+
     },
     drawEchart(legendData, xData, yData){
       const option = {
@@ -161,6 +206,14 @@ export default {
       this.getDataList();
     },
     changeShow(){
+      if (!this.cjPoint || !this.dataDate) {
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: '请选择搜索项后切换'
+        });
+        return;
+      }
       this.currentShow = !this.currentShow;
       if (!this.currentShow) {
         this.$nextTick(()=>{
@@ -170,11 +223,22 @@ export default {
           }
           this.initEchart();
         })
+      } else {
+        this.getList();
       }
+    },
+    handleDateChange(value){
+      const date = new Date(value);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const formattedDateNative = `${year}-${month}-${day}`;
+      this.queryParams.dataDate = formattedDateNative;
     },
     getList() {
       this.loading = true;
-      listMpReadCurve(this.queryParams).then((response) => {
+      const params = this.getParams(1);
+      getDNList(params).then((response) => {
         this.tableData = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -191,14 +255,29 @@ export default {
         <el-col :span="18" class="header-left">
           <div class="item-common">
             <label>采集点:</label>
-            <el-input v-model="cjPoint" disabled />
+            <el-select v-model="cjPoint">
+              <el-option v-for="option in optionsData"
+                         :key="option.value"
+                         :label="option.label"
+                         :value="option.value"
+              ></el-option>
+            </el-select>
           </div>
           <div class="item-common">
             <label>时间:</label>
-            <el-date-picker v-model="dataDate" type="date" placeholder="选择日期"> </el-date-picker>
+            <el-date-picker v-model="dataDate" @change="handleDateChange"  type="date" placeholder="选择日期"> </el-date-picker>
             <el-select v-model="curveValue" placeholder="请选择">
               <el-option
                 v-for="item in curveList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            <el-select v-model="oneToTwo" placeholder="请选择">
+              <el-option
+                v-for="item in oneList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -212,7 +291,9 @@ export default {
             >搜索</el-button
           >
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          <el-button icon="el-icon-sort" size="mini" @click="changeShow">{{currentShow?"切换图像":"切换表格"}}</el-button>
+          <el-button icon="el-icon-sort" size="mini" @click="changeShow">{{
+            currentShow ? "切换图像" : "切换表格"
+          }}</el-button>
         </el-col>
       </el-row>
     </div>
