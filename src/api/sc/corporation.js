@@ -42,3 +42,19 @@ export function delCorporation(id) {
     method: 'delete'
   })
 }
+
+// 查询省市区列表
+export function getAreaTree() {
+    return request({
+        url: '/sc/area/getAreaTree',
+        method: 'get'
+    })
+}
+
+// 查询所属虚拟电厂信息
+export function getCompanyOption() {
+  return request({
+      url: '/sc/company/getCompanyOption',
+      method: 'get'
+  })
+}

@@ -3,28 +3,27 @@
         <div style="background: #F5F5F5;margin-bottom: 20px;">
             <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
         </div>
-        <LoadInfo v-if="active === 0" :formData="formData" @close="$emit('close')"></LoadInfo>
-        <LoopInfo v-if="active === 1" :formData="formData" @close="$emit('close')"></LoopInfo>
-        <device-load-config v-if="active === 2" :formData="formData"></device-load-config>
-        <LivePicture v-if="active === 3" :formData="formData"></LivePicture>
+        <AddDialog v-if="active == 0" :formData="formData" @close="$emit('close')"></AddDialog>
+        <PvInfo v-if="active == 1"  :formData="formData" @close="$emit('close')"></PvInfo>
+        <EnergyStorageInfo v-if="active == 2"  :formData="formData"></EnergyStorageInfo>
+        <SelfPlantInfo v-if="active == 3"  :formData="formData"></SelfPlantInfo>
     </div>
 </template>
 <script>
+import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation } from "@/api/sc/corporation";
 import AddDialog from './addDialog.vue';
-import LoadInfo  from './loadInfo.vue';
-import LoopInfo  from './loopInfo.vue';
-import DeviceLoadConfig from './deviceLoadConfig.vue'
-import LivePicture from '@/views/sc/circuitLoadConfig/components/LivePicture.vue'
+import PvInfo  from './pvInfo.vue';
+import EnergyStorageInfo  from './energyStorageInfo.vue';
+import SelfPlantInfo from './selfPlantInfo.vue';
 
 export default {
     name: 'EditDialog',
     dicts: ['supply_voltage', 'industry_type', 'sys_yes_no', 'collection_state', 'electricity_state', 'corporation_state'],
     components: {
-      LivePicture,
-      DeviceLoadConfig,
       AddDialog,
-      LoadInfo,
-      LoopInfo,
+      PvInfo,
+      EnergyStorageInfo,
+      SelfPlantInfo,
      },
     props: {
         formData: {
@@ -43,15 +42,15 @@ export default {
                     value: 0
                 },
                 {
-                    label: '回路负荷配置',
+                    label: '分布式光伏',
                     value: 1
                 },
                 {
-                    label: '设备负荷配置',
+                    label: '储能信息',
                     value: 2
                 },
                 {
-                    label: '现场照片',
+                    label: '自备电厂',
                     value: 3
                 }
             ],
@@ -72,6 +71,7 @@ export default {
 
     methods: {
         changeTab(index) {
+            console.log('index', index);
             this.active = index;
         },
     }

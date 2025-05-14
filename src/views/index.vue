@@ -1,6 +1,6 @@
 <template>
   <div class="app-container home">
-    <el-button type="primary">确认</el-button>
+    <!-- <el-button type="primary">确认</el-button>
     <el-button>取消</el-button>
     <div>
       <custome-tabs :active="1" :tabList="tabs" @change="changeTab"></custome-tabs>
@@ -13,8 +13,8 @@
       <el-select placeholder="请选择区">
         <el-option v-for="item in 5" :key="item" :label="item" :value="item"> </el-option>
       </el-select>
-    </div>
-    欢迎访问！
+    </div> -->
+    <!-- 欢迎访问！ -->
   </div>
 </template>
 
@@ -47,6 +47,10 @@ export default {
 
 <style scoped lang="scss">
 .home {
+  background: url('../assets/images/homePage.png') no-repeat;
+  height: calc(100vh - 84px);
+  background-size: 100% 100%;
+
   blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;

@@ -117,7 +117,6 @@
 </template>
 <script>
 import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation, getAreaTree, getCompanyOption } from "@/api/sc/corporation";
-import { chinaCity } from './chinaCity.js'
 
 export default {
   name: 'AddDialog',

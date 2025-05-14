@@ -42,3 +42,14 @@ export function delDeviceLoadConfig(id) {
     method: 'delete'
   })
 }
+  
+// 获取所属设备信息
+export function getDeviceOption(id) {
+  return request({
+    url: '/sc/deviceInfo/getDeviceOption',
+    method: 'get',
+    params:{
+      userId: id,
+    }
+  })
+}

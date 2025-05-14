@@ -5,7 +5,7 @@
       <LoadInfo formType="description" :form-data="formData"></LoadInfo>
     </div>
     <div class="circuit-load-config_item">
-      <LabelTitle title="可调资源配置"></LabelTitle>
+      <LabelTitle title="回路负荷配置"></LabelTitle>
       <el-form
         :model="form"
         ref="form"
@@ -17,17 +17,21 @@
       >
         <el-form-item label="所属用户ID" prop="userId">
           <el-input
+            disabled
             v-model="form.userId"
             placeholder="请输入所属用户ID"
             clearable
           />
         </el-form-item>
-        <el-form-item label="所属回路ID" prop="circuitId">
-          <el-input
-            v-model="form.circuitId"
-            placeholder="请输入所属回路ID"
-            clearable
-          />
+        <el-form-item label="所属回路" prop="circuitId">
+          <el-select v-model="form.circuitId" placeholder="请选择所属回路" clearable @change="handleCircuit">
+            <el-option
+              v-for="dict in circuitOptions"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="最大负荷(KW)" prop="maxLoad">
           <el-input
@@ -157,7 +161,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="预留字段1" prop="reserved1">
+<!--        <el-form-item label="预留字段1" prop="reserved1">
           <el-input
             v-model="form.reserved1"
             placeholder="请输入预留字段1"
@@ -170,7 +174,7 @@
             placeholder="请输入预留字段2"
             clearable
           />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="备注信息" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
@@ -199,7 +203,7 @@
             >确认</el-button
           >
         </el-col>
-        <el-col :span="1.5">
+        <!-- <el-col :span="1.5">
           <el-button
             type="success"
             plain
@@ -210,7 +214,7 @@
             v-hasPermi="['sc:circuitLoadConfig:edit']"
             >修改</el-button
           >
-        </el-col>
+        </el-col> -->
         <el-col :span="1.5">
           <el-button
             type="danger"
@@ -223,7 +227,7 @@
             >删除</el-button
           >
         </el-col>
-        <el-col :span="1.5">
+<!--        <el-col :span="1.5">
           <el-button
             type="warning"
             plain
@@ -233,18 +237,20 @@
             v-hasPermi="['sc:circuitLoadConfig:export']"
             >导出</el-button
           >
-        </el-col>
+        </el-col>-->
       </el-row>
 
       <el-table
         v-loading="loading"
         :data="circuitLoadConfigList"
         @selection-change="handleSelectionChange"
+        @row-dblclick="handleUpdate"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="主键ID" align="center" prop="id" />
-        <el-table-column label="所属用户ID" align="center" prop="userId" />
-        <el-table-column label="所属回路ID" align="center" prop="circuitId" />
+<!--        <el-table-column label="主键ID" align="center" prop="id" />-->
+<!--        <el-table-column label="所属用户ID" align="center" prop="userId" />-->
+<!--        <el-table-column label="所属回路ID" align="center" prop="circuitId" />-->
+        <el-table-column label="所属回路" align="center" prop="reserved1" />
         <el-table-column label="最大负荷(KW)" align="center" prop="maxLoad" />
         <el-table-column label="早峰负荷(KW)" align="center" prop="morningPeak" />
         <el-table-column label="腰峰负荷(KW)" align="center" prop="middayPeak" />
@@ -283,9 +289,9 @@
             <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isControllable" />
           </template>
         </el-table-column>
-        <el-table-column label="预留字段1" align="center" prop="reserved1" />
+<!--        <el-table-column label="预留字段1" align="center" prop="reserved1" />
         <el-table-column label="预留字段2" align="center" prop="reserved2" />
-        <el-table-column label="备注信息" align="center" prop="remark" />
+        <el-table-column label="备注信息" align="center" prop="remark" />-->
       </el-table>
 
       <pagination
@@ -306,6 +312,7 @@ import {
   delCircuitLoadConfig,
   addCircuitLoadConfig,
   updateCircuitLoadConfig,
+  getCircuitOption,
 } from "@/api/sc/circuitLoadConfig";
 import LabelTitle from "./LabelTitle.vue";
 import LoadInfo from "./loadInfo.vue";
@@ -394,6 +401,7 @@ export default {
       // 表单校验
       rules: {},
       isEdit: false,
+      circuitOptions: [],
     };
   },
   created() {
@@ -401,8 +409,18 @@ export default {
   },
   mounted() {
     this.getList();
+    getCircuitOption(this.formData.id).then((response) => {
+      this.circuitOptions = response.data;
+    });
   },
   methods: {
+    // 回路选择
+    handleCircuit(val) {
+      const filter = this.circuitOptions.filter((item) => item.value === val);
+      if (filter.length > 0) {
+        this.form.reserved1 = filter[0].label;
+      }
+    },
     /** 查询回路负荷配置列表 */
     getList() {
       this.loading = true;

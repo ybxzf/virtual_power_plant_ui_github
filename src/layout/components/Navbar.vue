@@ -9,7 +9,9 @@
       <template v-if="device!=='mobile'">
 
       </template>
-
+      <el-tooltip effect="dark" content="转到大屏" placement="bottom">
+        <el-image src="/img/icons/icon-screen.png" style="width: 40px;height: 40px;cursor: pointer;" @click="toBigScreen"></el-image>
+      </el-tooltip>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar">
@@ -73,6 +75,11 @@ export default {
     }
   },
   methods: {
+    toBigScreen() {
+      // this.$router.push({path: '/bigScreen'});
+      const baseUrl = window.location.origin;
+      window.open(`${baseUrl}/bigScreen`, '_blank');
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -130,6 +137,8 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+    display: flex;
+    align-items: center;
 
     &:focus {
       outline: none;
