@@ -27,7 +27,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -387,6 +386,9 @@ export default {
       rules: {
         cpNo: [
           { required: true, message: "采集点编号不能为空", trigger: "blur" }
+        ],
+        cpName: [
+          { required: true, message: "采集点名称不能为空", trigger: "blur" }
         ],
         areaId: [
           { required: true, message: "所属区域不能为空", trigger: "blur" }

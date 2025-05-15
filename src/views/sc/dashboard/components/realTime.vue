@@ -42,11 +42,11 @@ export default {
 <style scoped>
 .current-time {
     position: absolute;
-    right: 40px;
-    top: 20px;
-    color: #fff;
+    right: 8%;
+    top: 4px;
+    color: #959aa7;
     font-family: monospace;
     /* 等宽字体显示时间更整齐 */
-    font-size: 16px;
+    font-size: 14px;
 }
 </style>

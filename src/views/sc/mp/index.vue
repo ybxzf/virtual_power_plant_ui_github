@@ -19,7 +19,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -478,6 +477,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        cjMeterName: [
+          { required: true, message: "测量点名称不能为空", trigger: "blur" }
+        ],
         areaId: [
           { required: true, message: "所属区域不能为空", trigger: "blur" }
         ],
