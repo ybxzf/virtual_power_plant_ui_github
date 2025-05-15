@@ -1,9 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
-      <el-form-item label="采集点编号" prop="cpNo">
-        <el-input v-model="queryParams.cpNo" placeholder="请输入采集点编号" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
       <el-form-item label="采集点名称" prop="cpName">
         <el-input v-model="queryParams.cpName" placeholder="请输入采集点名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
@@ -356,7 +353,7 @@ export default {
     // 级联选择器值改变时触发
     handleChange(val) {
       console.log('val', val);
-      this.form.areaId = val[val.length - 1]; // 获取最后一级的值
+      this.form.areaId = val[val.length - 1] || ""; // 获取最后一级的值
       // this.form.areaId = val;
     },
     // 根据最后一级的值查找完整路径

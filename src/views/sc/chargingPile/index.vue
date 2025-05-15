@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+      <el-form-item label="所属用户" prop="reserved1">
+        <el-input
+          v-model="queryParams.reserved1"
+          placeholder="请输入所属用户"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="充电桩名称" prop="chargerName">
         <el-input
           v-model="queryParams.chargerName"
@@ -196,6 +204,7 @@
     <el-table v-loading="loading" :data="chargingPileList" @selection-change="handleSelectionChange" @row-dblclick="handleRowDblClick">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="主键ID" align="center" prop="id" />-->
+      <el-table-column label="所属用户" align="center" prop="reserved1" />
       <el-table-column label="充电桩名称" align="center" prop="chargerName" />
       <el-table-column label="资产编号" align="center" prop="assetNo" />
       <el-table-column label="所属区域" align="center" prop="area" />
@@ -710,7 +719,7 @@ export default {
     // 级联选择器值改变时触发
     handleChange(val) {
       console.log('val', val);
-      this.form.area = val[val.length - 1]; // 获取最后一级的值
+      this.form.area = val[val.length - 1] || ""; // 获取最后一级的值
       // this.form.area = val;
     },
     // 根据最后一级的值查找完整路径

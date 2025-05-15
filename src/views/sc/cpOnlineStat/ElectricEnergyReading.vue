@@ -264,7 +264,7 @@ export default {
             </el-select>
           </div>
           <div class="item-common">
-            <label>时间:</label>
+            <label>日期:</label>
             <el-date-picker v-model="dataDate" @change="handleDateChange"  type="date" placeholder="选择日期"> </el-date-picker>
             <el-select v-model="curveValue" placeholder="请选择">
               <el-option

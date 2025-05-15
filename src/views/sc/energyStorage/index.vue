@@ -240,13 +240,22 @@
         </el-form-item>
         <LabelTitle title="设备负荷配置" style="margin-bottom: 20px"/>
         <el-form-item label="充电提前通知时间" prop="chargeNotice">
-          <el-input v-model="form.chargeNotice" placeholder="请输入充电提前通知时间" />
+          <el-select v-model="form.chargeNotice" placeholder="请输入充电提前通知时间">
+            <el-option v-for="dict in dict.type.advance_notice_time" :key="dict.value" :label="dict.label"
+                       :value="parseInt(dict.value)"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="日常放电时段" prop="dailyDischarge">
-          <el-input v-model="form.dailyDischarge" placeholder="请输入日常放电时段" />
+          <el-select v-model="form.dailyDischarge" placeholder="请输入日常放电时段">
+            <el-option v-for="dict in dict.type.adjustment_period" :key="dict.value" :label="dict.label"
+                       :value="dict.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="放电提前通知时间" prop="dischargeNotice">
-          <el-input v-model="form.dischargeNotice" placeholder="请输入放电提前通知时间" />
+          <el-select v-model="form.dischargeNotice" placeholder="请输入放电提前通知时间">
+            <el-option v-for="dict in dict.type.advance_notice_time" :key="dict.value" :label="dict.label"
+                       :value="parseInt(dict.value)"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="是否可调节" prop="isAdjust">
           <el-select v-model="form.isAdjust" placeholder="请选择是否可调节">
@@ -347,7 +356,7 @@ import { listCircuitInfo } from "@/api/sc/circuitInfo";
 export default {
   name: "EnergyStorage",
   components: { LabelTitle },
-  dicts: ['sys_yes_no', 'power_source_type'],
+  dicts: ['sys_yes_no', 'power_source_type','adjustment_period', 'advance_notice_time'],
   data() {
     return {
       // 新增数据项
@@ -480,7 +489,7 @@ export default {
     // 级联选择器值改变时触发
     handleChange(val) {
       console.log('val', val);
-      this.form.area = val[val.length - 1]; // 获取最后一级的值
+      this.form.area = val[val.length - 1] || ""; // 获取最后一级的值
       // this.form.area = val;
     },
     // 根据最后一级的值查找完整路径

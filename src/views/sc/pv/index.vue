@@ -399,7 +399,7 @@ export default {
     // 级联选择器值改变时触发
     handleChange(val) {
       console.log('val', val);
-      this.form.area = val[val.length - 1]; // 获取最后一级的值
+      this.form.area = val[val.length - 1] || ""; // 获取最后一级的值
       // this.form.area = val;
     },
     // 根据最后一级的值查找完整路径
