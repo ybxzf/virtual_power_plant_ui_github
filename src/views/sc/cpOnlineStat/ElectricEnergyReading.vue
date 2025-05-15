@@ -1,5 +1,5 @@
 <script>
-import { curveList, echartData, oneList } from '@/views/sc/cpOnlineStat/const'
+import { curveList,oneList } from '@/views/sc/cpOnlineStat/const'
 import * as echarts from "echarts";
 import { getDNChart, getDNList, getOptionList } from '@/api/sc/cpOnlineStat'
 
@@ -7,11 +7,21 @@ export default {
   name: "ElectricEnergyReading",
   data() {
     return {
-      cjPoint: "",
+      ruleForm: {
+        cjPoint: "",
+        dataDate: "",
+        curveValue: 1, // 曲线
+        oneToTwo: 1,
+      },
+      rules: {
+        cjPoint: [
+          { required: true, message: '请选择采集点', trigger: 'change' },
+        ],
+        dataDate: [{
+          type: 'date', required: true, message: '请选择日期', trigger: 'change'
+        }]
+      },
       optionsData: [],
-      dataDate: "",
-      curveValue: 1, // 曲线
-      oneToTwo: 1,
       curveList,
       oneList,
       currentShow: true, // 表格
@@ -34,19 +44,19 @@ export default {
       myChart: null,
       legendMap: [
         {
-          name: '正向有功总示度(kWh)',
+          name: '正向有功总示度',
           key: 'zxygz',
         },
         {
-          name: '反向有功总示度(kWh)',
+          name: '反向有功总示度',
           key: 'fxygz',
         },
         {
-          name: '正向无功总示度(kWh)',
+          name: '正向无功总示度',
           key: 'zxwgz',
         },
         {
-          name: '反向无功总示度(kWh)',
+          name: '反向无功总示度',
           key: 'fxwgz',
         }
       ]
@@ -64,10 +74,10 @@ export default {
   methods: {
     getParams(type=0){
       const formData = new FormData();
-      formData.append('cjMpId', this.cjPoint);
+      formData.append('cjMpId', this.ruleForm.cjPoint);
       formData.append('dataDate',  this.queryParams.dataDate);
-      formData.append('oneTwo', this.oneToTwo);
-      formData.append('type', this.curveValue);
+      formData.append('oneTwo', this.ruleForm.oneToTwo);
+      formData.append('type', this.ruleForm.curveValue);
       if (type) {
         formData.append('pageNum', this.queryParams.pageNum);
         formData.append('pageSize', this.queryParams.pageSize);
@@ -82,21 +92,11 @@ export default {
       });
     },
     handleQuery() {
-      if (!this.cjPoint || !this.dataDate) {
-        this.$message({
-          showClose: true,
-          type: 'error',
-          message: '请选择搜索项'
-        });
-        return;
-      }
-      this.getList();
-    },
-    resetQuery() {
-      this.cjPoint = "";
-      this.oneToTwo=1;
-      this.dataDate = "";
-      this.curveValue = 1;
+      this.$refs['ruleForm'].validate(valid => {
+        if (valid) {
+          this.currentShow ? this.getList() : this.initEchart();
+        }
+      })
     },
     getDataList(){
       const params = this.getParams();
@@ -125,7 +125,7 @@ export default {
     drawEchart(legendData, xData, yData){
       const option = {
         title: {
-          text: "电能示值"
+          text: "电能示值(kWh)"
         },
         tooltip: {
           trigger: "axis",
@@ -175,10 +175,10 @@ export default {
           }
         },
         legend: {
-          left: 80,
+
           data: legendData,
           textStyle: {
-            fontSize: 6.5
+            fontSize: 14
           }
         },
 
@@ -206,26 +206,22 @@ export default {
       this.getDataList();
     },
     changeShow(){
-      if (!this.cjPoint || !this.dataDate) {
-        this.$message({
-          showClose: true,
-          type: 'error',
-          message: '请选择搜索项后切换'
-        });
-        return;
-      }
-      this.currentShow = !this.currentShow;
-      if (!this.currentShow) {
-        this.$nextTick(()=>{
-          if (this.myChart) {
-            this.myChart.dispose();
-            this.myChart = null;
+      this.$refs['ruleForm'].validate(valid => {
+        if (valid) {
+          this.currentShow = !this.currentShow;
+          if (!this.currentShow) {
+            this.$nextTick(()=>{
+              if (this.myChart) {
+                this.myChart.dispose();
+                this.myChart = null;
+              }
+              this.initEchart();
+            })
+          } else {
+            this.getList();
           }
-          this.initEchart();
-        })
-      } else {
-        this.getList();
-      }
+        }
+      })
     },
     handleDateChange(value){
       const date = new Date(value);
@@ -252,48 +248,51 @@ export default {
   <div class="ElectricEnergyReading-container">
     <div class="header">
       <el-row :gutter="24">
-        <el-col :span="18" class="header-left">
-          <div class="item-common">
-            <label>采集点:</label>
-            <el-select v-model="cjPoint">
-              <el-option v-for="option in optionsData"
-                         :key="option.value"
-                         :label="option.label"
-                         :value="option.value"
-              ></el-option>
-            </el-select>
-          </div>
-          <div class="item-common">
-            <label>日期:</label>
-            <el-date-picker v-model="dataDate" @change="handleDateChange"  type="date" placeholder="选择日期"> </el-date-picker>
-            <el-select v-model="curveValue" placeholder="请选择">
-              <el-option
-                v-for="item in curveList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-            <el-select v-model="oneToTwo" placeholder="请选择">
-              <el-option
-                v-for="item in oneList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </div>
+        <el-col :span="20">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" inline label-width="65px" class="demo-ruleForm">
+            <el-form-item label="采集点" prop="cjPoint">
+              <el-select v-model="ruleForm.cjPoint">
+                <el-option v-for="option in optionsData"
+                           :key="option.value"
+                           :label="option.label"
+                           :value="option.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="时间" prop="dataDate">
+              <el-date-picker v-model="ruleForm.dataDate" @change="handleDateChange"  type="date" placeholder="选择日期"> </el-date-picker>
+            </el-form-item>
+            <el-form-item label="" prop="curveValue">
+              <el-select v-model="ruleForm.curveValue" placeholder="请选择">
+                <el-option
+                  v-for="item in curveList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="" prop="oneToTwo">
+              <el-select v-model="ruleForm.oneToTwo" placeholder="请选择">
+                <el-option
+                  v-for="item in oneList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
         </el-col>
-        <el-col :span="6">
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery"
+        <el-col :span="4">
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery"
             >搜索</el-button
-          >
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          <el-button icon="el-icon-sort" size="mini" @click="changeShow">{{
-            currentShow ? "切换图像" : "切换表格"
-          }}</el-button>
+            >
+            <el-button icon="el-icon-sort" size="mini" @click="changeShow">{{
+                currentShow ? "切换图像" : "切换表格"
+              }}</el-button>
         </el-col>
       </el-row>
     </div>
@@ -318,24 +317,6 @@ export default {
           <el-table-column label="反向有功总示度" align="center" prop="fxygz" />
           <el-table-column label="正向无功总示度" align="center" prop="zxwgz" />
           <el-table-column label="反向无功总示度" align="center" prop="fxwgz" />
-          <!--          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-          <!--            <template slot-scope="scope">-->
-          <!--              <el-button-->
-          <!--                size="mini"-->
-          <!--                type="text"-->
-          <!--                icon="el-icon-edit"-->
-          <!--                @click="handleUpdate(scope.row)"-->
-          <!--                v-hasPermi="['sc:mpReadCurve:edit']"-->
-          <!--              >修改</el-button>-->
-          <!--              <el-button-->
-          <!--                size="mini"-->
-          <!--                type="text"-->
-          <!--                icon="el-icon-delete"-->
-          <!--                @click="handleDelete(scope.row)"-->
-          <!--                v-hasPermi="['sc:mpReadCurve:remove']"-->
-          <!--              >删除</el-button>-->
-          <!--            </template>-->
-          <!--          </el-table-column>-->
         </el-table>
 
         <pagination

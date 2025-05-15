@@ -3,8 +3,8 @@
     <div style="background: #f5f5f5; margin-bottom: 20px">
       <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
     </div>
-    <ElectricEnergyReading v-if="active===0" :current-data="row"></ElectricEnergyReading>
-    <InstantaneousData v-if="active===1" :current-data="row"></InstantaneousData>
+    <ElectricEnergyReading v-show="active===0" :current-data="row"></ElectricEnergyReading>
+    <InstantaneousData v-show="active===1" :current-data="row"></InstantaneousData>
   </div>
 </template>
 <script>
@@ -43,6 +43,9 @@ export default {
           value: 1,
         },
       ],
+      formData: {
+
+      },
     };
   },
   computed: {},

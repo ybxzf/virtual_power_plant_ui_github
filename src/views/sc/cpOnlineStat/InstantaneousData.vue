@@ -1,18 +1,27 @@
 <script>
-import { chartOption, curveList, data1, echartData, oneList } from '@/views/sc/cpOnlineStat/const'
+import { chartOption, curveList, oneList } from '@/views/sc/cpOnlineStat/const'
 import * as echarts from "echarts";
-import { listMpYcRead } from '@/api/sc/mpYcRead'
 import { getOptionList, getQxChartData, getQxList } from '@/api/sc/cpOnlineStat'
 
 export default {
   name: "ElectricEnergyReading",
   data() {
     return {
-      cjPoint: "",
-      dataDate: "",
-      curveValue: 1, // 曲线
+      ruleForm: {
+        cjPoint: "",
+        dataDate: "",
+        curveValue: 1, // 曲线
+        oneToTwo: 1,
+      },
+      rules: {
+        cjPoint: [
+          { required: true, message: '请选择采集点', trigger: 'change' },
+        ],
+        dataDate: [{
+          type: 'date', required: true, message: '请选择日期', trigger: 'change'
+        }]
+      },
       curveList,
-      oneToTwo: 1,
       oneList,
       currentShow: true, // 表格
       loading: false,
@@ -39,13 +48,8 @@ export default {
           title: '瞬时数据P',
           legendData: ["pz", "pa", "pb", "pc",],
           option: JSON.parse(JSON.stringify(chartOption)),
-        }, {
-          name: "chartQ",
-          echartDom: null,
-          title: '瞬时数据Q',
-          legendData: ["qz", "qa", "qb", "qc",],
-          option: JSON.parse(JSON.stringify(chartOption)),
-        }, {
+        },
+        {
           name: "chartU",
           echartDom: null,
           title: '瞬时数据U',
@@ -56,12 +60,6 @@ export default {
           echartDom: null,
           title: '瞬时数据I',
           legendData: ["ia", "ib", "ic",],
-          option: JSON.parse(JSON.stringify(chartOption)),
-        }, {
-          name: "chartCos",
-          echartDom: null,
-          title: '瞬时数据Cos',
-          legendData: ["cos", "cosa", "cosb", "cosc",],
           option: JSON.parse(JSON.stringify(chartOption)),
         },
       ]
@@ -86,10 +84,10 @@ export default {
     },
     getParams(type=0){
       const formData = new FormData();
-      formData.append('cjMpId', this.cjPoint);
+      formData.append('cjMpId', this.ruleForm.cjPoint);
       formData.append('dataDate',  this.queryParams.dataDate);
-      formData.append('oneTwo', this.oneToTwo);
-      formData.append('type', this.curveValue);
+      formData.append('oneTwo', this.ruleForm.oneToTwo);
+      formData.append('type', this.ruleForm.curveValue);
       if (type) {
         formData.append('pageNum', this.queryParams.pageNum);
         formData.append('pageSize', this.queryParams.pageSize);
@@ -97,21 +95,11 @@ export default {
       return formData;
     },
     handleQuery() {
-      if (!this.cjPoint || !this.dataDate) {
-        this.$message({
-          showClose: true,
-          type: 'error',
-          message: '请选择搜索项'
-        });
-        return;
-      }
-      this.getList();
-    },
-    resetQuery() {
-      this.cjPoint = "";
-      this.oneToTwo=1;
-      this.dataDate = "";
-      this.curveValue = 1;
+      this.$refs['ruleForm'].validate(valid => {
+        if (valid) {
+          this.currentShow ? this.getList() : this.initEchart();
+        }
+      })
     },
     getDataList(){
       const params = this.getParams(0);
@@ -140,11 +128,10 @@ export default {
 
     },
     initEchart(){
-      this.myCharts[0].echartDom = echarts.init(document.getElementById("echarts-line-chart-1"));
-      this.myCharts[1].echartDom = echarts.init(document.getElementById("echarts-line-chart-2"));
-      this.myCharts[2].echartDom = echarts.init(document.getElementById("echarts-line-chart-3"));
-      this.myCharts[3].echartDom = echarts.init(document.getElementById("echarts-line-chart-4"));
-      this.myCharts[4].echartDom = echarts.init(document.getElementById("echarts-line-chart-5"));
+      this.myCharts.map((myChart, index)=>{
+          const id = `echarts-line-chart-${index+1}`;
+          myChart.echartDom = echarts.init(document.getElementById(id));
+      })
       this.getDataList();
     },
     handleDateChange(value){
@@ -156,26 +143,22 @@ export default {
       this.queryParams.dataDate = formattedDateNative;
     },
     changeShow(){
-      if (!this.cjPoint || !this.dataDate) {
-        this.$message({
-          showClose: true,
-          type: 'error',
-          message: '请选择搜索项后切换'
-        });
-        return;
-      }
-      this.currentShow = !this.currentShow;
-      if (!this.currentShow && !this.myChart) {
-        this.$nextTick(()=>{
-          this.myCharts.map((myChart)=>{
-            if (myChart.echartDom) {
-              myChart.echartDom.dispose();
-              myChart.echartDom = null;
-            }
-          })
-          this.initEchart();
-        })
-      }
+      this.$refs['ruleForm'].validate(valid => {
+        if (valid) {
+          this.currentShow = !this.currentShow;
+          if (!this.currentShow && !this.myChart) {
+            this.$nextTick(()=>{
+              this.myCharts.map((myChart)=>{
+                if (myChart.echartDom) {
+                  myChart.echartDom.dispose();
+                  myChart.echartDom = null;
+                }
+              })
+              this.initEchart();
+            })
+          }
+        }
+      })
     },
     getList() {
       this.loading = true;
@@ -194,55 +177,57 @@ export default {
   <div class="instantaneous-data-container">
     <div class="header">
       <el-row :gutter="24">
-        <el-col :span="18" class="header-left">
-          <div class="item-common">
-            <label>采集点:</label>
-            <el-select v-model="cjPoint">
-              <el-option v-for="option in optionsData"
-                         :key="option.value"
-                         :label="option.label"
-                         :value="option.value"
-              ></el-option>
-            </el-select>
-          </div>
-          <div class="item-common">
-            <label>日期:</label>
-            <el-date-picker v-model="dataDate" type="date" @change="handleDateChange" placeholder="选择日期"> </el-date-picker>
-            <el-select v-model="curveValue" placeholder="请选择">
-              <el-option
-                v-for="item in curveList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-            <el-select v-model="oneToTwo" placeholder="请选择">
-              <el-option
-                v-for="item in oneList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </div>
+        <el-col :span="20">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" inline label-width="65px" class="demo-ruleForm">
+            <el-form-item label="采集点" prop="cjPoint">
+              <el-select v-model="ruleForm.cjPoint">
+                <el-option v-for="option in optionsData"
+                           :key="option.value"
+                           :label="option.label"
+                           :value="option.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="时间" prop="dataDate">
+              <el-date-picker v-model="ruleForm.dataDate" @change="handleDateChange"  type="date" placeholder="选择日期"> </el-date-picker>
+            </el-form-item>
+            <el-form-item label="" prop="curveValue">
+              <el-select v-model="ruleForm.curveValue" placeholder="请选择">
+                <el-option
+                  v-for="item in curveList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="" prop="oneToTwo">
+              <el-select v-model="ruleForm.oneToTwo" placeholder="请选择">
+                <el-option
+                  v-for="item in oneList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery"
-            >搜索</el-button
+          >搜索</el-button
           >
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           <el-button icon="el-icon-sort" size="mini" @click="changeShow">{{
-            currentShow ? "切换图像" : "切换表格"
-          }}</el-button>
+              currentShow ? "切换图像" : "切换表格"
+            }}</el-button>
         </el-col>
       </el-row>
     </div>
     <div class="content">
       <template v-if="currentShow">
         <el-table v-loading="loading" :data="tableData">
-          <!--          <el-table-column type="selection" width="55" align="center" />-->
           <el-table-column label="ID" align="center" prop="id" />
           <el-table-column label="测量点标识" align="center" prop="cjMpId" />
           <el-table-column label="数据时标" align="center" prop="dataDate" width="180">
@@ -278,24 +263,6 @@ export default {
           <el-table-column label="PT变比值" align="center" prop="ptRatio" />
           <el-table-column label="CT 变比值" align="center" prop="ctRatio" />
           <el-table-column label="综合倍率" align="center" prop="tFactor" />
-          <!--          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-          <!--            <template slot-scope="scope">-->
-          <!--              <el-button-->
-          <!--                size="mini"-->
-          <!--                type="text"-->
-          <!--                icon="el-icon-edit"-->
-          <!--                @click="handleUpdate(scope.row)"-->
-          <!--                v-hasPermi="['sc:mpYcRead:edit']"-->
-          <!--              >修改</el-button>-->
-          <!--              <el-button-->
-          <!--                size="mini"-->
-          <!--                type="text"-->
-          <!--                icon="el-icon-delete"-->
-          <!--                @click="handleDelete(scope.row)"-->
-          <!--                v-hasPermi="['sc:mpYcRead:remove']"-->
-          <!--              >删除</el-button>-->
-          <!--            </template>-->
-          <!--          </el-table-column>-->
         </el-table>
 
         <pagination
@@ -310,8 +277,6 @@ export default {
         <div id="echarts-line-chart-1" class="chartContainer"></div>
         <div id="echarts-line-chart-2" class="chartContainer"></div>
         <div id="echarts-line-chart-3" class="chartContainer"></div>
-        <div id="echarts-line-chart-4" class="chartContainer"></div>
-        <div id="echarts-line-chart-5" class="chartContainer"></div>
       </template>
     </div>
   </div>
