@@ -25,8 +25,8 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="额定电压(KV)" prop="ratedVoltage">
-        <el-select v-model="queryParams.ratedVoltage" placeholder="请选择额定电压(KV)" clearable>
+      <el-form-item label="额定电压(kV)" prop="ratedVoltage">
+        <el-select v-model="queryParams.ratedVoltage" placeholder="请选择额定电压(kV)" clearable>
           <el-option
             v-for="dict in dict.type.supply_voltage"
             :key="dict.value"
@@ -43,10 +43,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="额定功率(KW)" prop="ratedPower">
+      <el-form-item label="额定功率(kW)" prop="ratedPower">
         <el-input
           v-model="queryParams.ratedPower"
-          placeholder="请输入额定功率(KW)"
+          placeholder="请输入额定功率(kW)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -117,13 +117,13 @@
       <el-table-column label="所属用户ID" align="center" prop="userId" />
       <el-table-column label="设备名称" align="center" prop="deviceName" />
       <el-table-column label="设备类别" align="center" prop="deviceType" />
-      <el-table-column label="额定电压(KV)" align="center" prop="ratedVoltage">
+      <el-table-column label="额定电压(kV)" align="center" prop="ratedVoltage">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.supply_voltage" :value="scope.row.ratedVoltage"/>
         </template>
       </el-table-column>
       <el-table-column label="所属区域" align="center" prop="area" />
-      <el-table-column label="额定功率(KW)" align="center" prop="ratedPower" />
+      <el-table-column label="额定功率(kW)" align="center" prop="ratedPower" />
       <el-table-column label="所属回路ID" align="center" prop="circuitId" />
       <el-table-column label="备注信息" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -145,7 +145,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -166,8 +166,8 @@
         <el-form-item label="设备类别" prop="deviceType">
           <el-input v-model="form.deviceType" placeholder="请输入设备类别" />
         </el-form-item>
-        <el-form-item label="额定电压(KV)" prop="ratedVoltage">
-          <el-select v-model="form.ratedVoltage" placeholder="请选择额定电压(KV)">
+        <el-form-item label="额定电压(kV)" prop="ratedVoltage">
+          <el-select v-model="form.ratedVoltage" placeholder="请选择额定电压(kV)">
             <el-option
               v-for="dict in dict.type.supply_voltage"
               :key="dict.value"
@@ -179,8 +179,8 @@
         <el-form-item label="所属区域" prop="area">
           <el-input v-model="form.area" placeholder="请输入所属区域" />
         </el-form-item>
-        <el-form-item label="额定功率(KW)" prop="ratedPower">
-          <el-input v-model="form.ratedPower" placeholder="请输入额定功率(KW)" />
+        <el-form-item label="额定功率(kW)" prop="ratedPower">
+          <el-input v-model="form.ratedPower" placeholder="请输入额定功率(kW)" />
         </el-form-item>
         <el-form-item label="所属回路ID" prop="circuitId">
           <el-input v-model="form.circuitId" placeholder="请输入所属回路ID" />

@@ -9,34 +9,34 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="年用电量(KWH)" prop="annualElectricity">
+      <el-form-item label="年用电量(kWh)" prop="annualElectricity">
         <el-input
           v-model="queryParams.annualElectricity"
-          placeholder="请输入年用电量(KWH)"
+          placeholder="请输入年用电量(kWh)"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="合同容量(KVA)" prop="contractCapacity">
+      <el-form-item label="合同容量(kWh)" prop="contractCapacity">
         <el-input
           v-model="queryParams.contractCapacity"
-          placeholder="请输入合同容量(KVA)"
+          placeholder="请输入合同容量(kWh)"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="运行容量" prop="runningCapacity">
+      <el-form-item label="运行容量(kWh)" prop="runningCapacity">
         <el-input
           v-model="queryParams.runningCapacity"
-          placeholder="请输入运行容量"
+          placeholder="请输入运行容量(kWh)"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="近三年夏季最大负荷(kw)" prop="summerMaxLoad">
+      <el-form-item label="近三年夏季最大负荷(kW)" prop="summerMaxLoad">
         <el-input
           v-model="queryParams.summerMaxLoad"
-          placeholder="请输入近三年夏季最大负荷(kw)"
+          placeholder="请输入近三年夏季最大负荷(kW)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -89,10 +89,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="保安负荷容量(kWV)" prop="securityLoad">
+      <el-form-item label="保安负荷容量(kWh)" prop="securityLoad">
         <el-input
           v-model="queryParams.securityLoad"
-          placeholder="请输入保安负荷容量(kWV)"
+          placeholder="请输入保安负荷容量(kWh)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -113,10 +113,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="分配电压等级(KV)" prop="distributionVoltage">
+      <el-form-item label="分配电压等级(kV)" prop="distributionVoltage">
         <el-input
           v-model="queryParams.distributionVoltage"
-          placeholder="请输入分配电压等级(KV)"
+          placeholder="请输入分配电压等级(kV)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -153,10 +153,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="总配电压等级(KV)" prop="totalVoltage">
+      <el-form-item label="总配电压等级(kV)" prop="totalVoltage">
         <el-input
           v-model="queryParams.totalVoltage"
-          placeholder="请输入总配电压等级(KV)"
+          placeholder="请输入总配电压等级(kV)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -177,10 +177,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="高压馈线电压等级(KV)" prop="hvFeederVoltage">
+      <el-form-item label="高压馈线电压等级(kV)" prop="hvFeederVoltage">
         <el-input
           v-model="queryParams.hvFeederVoltage"
-          placeholder="请输入高压馈线电压等级(KV)"
+          placeholder="请输入高压馈线电压等级(kV)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -249,28 +249,28 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键ID" align="center" prop="id" />
       <el-table-column label="所属用户ID" align="center" prop="userId" />
-      <el-table-column label="年用电量(KWH)" align="center" prop="annualElectricity" />
-      <el-table-column label="合同容量(KVA)" align="center" prop="contractCapacity" />
-      <el-table-column label="运行容量" align="center" prop="runningCapacity" />
-      <el-table-column label="近三年夏季最大负荷(kw)" align="center" prop="summerMaxLoad" />
+      <el-table-column label="年用电量(kWh)" align="center" prop="annualElectricity" />
+      <el-table-column label="合同容量(kWh)" align="center" prop="contractCapacity" />
+      <el-table-column label="运行容量(kWh)" align="center" prop="runningCapacity" />
+      <el-table-column label="近三年夏季最大负荷(kW)" align="center" prop="summerMaxLoad" />
       <el-table-column label="近三年冬季最大负荷(kW)" align="center" prop="winterMaxLoad" />
       <el-table-column label="近三年夏季最大负荷日平均负荷(kW)" align="center" prop="summerAvgLoad" />
       <el-table-column label="近三年冬季最大负荷日平均负荷(kW)" align="center" prop="winterAvgLoad" />
       <el-table-column label="需求响应任务量(kW)" align="center" prop="demandResponse" />
       <el-table-column label="实际响应量(kW)" align="center" prop="actualResponse" />
       <el-table-column label="每年生产时段" align="center" prop="productionPeriod" />
-      <el-table-column label="保安负荷容量(kWV)" align="center" prop="securityLoad" />
+      <el-table-column label="保安负荷容量(kWh)" align="center" prop="securityLoad" />
       <el-table-column label="总配数量(个)" align="center" prop="totalDistribution" />
       <el-table-column label="总配出线数量(个)" align="center" prop="totalOutlet" />
-      <el-table-column label="分配电压等级(KV)" align="center" prop="distributionVoltage" />
+      <el-table-column label="分配电压等级(kV)" align="center" prop="distributionVoltage" />
       <el-table-column label="高压馈线数量(个)" align="center" prop="highVoltageLines" />
       <el-table-column label="可调节高压馈线数量(个)" align="center" prop="adjustableHighLines" />
       <el-table-column label="可调节低压馈线数量(个)" align="center" prop="adjustableLowLines" />
       <el-table-column label="保安负荷设备名称" align="center" prop="securityDevice" />
-      <el-table-column label="总配电压等级(KV)" align="center" prop="totalVoltage" />
+      <el-table-column label="总配电压等级(kV)" align="center" prop="totalVoltage" />
       <el-table-column label="分配数量(个)" align="center" prop="subDistribution" />
       <el-table-column label="分配出线数量(个)" align="center" prop="subOutlet" />
-      <el-table-column label="高压馈线电压等级(KV)" align="center" prop="hvFeederVoltage" />
+      <el-table-column label="高压馈线电压等级(kV)" align="center" prop="hvFeederVoltage" />
       <el-table-column label="低压馈线数量(个)" align="center" prop="lvFeederCount" />
       <el-table-column label="备注信息" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -292,7 +292,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -307,17 +307,17 @@
         <el-form-item label="所属用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入所属用户ID" />
         </el-form-item>
-        <el-form-item label="年用电量(KWH)" prop="annualElectricity">
-          <el-input v-model="form.annualElectricity" placeholder="请输入年用电量(KWH)" />
+        <el-form-item label="年用电量(kWh)" prop="annualElectricity">
+          <el-input v-model="form.annualElectricity" placeholder="请输入年用电量(kWh)" />
         </el-form-item>
-        <el-form-item label="合同容量(KVA)" prop="contractCapacity">
-          <el-input v-model="form.contractCapacity" placeholder="请输入合同容量(KVA)" />
+        <el-form-item label="合同容量(kWh)" prop="contractCapacity">
+          <el-input v-model="form.contractCapacity" placeholder="请输入合同容量(kWh)" />
         </el-form-item>
-        <el-form-item label="运行容量" prop="runningCapacity">
-          <el-input v-model="form.runningCapacity" placeholder="请输入运行容量" />
+        <el-form-item label="运行容量(kWh)" prop="runningCapacity">
+          <el-input v-model="form.runningCapacity" placeholder="请输入运行容量(kWh)" />
         </el-form-item>
-        <el-form-item label="近三年夏季最大负荷(kw)" prop="summerMaxLoad">
-          <el-input v-model="form.summerMaxLoad" placeholder="请输入近三年夏季最大负荷(kw)" />
+        <el-form-item label="近三年夏季最大负荷(kW)" prop="summerMaxLoad">
+          <el-input v-model="form.summerMaxLoad" placeholder="请输入近三年夏季最大负荷(kW)" />
         </el-form-item>
         <el-form-item label="近三年冬季最大负荷(kW)" prop="winterMaxLoad">
           <el-input v-model="form.winterMaxLoad" placeholder="请输入近三年冬季最大负荷(kW)" />
@@ -337,8 +337,8 @@
         <el-form-item label="每年生产时段" prop="productionPeriod">
           <el-input v-model="form.productionPeriod" placeholder="请输入每年生产时段" />
         </el-form-item>
-        <el-form-item label="保安负荷容量(kWV)" prop="securityLoad">
-          <el-input v-model="form.securityLoad" placeholder="请输入保安负荷容量(kWV)" />
+        <el-form-item label="保安负荷容量(kWh)" prop="securityLoad">
+          <el-input v-model="form.securityLoad" placeholder="请输入保安负荷容量(kWh)" />
         </el-form-item>
         <el-form-item label="总配数量(个)" prop="totalDistribution">
           <el-input v-model="form.totalDistribution" placeholder="请输入总配数量(个)" />
@@ -346,8 +346,8 @@
         <el-form-item label="总配出线数量(个)" prop="totalOutlet">
           <el-input v-model="form.totalOutlet" placeholder="请输入总配出线数量(个)" />
         </el-form-item>
-        <el-form-item label="分配电压等级(KV)" prop="distributionVoltage">
-          <el-input v-model="form.distributionVoltage" placeholder="请输入分配电压等级(KV)" />
+        <el-form-item label="分配电压等级(kV)" prop="distributionVoltage">
+          <el-input v-model="form.distributionVoltage" placeholder="请输入分配电压等级(kV)" />
         </el-form-item>
         <el-form-item label="高压馈线数量(个)" prop="highVoltageLines">
           <el-input v-model="form.highVoltageLines" placeholder="请输入高压馈线数量(个)" />
@@ -361,8 +361,8 @@
         <el-form-item label="保安负荷设备名称" prop="securityDevice">
           <el-input v-model="form.securityDevice" placeholder="请输入保安负荷设备名称" />
         </el-form-item>
-        <el-form-item label="总配电压等级(KV)" prop="totalVoltage">
-          <el-input v-model="form.totalVoltage" placeholder="请输入总配电压等级(KV)" />
+        <el-form-item label="总配电压等级(kV)" prop="totalVoltage">
+          <el-input v-model="form.totalVoltage" placeholder="请输入总配电压等级(kV)" />
         </el-form-item>
         <el-form-item label="分配数量(个)" prop="subDistribution">
           <el-input v-model="form.subDistribution" placeholder="请输入分配数量(个)" />
@@ -370,8 +370,8 @@
         <el-form-item label="分配出线数量(个)" prop="subOutlet">
           <el-input v-model="form.subOutlet" placeholder="请输入分配出线数量(个)" />
         </el-form-item>
-        <el-form-item label="高压馈线电压等级(KV)" prop="hvFeederVoltage">
-          <el-input v-model="form.hvFeederVoltage" placeholder="请输入高压馈线电压等级(KV)" />
+        <el-form-item label="高压馈线电压等级(kV)" prop="hvFeederVoltage">
+          <el-input v-model="form.hvFeederVoltage" placeholder="请输入高压馈线电压等级(kV)" />
         </el-form-item>
         <el-form-item label="低压馈线数量(个)" prop="lvFeederCount">
           <el-input v-model="form.lvFeederCount" placeholder="请输入低压馈线数量(个)" />

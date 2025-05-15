@@ -279,7 +279,7 @@
               v-for="dict in dict.type.pt_ratio"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>

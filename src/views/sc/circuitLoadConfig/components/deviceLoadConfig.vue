@@ -46,10 +46,10 @@
 <!--            <dict-tag :options="dict.type.adjustment_method" :value="scope.row.adjustMethod" />-->
 <!--          </template>-->
 <!--        </el-table-column>-->
-        <el-form-item label="最大可调节负荷(KW)" prop="maxAdjustableLoad">
+        <el-form-item label="最大可调节负荷(kW)" prop="maxAdjustableLoad">
           <el-input
             v-model="form.maxAdjustableLoad"
-            placeholder="请输入最大可调节负荷(KW)"
+            placeholder="请输入最大可调节负荷(kW)"
             clearable
           />
         </el-form-item>
@@ -191,7 +191,7 @@
             <dict-tag :options="dict.type.adjustment_method" :value="scope.row.adjustMethod" />
           </template>
         </el-table-column>
-        <el-table-column label="最大可调节负荷(KW)" align="center" prop="maxAdjustableLoad" />
+        <el-table-column label="最大可调节负荷(kW)" align="center" prop="maxAdjustableLoad" />
         <el-table-column label="可调节时段" align="center" prop="adjustablePeriod">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.adjustment_period" :value="scope.row.adjustablePeriod" />

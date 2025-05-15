@@ -12,8 +12,8 @@
         </template>
       </el-table-column>
       <el-table-column label="资产编号" min-width="80" align="center" prop="assetNo" />
-      <el-table-column label="峰值总功率(KWP)" min-width="130" align="center" prop="peakPower" />
-      <el-table-column label="最大可出力(KW)" min-width="120" align="center" prop="maxOutput" />
+      <el-table-column label="峰值总功率(kW)" min-width="130" align="center" prop="peakPower" />
+      <el-table-column label="最大可出力(kWh)" min-width="120" align="center" prop="maxOutput" />
       <el-table-column label="发电效率" min-width="80" align="center" prop="efficiency" />
       <el-table-column label="调节方式" min-width="80" align="center" prop="adjustMode">
         <template slot-scope="scope">

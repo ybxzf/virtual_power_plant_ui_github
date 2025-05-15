@@ -43,8 +43,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="供电电压(KV)" prop="supplyVoltage">
-        <el-select v-model="queryParams.supplyVoltage" placeholder="请选择供电电压(KV)" clearable>
+      <el-form-item label="供电电压(kV)" prop="supplyVoltage">
+        <el-select v-model="queryParams.supplyVoltage" placeholder="请选择供电电压(kV)" clearable>
           <el-option
             v-for="dict in dict.type.supply_voltage"
             :key="dict.value"
@@ -53,10 +53,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="充电桩功率(KW)" prop="power">
+      <el-form-item label="充电桩功率(kW)" prop="power">
         <el-input
           v-model="queryParams.power"
-          placeholder="请输入充电桩功率(KW)"
+          placeholder="请输入充电桩功率(kW)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -213,12 +213,12 @@
           <dict-tag :options="dict.type.generation_type" :value="scope.row.chargerType"/>
         </template>
       </el-table-column>
-<!--      <el-table-column label="供电电压(KV)" align="center" prop="supplyVoltage">-->
+<!--      <el-table-column label="供电电压(kV)" align="center" prop="supplyVoltage">-->
 <!--        <template slot-scope="scope">-->
 <!--          <dict-tag :options="dict.type.supply_voltage" :value="scope.row.supplyVoltage"/>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="充电桩功率(KW)" align="center" prop="power" />
+      <el-table-column label="充电桩功率(kW)" align="center" prop="power" />
       <el-table-column label="主设备品牌" align="center" prop="deviceBrand" />
       <el-table-column label="主设备型号" align="center" prop="deviceModel" />
 <!--      <el-table-column label="所属用户ID" align="center" prop="userId" />
@@ -301,18 +301,22 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="供电电压(KV)" prop="supplyVoltage">
-          <el-select v-model="form.supplyVoltage" placeholder="请选择供电电压(KV)">
+        <el-form-item label="供电电压(kV)" prop="supplyVoltage">
+<!--          <el-select v-model="form.supplyVoltage" placeholder="请选择供电电压(kV)">
             <el-option
               v-for="dict in dict.type.supply_voltage"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
             ></el-option>
+          </el-select>-->
+          <el-select v-model="form.supplyVoltage" placeholder="请选择供电电压">
+            <el-option v-for="dict in dict.type.supply_voltage" :key="dict.value" :label="dict.label"
+                       :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="充电桩功率(KW)" prop="power">
-          <el-input v-model="form.power" placeholder="请输入充电桩功率(KW)" />
+        <el-form-item label="充电桩功率(kW)" prop="power">
+          <el-input v-model="form.power" placeholder="请输入充电桩功率(kW)" />
         </el-form-item>
         <el-form-item label="所属用户" prop="reserved1">
           <el-input

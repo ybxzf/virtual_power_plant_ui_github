@@ -33,10 +33,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="装机容量" prop="capacity">
+      <el-form-item label="装机容量(kWh)" prop="capacity">
         <el-input
           v-model="queryParams.capacity"
-          placeholder="请输入装机容量"
+          placeholder="请输入装机容量(kWh)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -136,9 +136,9 @@
           <dict-tag :options="dict.type.power_source_type" :value="scope.row.powerType" />
         </template>
       </el-table-column>-->
-      <el-table-column label="装机容量(KW)" min-width="80" align="center" prop="capacity" />
-      <el-table-column label="最大充电能力(KW)" min-width="100" align="center" prop="maxCharge" />
-      <el-table-column label="最大放电能力(KW)" min-width="100" align="center" prop="maxDischarge" />
+      <el-table-column label="装机容量(kWh)" min-width="80" align="center" prop="capacity" />
+      <el-table-column label="最大充电能力(kW)" min-width="100" align="center" prop="maxCharge" />
+      <el-table-column label="最大放电能力(kW)" min-width="100" align="center" prop="maxDischarge" />
 <!--      <el-table-column label="所属回路ID" min-width="100" align="center" prop="circuitId" />
       <el-table-column label="主设备品牌和型号" min-width="130" align="center" prop="deviceModel" />
       <el-table-column label="充电提前通知时间" min-width="130" align="center" prop="chargeNotice" />
@@ -191,13 +191,13 @@
               :value="dict.value"></el-option>
           </el-select>
         </el-form-item>-->
-        <el-form-item label="装机容量(KW)" prop="capacity">
-          <el-input v-model="form.capacity" placeholder="请输入装机容量" />
+        <el-form-item label="装机容量(kWh)" prop="capacity">
+          <el-input v-model="form.capacity" placeholder="请输入装机容量(kWh)" />
         </el-form-item>
-        <el-form-item label="最大充电能力(KW)" prop="maxCharge">
+        <el-form-item label="最大充电能力(kW)" prop="maxCharge">
           <el-input v-model="form.maxCharge" placeholder="请输入最大充电能力" />
         </el-form-item>
-        <el-form-item label="最大放电能力(KW)" prop="maxDischarge">
+        <el-form-item label="最大放电能力(kW)" prop="maxDischarge">
           <el-input v-model="form.maxDischarge" placeholder="请输入最大放电能力" />
         </el-form-item>
         <!-- 修改原有表单项 -->
@@ -242,7 +242,7 @@
         <el-form-item label="充电提前通知时间" prop="chargeNotice">
           <el-select v-model="form.chargeNotice" placeholder="请输入充电提前通知时间">
             <el-option v-for="dict in dict.type.advance_notice_time" :key="dict.value" :label="dict.label"
-                       :value="parseInt(dict.value)"></el-option>
+                       :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="日常放电时段" prop="dailyDischarge">
@@ -254,7 +254,7 @@
         <el-form-item label="放电提前通知时间" prop="dischargeNotice">
           <el-select v-model="form.dischargeNotice" placeholder="请输入放电提前通知时间">
             <el-option v-for="dict in dict.type.advance_notice_time" :key="dict.value" :label="dict.label"
-                       :value="parseInt(dict.value)"></el-option>
+                       :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="是否可调节" prop="isAdjust">

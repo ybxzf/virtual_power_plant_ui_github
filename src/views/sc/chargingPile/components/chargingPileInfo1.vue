@@ -11,12 +11,12 @@
           <dict-tag :options="dict.type.generation_type" :value="scope.row.chargerType" />
         </template>
       </el-table-column>
-      <!--      <el-table-column label="供电电压(KV)" align="center" prop="supplyVoltage">-->
+      <!--      <el-table-column label="供电电压(kV)" align="center" prop="supplyVoltage">-->
       <!--        <template slot-scope="scope">-->
       <!--          <dict-tag :options="dict.type.supply_voltage" :value="scope.row.supplyVoltage"/>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column label="充电桩功率(KW)" align="center" prop="power" />
+      <el-table-column label="充电桩功率(kW)" align="center" prop="power" />
       <el-table-column label="主设备品牌" align="center" prop="deviceBrand" />
       <el-table-column label="主设备型号" align="center" prop="deviceModel" />
       <!--      <el-table-column label="所属用户ID" align="center" prop="userId" />

@@ -33,10 +33,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="最大可调节负荷(KW)" prop="maxAdjustableLoad">
+      <el-form-item label="最大可调节负荷(kW)" prop="maxAdjustableLoad">
         <el-input
           v-model="queryParams.maxAdjustableLoad"
-          placeholder="请输入最大可调节负荷(KW)"
+          placeholder="请输入最大可调节负荷(kW)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -180,7 +180,7 @@
       <el-table-column label="所属设备ID" align="center" prop="deviceId" />
       <el-table-column label="设备所属回路ID" align="center" prop="circuitId" />
       <el-table-column label="调节方式" align="center" prop="adjustMethod" />
-      <el-table-column label="最大可调节负荷(KW)" align="center" prop="maxAdjustableLoad" />
+      <el-table-column label="最大可调节负荷(kW)" align="center" prop="maxAdjustableLoad" />
       <el-table-column label="可调节时段" align="center" prop="adjustablePeriod">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.adjustment_period" :value="scope.row.adjustablePeriod"/>
@@ -250,8 +250,8 @@
         <el-form-item label="调节方式" prop="adjustMethod">
           <el-input v-model="form.adjustMethod" placeholder="请输入调节方式" />
         </el-form-item>
-        <el-form-item label="最大可调节负荷(KW)" prop="maxAdjustableLoad">
-          <el-input v-model="form.maxAdjustableLoad" placeholder="请输入最大可调节负荷(KW)" />
+        <el-form-item label="最大可调节负荷(kW)" prop="maxAdjustableLoad">
+          <el-input v-model="form.maxAdjustableLoad" placeholder="请输入最大可调节负荷(kW)" />
         </el-form-item>
         <el-form-item label="可调节时段" prop="adjustablePeriod">
           <el-select v-model="form.adjustablePeriod" placeholder="请选择可调节时段">

@@ -33,31 +33,31 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="最大负荷(KW)" prop="maxLoad">
+        <el-form-item label="最大负荷(kW)" prop="maxLoad">
           <el-input
             v-model="form.maxLoad"
-            placeholder="请输入最大负荷(KW)"
+            placeholder="请输入最大负荷(kW)"
             clearable
           />
         </el-form-item>
-        <el-form-item label="早峰负荷(KW)" prop="morningPeak">
+        <el-form-item label="早峰负荷(kW)" prop="morningPeak">
           <el-input
             v-model="form.morningPeak"
-            placeholder="请输入早峰负荷(KW)"
+            placeholder="请输入早峰负荷(kW)"
             clearable
           />
         </el-form-item>
-        <el-form-item label="腰峰负荷(KW)" prop="middayPeak">
+        <el-form-item label="腰峰负荷(kW)" prop="middayPeak">
           <el-input
             v-model="form.middayPeak"
-            placeholder="请输入腰峰负荷(KW)"
+            placeholder="请输入腰峰负荷(kW)"
             clearable
           />
         </el-form-item>
-        <el-form-item label="晚峰负荷(KW)" prop="eveningPeak">
+        <el-form-item label="晚峰负荷(kW)" prop="eveningPeak">
           <el-input
             v-model="form.eveningPeak"
-            placeholder="请输入晚峰负荷(KW)"
+            placeholder="请输入晚峰负荷(kW)"
             clearable
           />
         </el-form-item>
@@ -71,10 +71,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="最大可调节负荷(KW)" prop="maxAdjustableLoad">
+        <el-form-item label="最大可调节负荷(kW)" prop="maxAdjustableLoad">
           <el-input
             v-model="form.maxAdjustableLoad"
-            placeholder="请输入最大可调节负荷(KW)"
+            placeholder="请输入最大可调节负荷(kW)"
             clearable
           />
         </el-form-item>
@@ -251,16 +251,16 @@
 <!--        <el-table-column label="所属用户ID" align="center" prop="userId" />-->
 <!--        <el-table-column label="所属回路ID" align="center" prop="circuitId" />-->
         <el-table-column label="所属回路" align="center" prop="reserved1" />
-        <el-table-column label="最大负荷(KW)" align="center" prop="maxLoad" />
-        <el-table-column label="早峰负荷(KW)" align="center" prop="morningPeak" />
-        <el-table-column label="腰峰负荷(KW)" align="center" prop="middayPeak" />
-        <el-table-column label="晚峰负荷(KW)" align="center" prop="eveningPeak" />
+        <el-table-column label="最大负荷(kW)" align="center" prop="maxLoad" />
+        <el-table-column label="早峰负荷(kW)" align="center" prop="morningPeak" />
+        <el-table-column label="腰峰负荷(kW)" align="center" prop="middayPeak" />
+        <el-table-column label="晚峰负荷(kW)" align="center" prop="eveningPeak" />
         <el-table-column label="调节方式" align="center" prop="adjustMethod">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.adjustment_method" :value="scope.row.adjustMethod" />
           </template>
         </el-table-column>
-        <el-table-column label="最大可调节负荷(KW)" align="center" prop="maxAdjustableLoad" />
+        <el-table-column label="最大可调节负荷(kW)" align="center" prop="maxAdjustableLoad" />
         <el-table-column label="可调节时段" align="center" prop="adjustablePeriod">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.adjustment_period" :value="scope.row.adjustablePeriod" />
