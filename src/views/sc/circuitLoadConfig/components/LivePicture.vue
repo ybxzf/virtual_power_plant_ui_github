@@ -28,10 +28,18 @@ export default {
 </script>
 
 <template>
-  <div class="live-picture">
-    <div v-for="(item, index) in liveList" :key="index" class="live-picture__item">
-      <LabelTitle :title="item.name"></LabelTitle>
-      <el-image class="live-picture_img" :src="item.url" fit="contain"></el-image>
+  <div>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-upload" size="mini"
+          v-hasPermi="['sc:corporation:add']">上传</el-button>
+      </el-col>
+    </el-row>
+    <div class="live-picture">
+      <div v-for="(item, index) in liveList" :key="index" class="live-picture__item">
+        <LabelTitle :title="item.name"></LabelTitle>
+        <el-image class="live-picture_img" :src="item.url" fit="contain"></el-image>
+      </div>
     </div>
   </div>
 </template>

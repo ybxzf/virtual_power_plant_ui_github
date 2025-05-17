@@ -6,7 +6,8 @@
         <AddDialog v-if="active == 0" :formData="formData" @close="$emit('close')"></AddDialog>
         <PvInfo v-if="active == 1"  :formData="formData" @close="$emit('close')"></PvInfo>
         <EnergyStorageInfo v-if="active == 2"  :formData="formData"></EnergyStorageInfo>
-        <SelfPlantInfo v-if="active == 3"  :formData="formData"></SelfPlantInfo>
+        <ChargingPileInfo v-if="active == 3"  :formData="formData"></ChargingPileInfo>
+        <SelfPlantInfo v-if="active == 4"  :formData="formData"></SelfPlantInfo>
     </div>
 </template>
 <script>
@@ -14,6 +15,7 @@ import { listCorporation, getCorporation, delCorporation, addCorporation, update
 import AddDialog from './addDialog.vue';
 import PvInfo  from './pvInfo.vue';
 import EnergyStorageInfo  from './energyStorageInfo.vue';
+import ChargingPileInfo from './chargingPileInfo.vue'
 import SelfPlantInfo from './selfPlantInfo.vue';
 
 export default {
@@ -23,6 +25,7 @@ export default {
       AddDialog,
       PvInfo,
       EnergyStorageInfo,
+      ChargingPileInfo,
       SelfPlantInfo,
      },
     props: {
@@ -50,8 +53,12 @@ export default {
                     value: 2
                 },
                 {
-                    label: '自备电厂',
+                    label: '充电桩',
                     value: 3
+                },
+                {
+                    label: '自备电厂',
+                    value: 4
                 }
             ],
         }

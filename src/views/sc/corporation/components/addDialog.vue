@@ -137,6 +137,9 @@ export default {
         userName: [
           { required: true, message: "用户名称不能为空", trigger: "blur" }
         ],
+        userCode: [
+          { required: true, message: "用户编号不能为空", trigger: "blur" }
+        ],
         creditCode: [
           { required: true, message: "统一社会信用代码不能为空", trigger: "blur" }
         ],

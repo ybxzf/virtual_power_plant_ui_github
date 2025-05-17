@@ -42,9 +42,12 @@
           <!--            <img :src="codeUrl" @click="getCode" class="login-code-img"/>-->
           <!--          </div>-->
           <!--        </el-form-item>-->
-          <p class="login-unaccount"><span>没有账户？</span><span class="register">免费注册</span></p>
-          <el-checkbox v-model="loginForm.rememberMe">我已阅读并同意<span class="link">《虚拟电厂服务条款》</span><span
-              class="link">《隐私条款》</span></el-checkbox>
+          <p class="login-unaccount">
+             <el-checkbox v-model="rememberPassword" @change="rememberPasswordChange">记住密码</el-checkbox>
+          </p>
+          <!-- <p class="login-unaccount"><span>没有账户？</span><span class="register">免费注册</span></p> -->
+          <!-- <el-checkbox v-model="loginForm.rememberMe">我已阅读并同意<span class="link">《虚拟电厂服务条款》</span><span
+              class="link">《隐私条款》</span></el-checkbox> -->
           <el-form-item style="width:100%;">
             <el-button :loading="loading" size="medium" type="primary" class="button-style" style="width:100%;"
               @click.native.prevent="handleLogin">
@@ -83,6 +86,7 @@ export default {
         code: "",
         uuid: ""
       },
+      rememberPassword: false,
       loginRules: {
         username: [
           { required: true, trigger: "blur", message: "请输入您的账号" }
@@ -119,6 +123,12 @@ export default {
   created() {
     this.getCode();
     this.getCookie();
+    const pwd = window.localStorage.getItem('passwordInfo');
+    if (pwd) {
+      this.rememberPassword = true;
+      this.loginForm.username = JSON.parse(pwd).username;
+      this.loginForm.password = JSON.parse(pwd).password;
+    }
   },
   methods: {
     handleFocus(event, type) {
@@ -128,6 +138,13 @@ export default {
     handleBlur(event, type) {
       event.preventDefault();
       this.focusConf[type].isFocus = false;
+    },
+    rememberPasswordChange(val) {
+      if (val) {
+        window.localStorage.setItem('passwordInfo', JSON.stringify(this.loginForm));
+      } else {
+        window.localStorage.removeItem('passwordInfo');
+      }
     },
     getCode() {
       getCodeImg().then(res => {
