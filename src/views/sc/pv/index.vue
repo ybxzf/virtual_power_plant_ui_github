@@ -54,7 +54,7 @@
       </el-table-column>-->
 
       <el-table-column label="峰值总功率(kW)" min-width="130" align="center" prop="peakPower" />
-      <el-table-column label="最大可出力(kWh)" min-width="120" align="center" prop="maxOutput" />
+      <el-table-column label="最大可出力(kW)" min-width="120" align="center" prop="maxOutput" />
       <el-table-column label="发电效率" min-width="80" align="center" prop="efficiency" />
       <el-table-column label="是否可调节" min-width="90" align="center" prop="isAdjust">
         <template slot-scope="scope">
@@ -106,8 +106,8 @@
         <el-form-item label="峰值总功率(kW)" prop="peakPower">
           <el-input v-model="form.peakPower" placeholder="请输入峰值总功率(kW)" />
         </el-form-item>
-        <el-form-item label="最大可出力(kWh)" prop="maxOutput">
-          <el-input v-model="form.maxOutput" placeholder="请输入最大可出力(kWh)" />
+        <el-form-item label="最大可出力(kW)" prop="maxOutput">
+          <el-input v-model="form.maxOutput" placeholder="请输入最大可出力(kW)" />
         </el-form-item>
         <el-form-item label="发电效率" prop="efficiency">
           <el-input v-model="form.efficiency" placeholder="请输入发电效率" />

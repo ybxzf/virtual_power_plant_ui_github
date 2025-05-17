@@ -313,10 +313,10 @@ export default {
               <span>{{ parseTime(scope.row.writeDate, "{y}-{m}-{d}") }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="正向有功总示度" align="center" prop="zxygz" />
-          <el-table-column label="反向有功总示度" align="center" prop="fxygz" />
-          <el-table-column label="正向无功总示度" align="center" prop="zxwgz" />
-          <el-table-column label="反向无功总示度" align="center" prop="fxwgz" />
+          <el-table-column label="正向有功总示度(kWh)" align="center" prop="zxygz" />
+          <el-table-column label="反向有功总示度(kWh)" align="center" prop="fxygz" />
+          <el-table-column label="正向无功总示度(kWh)" align="center" prop="zxwgz" />
+          <el-table-column label="反向无功总示度(kWh)" align="center" prop="fxwgz" />
         </el-table>
 
         <pagination

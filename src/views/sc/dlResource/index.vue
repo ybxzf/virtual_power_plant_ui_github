@@ -20,25 +20,25 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['sc:corporation:add']">新增</el-button>
-      </el-col>
-      <!-- <el-col :span="1.5">
-        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['sc:corporation:edit']">修改</el-button>
-      </el-col> -->
-      <el-col :span="1.5">
-        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['sc:corporation:remove']">删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['sc:corporation:export']">导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+<!--    <el-row :gutter="10" class="mb8">-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"-->
+<!--          v-hasPermi="['sc:corporation:add']">新增</el-button>-->
+<!--      </el-col>-->
+<!--      &lt;!&ndash; <el-col :span="1.5">-->
+<!--        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"-->
+<!--          v-hasPermi="['sc:corporation:edit']">修改</el-button>-->
+<!--      </el-col> &ndash;&gt;-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"-->
+<!--          v-hasPermi="['sc:corporation:remove']">删除</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"-->
+<!--          v-hasPermi="['sc:corporation:export']">导出</el-button>-->
+<!--      </el-col>-->
+<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
+<!--    </el-row>-->
     <div class="table-container">
       <el-table border v-loading="loading" height="100%" :data="corporationList"
         @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
@@ -97,14 +97,14 @@
         <el-table-column show-overflow-tooltip label="合约有效期(年)" align="center" prop="contractPeriod" min-width="110" />
         <el-table-column show-overflow-tooltip label="所属变电站" align="center" prop="substation" min-width="90" />
         <el-table-column show-overflow-tooltip label="所属虚拟电厂" align="center" prop="extend1" min-width="100" />-->
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">
-          <template slot-scope="scope">
-            <!-- <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-              v-hasPermi="['sc:corporation:edit']">修改</el-button> -->
-            <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-              v-hasPermi="['sc:corporation:remove']">删除</el-button>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="150">-->
+<!--          <template slot-scope="scope">-->
+<!--            &lt;!&ndash; <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"-->
+<!--              v-hasPermi="['sc:corporation:edit']">修改</el-button> &ndash;&gt;-->
+<!--            <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"-->
+<!--              v-hasPermi="['sc:corporation:remove']">删除</el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </el-table>
     </div>
 

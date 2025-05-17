@@ -241,28 +241,28 @@ export default {
               <span>{{ parseTime(scope.row.writeDate, "{y}-{m}-{d}") }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="总有功功率" align="center" prop="pz" />
-          <el-table-column label="A相有功功率" align="center" prop="pa" />
-          <el-table-column label="B相有功功率" align="center" prop="pb" />
-          <el-table-column label="C相有功功率" align="center" prop="pc" />
-          <el-table-column label="总无功功率" align="center" prop="qz" />
-          <el-table-column label="A相无功功率" align="center" prop="qa" />
-          <el-table-column label="B相无功功率" align="center" prop="qb" />
-          <el-table-column label="C相无功功率" align="center" prop="qc" />
-          <el-table-column label="A相电压" align="center" prop="ua" />
-          <el-table-column label="B相电压" align="center" prop="ub" />
-          <el-table-column label="C相电压" align="center" prop="uc" />
-          <el-table-column label="A相电流" align="center" prop="ia" />
-          <el-table-column label="B相电流" align="center" prop="ib" />
-          <el-table-column label="C相电流" align="center" prop="ic" />
+          <el-table-column label="总有功功率(kV)" align="center" prop="pz" />
+          <el-table-column label="A相有功功率(kV)" align="center" prop="pa" />
+          <el-table-column label="B相有功功率(kV)" align="center" prop="pb" />
+          <el-table-column label="C相有功功率(kV)" align="center" prop="pc" />
+          <el-table-column label="总无功功率(kV)" align="center" prop="qz" />
+          <el-table-column label="A相无功功率(kV)" align="center" prop="qa" />
+          <el-table-column label="B相无功功率(kV)" align="center" prop="qb" />
+          <el-table-column label="C相无功功率(kV)" align="center" prop="qc" />
+          <el-table-column label="A相电压(V)" align="center" prop="ua" />
+          <el-table-column label="B相电压(V)" align="center" prop="ub" />
+          <el-table-column label="C相电压(V)" align="center" prop="uc" />
+          <el-table-column label="A相电流(A)" align="center" prop="ia" />
+          <el-table-column label="B相电流(A)" align="center" prop="ib" />
+          <el-table-column label="C相电流(A)" align="center" prop="ic" />
           <el-table-column label="总功率因数" align="center" prop="cos" />
           <el-table-column label="A相功率因数" align="center" prop="cosa" />
           <el-table-column label="B相功率因数" align="center" prop="cosb" />
           <el-table-column label="C相功率因数" align="center" prop="cosc" />
-          <el-table-column label="零序电流" align="center" prop="midI" />
+<!--          <el-table-column label="零序电流" align="center" prop="midI" />
           <el-table-column label="PT变比值" align="center" prop="ptRatio" />
           <el-table-column label="CT 变比值" align="center" prop="ctRatio" />
-          <el-table-column label="综合倍率" align="center" prop="tFactor" />
+          <el-table-column label="综合倍率" align="center" prop="tFactor" />-->
         </el-table>
 
         <pagination

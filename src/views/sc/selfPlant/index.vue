@@ -33,10 +33,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="装机容量(kWh)" prop="capacity">
+      <el-form-item label="装机容量(KVA)" prop="capacity">
         <el-input
           v-model="queryParams.capacity"
-          placeholder="请输入装机容量(kWh)"
+          placeholder="请输入装机容量(KVA)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -152,8 +152,8 @@
 <!--          <dict-tag :options="dict.type.power_source_type" :value="scope.row.powerType" />-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="装机容量(kWh)" min-width="80" align="center" prop="capacity" />
-      <el-table-column label="最大可出力(kWh)" min-width="90" align="center" prop="maxOutput" />
+      <el-table-column label="装机容量(KVA)" min-width="80" align="center" prop="capacity" />
+      <el-table-column label="最大可出力(kW)" min-width="90" align="center" prop="maxOutput" />
       <el-table-column label="并网电压等级" min-width="100" align="center" prop="gridVoltage">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.supply_voltage" :value="scope.row.gridVoltage" />
@@ -229,10 +229,10 @@
 <!--              :value="dict.value"></el-option>-->
 <!--          </el-select>-->
 <!--        </el-form-item>-->
-        <el-form-item label="装机容量(kWh)" prop="capacity">
-          <el-input v-model="form.capacity" placeholder="请输入装机容量(kWh)" />
+        <el-form-item label="装机容量(KVA)" prop="capacity">
+          <el-input v-model="form.capacity" placeholder="请输入装机容量(KVA)" />
         </el-form-item>
-        <el-form-item label="最大可出力(kWh)" prop="maxOutput">
+        <el-form-item label="最大可出力(kW)" prop="maxOutput">
           <el-input v-model="form.maxOutput" placeholder="请输入最大可出力" />
         </el-form-item>
         <el-form-item label="并网电压等级" prop="gridVoltage">

@@ -8,11 +8,11 @@
       <el-form-item label="年用电量(kWh)" prop="annualElectricity">
         <el-input v-model="form.annualElectricity" placeholder="请输入年用电量(kWh)" />
       </el-form-item>
-      <el-form-item label="合同容量(kWh)" prop="contractCapacity">
-        <el-input v-model="form.contractCapacity" placeholder="请输入合同容量(kWh)" />
+      <el-form-item label="合同容量(KVA)" prop="contractCapacity">
+        <el-input v-model="form.contractCapacity" placeholder="请输入合同容量(KVA)" />
       </el-form-item>
-      <el-form-item label="运行容量(kWh)" prop="runningCapacity">
-        <el-input v-model="form.runningCapacity" placeholder="请输入运行容量(kWh)" />
+      <el-form-item label="运行容量(KVA)" prop="runningCapacity">
+        <el-input v-model="form.runningCapacity" placeholder="请输入运行容量(KVA)" />
       </el-form-item>
       <el-form-item label="近三年夏季最大负荷(kW)" prop="summerMaxLoad">
         <el-input v-model="form.summerMaxLoad" placeholder="请输入近三年夏季最大负荷(kW)" />
@@ -35,8 +35,8 @@
       <el-form-item label="每年生产时段" prop="productionPeriod">
         <el-input v-model="form.productionPeriod" placeholder="请输入每年生产时段" />
       </el-form-item>
-      <el-form-item label="保安负荷容量(kWh)" prop="securityLoad">
-        <el-input v-model="form.securityLoad" placeholder="请输入保安负荷容量(kWh)" />
+      <el-form-item label="保安负荷容量(KVA)" prop="securityLoad">
+        <el-input v-model="form.securityLoad" placeholder="请输入保安负荷容量(KVA)" />
       </el-form-item>
       <el-form-item label="总配数量(个)" prop="totalDistribution">
         <el-input v-model="form.totalDistribution" placeholder="请输入总配数量(个)" />
