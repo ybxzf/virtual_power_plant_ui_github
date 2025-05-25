@@ -119,6 +119,14 @@ export default {
     };
   },
   watch: {
+    userId: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          this.getList();
+        }
+      }
+    },
     form: {
       handler(newVal, oldVal) {
         if (newVal.area !== oldVal.area) {
@@ -140,11 +148,20 @@ export default {
   created() {
     this.getList();
   },
+  props: {
+    userId: {
+      type: [String, Number],
+      default: null
+    }
+  },
   methods: {
     /** 查询充电桩列表 */
     getList() {
       this.loading = true;
-      listChargingPile(this.queryParams).then(response => {
+      listChargingPile({
+        ...this.queryParams,
+        userId: this.userId  // 添加userId参数
+      }).then(response => {
         this.chargingPileList = response.rows;
         this.total = response.total;
         this.loading = false;

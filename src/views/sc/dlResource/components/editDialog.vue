@@ -4,10 +4,10 @@
             <custome-tabs :active="active" :tabList="tabs" @change="changeTab"></custome-tabs>
         </div>
         <AddDialog v-if="active == 0" :formData="formData" @close="$emit('close')"></AddDialog>
-        <PvInfo v-if="active == 1"  :formData="formData" @close="$emit('close')"></PvInfo>
-        <EnergyStorageInfo v-if="active == 2"  :formData="formData"></EnergyStorageInfo>
-        <ChargingPileInfo v-if="active == 3"  :formData="formData"></ChargingPileInfo>
-        <SelfPlantInfo v-if="active == 4"  :formData="formData"></SelfPlantInfo>
+        <PvInfo v-if="active == 1"  :userId="formData.id" :formData="formData" @close="$emit('close')"></PvInfo>
+        <EnergyStorageInfo v-if="active == 2" :userId="formData.id" :formData="formData"></EnergyStorageInfo>
+        <ChargingPileInfo v-if="active == 3" :userId="formData.id" :formData="formData"></ChargingPileInfo>
+        <SelfPlantInfo v-if="active == 4" :userId="formData.id" :formData="formData"></SelfPlantInfo>
     </div>
 </template>
 <script>

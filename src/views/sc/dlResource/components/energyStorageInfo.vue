@@ -50,6 +50,12 @@
 import { listEnergyStorage, getEnergyStorage, delEnergyStorage, addEnergyStorage, updateEnergyStorage } from "@/api/sc/energyStorage";
 
 export default {
+  props: {
+    userId: {
+      type: [String, Number],
+      default: null
+    }
+  },
   name: "EnergyStorage",
   dicts: ['sys_yes_no', 'power_source_type'],
   data() {
@@ -104,11 +110,24 @@ export default {
   created() {
     this.getList();
   },
+  watch: {
+    userId: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          this.getList();
+        }
+      }
+    }
+  },
   methods: {
     /** 查询储能列表 */
     getList() {
       this.loading = true;
-      listEnergyStorage(this.queryParams).then(response => {
+      listEnergyStorage({
+        ...this.queryParams,
+        userId: this.userId  // 添加userId参数
+      }).then(response => {
         this.energyStorageList = response.rows;
         this.total = response.total;
         this.loading = false;

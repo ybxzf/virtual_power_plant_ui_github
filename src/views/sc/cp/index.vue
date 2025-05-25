@@ -305,7 +305,8 @@
           <el-input v-model="form.dataSource" placeholder="请输入数据来源" />
         </el-form-item>-->
       </el-form>
-      <MpInfo v-if="active == 1"></MpInfo>
+<!--      <MpInfo v-if="active == 1"></MpInfo>-->
+      <MpInfo v-if="active == 1" :cjCpNo="form.cjCpNo"></MpInfo>
       <div v-if="active == 0" slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -573,6 +574,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.active = 0;
       this.open = true;
       this.title = "添加采集点";
     },
@@ -584,6 +586,7 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改采集点";
+        // this.active = 0;
       });
     },
     /** 提交按钮 */

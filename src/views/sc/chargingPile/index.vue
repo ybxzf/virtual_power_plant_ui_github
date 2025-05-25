@@ -315,7 +315,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="充电桩功率(kW)" prop="power">
-          <el-input v-model="form.power" placeholder="请输入充电桩功率(kW)" />
+          <el-input type="number" v-model="form.power" placeholder="请输入充电桩功率(kW)" />
         </el-form-item>
         <el-form-item label="所属用户" prop="reserved1">
           <el-input
@@ -555,6 +555,15 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        chargerName: [
+          { required: true, message: "充电桩名称不能为空", trigger: "blur" }
+        ],
+        assetNo: [
+          { required: true, message: "资产编号不能为空", trigger: "blur" }
+        ],
+        reserved1: [
+          { required: true, message: "所属用户不能为空", trigger: "blur" }
+        ]
       }
     };
   },

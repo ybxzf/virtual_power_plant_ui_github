@@ -63,6 +63,13 @@ import { listPv, getPv, delPv, addPv, updatePv } from "@/api/sc/pv";
 export default {
   name: "Pv",
   dicts: ['regulation_mode', 'advance_notice_time', 'adjustment_period', 'sys_yes_no', 'power_source_type'],
+  props: {
+    userId: {
+      type: [String, Number],
+      default: null
+    }
+  },
+
   data() {
     return {
       // 遮罩层
@@ -112,6 +119,16 @@ export default {
       }
     };
   },
+  watch: {
+    userId: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          this.getList();
+        }
+      }
+    }
+  },
   created() {
     this.getList();
   },
@@ -119,7 +136,10 @@ export default {
     /** 查询分布式光伏列表 */
     getList() {
       this.loading = true;
-      listPv(this.queryParams).then(response => {
+      listPv({
+        ...this.queryParams,
+        userId: this.userId  // 添加userId参数
+      }).then(response => {
         this.pvList = response.rows;
         this.total = response.total;
         this.loading = false;

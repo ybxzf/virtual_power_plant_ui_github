@@ -300,7 +300,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: null,
+        userId: this.formData.id,
         deviceId: null,
         circuitId: null,
         adjustMethod: null,
@@ -343,6 +343,10 @@ export default {
     /** 查询设备负荷配置列表 */
     getList() {
       this.loading = true;
+      const params = {
+        ...this.queryParams,
+        userId: this.formData.id
+      };
       listDeviceLoadConfig(this.queryParams).then((response) => {
         this.deviceLoadConfigList = response.rows;
         this.total = response.total;

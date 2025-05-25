@@ -197,7 +197,22 @@ export default {
       }
     };
   },
+  props: {
+    cjCpNo: {
+      type: [String, Number],
+      default: null
+    }
+  },
   watch: {
+    cjCpNo: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          this.queryParams.cjCpNo = newVal;
+          this.getList();
+        }
+      }
+    },
     form: {
       handler(newVal, oldVal) {
         if (newVal.areaId !== oldVal.areaId) {
@@ -223,7 +238,10 @@ export default {
     /** 查询测量点列表 */
     getList() {
       this.loading = true;
-      listMp(this.queryParams).then(response => {
+      listMp({
+        ...this.queryParams,
+        cjCpNo: this.cjCpNo  // 添加采集点标识参数
+      }).then(response => {
         this.mpList = response.rows;
         this.total = response.total;
         this.loading = false;

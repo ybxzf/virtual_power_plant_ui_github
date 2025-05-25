@@ -71,6 +71,22 @@
 import { listSelfPlant, getSelfPlant, delSelfPlant, addSelfPlant, updateSelfPlant } from "@/api/sc/selfPlant";
 
 export default {
+  props: {
+    userId: {
+      type: [String, Number],
+      default: null
+    }
+  },
+  watch: {
+    userId: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          this.getList();
+        }
+      }
+    }
+  },
   name: "SelfPlant",
   dicts: ['supply_voltage', 'advance_notice_time', 'adjustment_period', 'sys_yes_no', 'power_source_type', 'generation_type'],
   data() {
@@ -130,7 +146,10 @@ export default {
     /** 查询自备电厂列表 */
     getList() {
       this.loading = true;
-      listSelfPlant(this.queryParams).then(response => {
+      listSelfPlant({
+        ...this.queryParams,
+        userId: this.userId  // 添加userId参数
+      }).then(response => {
         this.selfPlantList = response.rows;
         this.total = response.total;
         this.loading = false;

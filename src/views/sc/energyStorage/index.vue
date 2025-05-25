@@ -192,13 +192,13 @@
           </el-select>
         </el-form-item>-->
         <el-form-item label="装机容量(KVA)" prop="capacity">
-          <el-input v-model="form.capacity" placeholder="请输入装机容量(KVA)" />
+          <el-input type="number" v-model="form.capacity" placeholder="请输入装机容量(KVA)" />
         </el-form-item>
         <el-form-item label="最大充电能力(kW)" prop="maxCharge">
-          <el-input v-model="form.maxCharge" placeholder="请输入最大充电能力" />
+          <el-input type="number" v-model="form.maxCharge" placeholder="请输入最大充电能力" />
         </el-form-item>
         <el-form-item label="最大放电能力(kW)" prop="maxDischarge">
-          <el-input v-model="form.maxDischarge" placeholder="请输入最大放电能力" />
+          <el-input type="number" v-model="form.maxDischarge" placeholder="请输入最大放电能力" />
         </el-form-item>
         <!-- 修改原有表单项 -->
         <el-form-item label="所属用户" prop="reserved1">
@@ -427,6 +427,15 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        storageName: [
+          { required: true, message: "储能名称不能为空", trigger: "blur" }
+        ],
+        assetNo: [
+          { required: true, message: "资产编号不能为空", trigger: "blur" }
+        ],
+        reserved1: [
+          { required: true, message: "所属用户不能为空", trigger: "blur" }
+        ]
       }
     };
   },

@@ -230,10 +230,10 @@
 <!--          </el-select>-->
 <!--        </el-form-item>-->
         <el-form-item label="装机容量(KVA)" prop="capacity">
-          <el-input v-model="form.capacity" placeholder="请输入装机容量(KVA)" />
+          <el-input type="number" v-model="form.capacity" placeholder="请输入装机容量(KVA)" />
         </el-form-item>
         <el-form-item label="最大可出力(kW)" prop="maxOutput">
-          <el-input v-model="form.maxOutput" placeholder="请输入最大可出力" />
+          <el-input type="number" v-model="form.maxOutput" placeholder="请输入最大可出力" />
         </el-form-item>
         <el-form-item label="并网电压等级" prop="gridVoltage">
           <el-select v-model="form.gridVoltage" placeholder="请选择并网电压等级">
@@ -475,6 +475,15 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        plantName: [
+          { required: true, message: "自备电厂名称不能为空", trigger: "blur" }
+        ],
+        assetNo: [
+          { required: true, message: "资产编号不能为空", trigger: "blur" }
+        ],
+        reserved1: [
+          { required: true, message: "所属用户不能为空", trigger: "blur" }
+        ]
       }
     };
   },

@@ -104,13 +104,13 @@
         </el-form-item>-->
 
         <el-form-item label="峰值总功率(kW)" prop="peakPower">
-          <el-input v-model="form.peakPower" placeholder="请输入峰值总功率(kW)" />
+          <el-input type="number" v-model="form.peakPower" placeholder="请输入峰值总功率(kW)" />
         </el-form-item>
         <el-form-item label="最大可出力(kW)" prop="maxOutput">
-          <el-input v-model="form.maxOutput" placeholder="请输入最大可出力(kW)" />
+          <el-input type="number" v-model="form.maxOutput" placeholder="请输入最大可出力(kW)" />
         </el-form-item>
         <el-form-item label="发电效率" prop="efficiency">
-          <el-input v-model="form.efficiency" placeholder="请输入发电效率" />
+          <el-input type="number" v-model="form.efficiency" placeholder="请输入发电效率" />
         </el-form-item>
 <!--        <el-form-item label="所属用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入所属用户ID" />
@@ -337,6 +337,15 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        pvName: [
+          { required: true, message: "分布式光伏名称不能为空", trigger: "blur" }
+        ],
+        assetNo: [
+          { required: true, message: "资产编号不能为空", trigger: "blur" }
+        ],
+        reserved1: [
+          { required: true, message: "所属用户不能为空", trigger: "blur" }
+        ]
       }
     };
   },
