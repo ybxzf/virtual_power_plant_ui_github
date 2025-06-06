@@ -65,6 +65,47 @@
           v-hasPermi="['sc:cp:export']"
         >导出</el-button>
       </el-col>
+
+<!--      <el-col :span="1.5">
+        <el-button
+          type="info"
+          plain
+          icon="el-icon-upload2"
+          size="mini"
+          @click="handleIssue"
+          v-hasPermi="['sc:cp:issue']"
+        >下发</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleCall"
+          v-hasPermi="['sc:cp:call']"
+        >召测</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-refresh-left"
+          size="mini"
+          @click="handleSupply"
+          v-hasPermi="['sc:cp:supply']"
+        >补抄</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-info"
+          size="mini"
+          @click="handleGetStatus"
+          v-hasPermi="['sc:cp:status']"
+        >获取状态</el-button>
+      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -293,14 +334,14 @@
 <!--        <el-form-item label="显示序号" prop="sortNo">
           <el-input v-model="form.sortNo" placeholder="请输入显示序号" />
         </el-form-item>-->
-        <el-form-item label="记录最后保存时间" prop="writeDate">
+<!--        <el-form-item label="记录最后保存时间" prop="writeDate">
           <el-date-picker clearable
             v-model="form.writeDate"
             type="date"
             value-format="yyyy-MM-dd"
             placeholder="请选择记录最后保存时间">
           </el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
 <!--        <el-form-item label="数据来源" prop="dataSource">
           <el-input v-model="form.dataSource" placeholder="请输入数据来源" />
         </el-form-item>-->
@@ -476,6 +517,26 @@ export default {
     this.getList();
   },
   methods: {
+    /** 下发按钮操作 */
+    /*handleIssue() {
+      // 待实现
+      this.$modal.msgSuccess("下发功能待实现");
+    },
+    /!** 召测按钮操作 *!/
+    handleCall() {
+      // 待实现
+      this.$modal.msgSuccess("召测功能待实现");
+    },
+    /!** 补抄按钮操作 *!/
+    handleSupply() {
+      // 待实现
+      this.$modal.msgSuccess("补抄功能待实现");
+    },
+    /!** 获取状态按钮操作 *!/
+    handleGetStatus() {
+      // 待实现
+      this.$modal.msgSuccess("获取状态功能待实现");
+    },*/
     /** 查询采集点列表 */
     getList() {
       this.loading = true;

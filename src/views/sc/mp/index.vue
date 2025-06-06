@@ -233,9 +233,9 @@
         <el-form-item label="在终端内的测量点号" prop="innerId">
           <el-input v-model="form.innerId" placeholder="请输入在终端内的测量点号" />
         </el-form-item>
-        <el-form-item label="通讯参数模板标识" prop="mpParaTmpId">
+<!--        <el-form-item label="通讯参数模板标识" prop="mpParaTmpId">
           <el-input v-model="form.mpParaTmpId" placeholder="请输入测量点通讯参数模板标识" />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="电表通信地址" prop="commAddr">
           <el-input v-model="form.commAddr" placeholder="请输入电表通信地址" />
         </el-form-item>
@@ -249,9 +249,98 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="下发状态" prop="isOnline">
-          <el-input v-model="form.isOnline" placeholder="请输入下发状态" />
+<!--          <el-input v-model="form.isOnline" placeholder="请输入下发状态" />-->
+          <el-select v-model="form.isOnline" placeholder="请选择下发状态">
+            <el-option
+              v-for="dict in dict.type.issue_status"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <LabelTitle title="配置信息" style="margin-bottom: 20px"/>
+        <el-form-item label="关联资源类型" prop="measureType">
+          <el-select v-model="form.measureType" placeholder="请选择关联资源类型" @change="handleMeasureTypeChange">
+            <el-option
+              v-for="dict in dict.type.measure_type_new"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <!-- 所属用户 -->
+        <el-form-item
+          v-if="form.measureType && form.measureType !== '1'"
+          label="所属用户"
+          prop="reserved2"
+          :required="form.measureType !== '1'"
+        >
+          <el-input
+            v-model="form.reserved2"
+            placeholder="请选择用户"
+            readonly
+            clearable
+            @click.native="userDialogVisible = true"
+            @clear="clearUser"
+          >
+            <i slot="suffix" class="el-icon-search" @click.stop="userDialogVisible = true"></i>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item v-show="false" prop="cjConsId">
+          <el-input v-model="form.cjConsId" />
+        </el-form-item>
+
+        <!-- 关联资源 -->
+        <el-form-item
+          v-if="form.measureType && form.measureType !== '1' && form.measureType !== '2'"
+          label="关联资源"
+          prop="reserved3"
+          :required="form.measureType !== '1' && form.measureType !== '2'"
+        >
+          <el-select
+            v-model="form.resourcesId"
+            placeholder="请选择关联资源"
+            :loading="resourceLoading"
+            @change="handleResourceChange"
+          >
+            <el-option
+              v-for="item in resourceOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item v-show="false" prop="reserved3">
+          <el-input v-model="form.reserved3" />
+        </el-form-item>
+<!--        <el-form-item label="关联资源类型" prop="measureType">
+          <el-select v-model="form.measureType" placeholder="请选择关联资源类型">
+            <el-option
+              v-for="dict in dict.type.measure_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属用户" prop="reserved2">
+          <el-input v-model="form.reserved2" placeholder="请输入所属用户" />
+        </el-form-item>
+        <el-form-item label="所属用户ID" prop="cjConsId">
+          <el-input v-model="form.cjConsId" placeholder="请输入所属用户ID" />
+        </el-form-item>
+        <el-form-item label="关联资源" prop="reserved3">
+          <el-input v-model="form.reserved3" placeholder="请输入关联资源" />
+        </el-form-item>
+        <el-form-item label="关联资源ID" prop="resourcesId">
+          <el-input v-model="form.resourcesId" placeholder="请输入关联资源ID" />
+        </el-form-item>-->
         <el-form-item label="接线方式" prop="wiringMode">
           <el-select v-model="form.wiringMode" placeholder="请选择接线方式">
             <el-option
@@ -306,9 +395,9 @@
           </el-select>
         </el-form-item>
         <LabelTitle title="其他信息" style="margin-bottom: 20px"/>
-        <el-form-item label="用户标识" prop="cjConsId">
+<!--        <el-form-item label="用户标识" prop="cjConsId">
           <el-input v-model="form.cjConsId" placeholder="请输入用户标识" />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="是否总表" prop="cjTgTotal">
           <el-select v-model="form.cjTgTotal" placeholder="请选择是否总表">
             <el-option
@@ -341,17 +430,17 @@
             placeholder="请选择投运日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="显示序号" prop="sortNo">
+<!--        <el-form-item label="显示序号" prop="sortNo">
           <el-input v-model="form.sortNo" placeholder="请输入显示序号" />
-        </el-form-item>
-        <el-form-item label="记录最后保存时间" prop="writeDate">
+        </el-form-item>-->
+<!--        <el-form-item label="记录最后保存时间" prop="writeDate">
           <el-date-picker clearable
             v-model="form.writeDate"
             type="date"
             value-format="yyyy-MM-dd"
             placeholder="请选择记录最后保存时间">
           </el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
 <!--        <el-form-item label="数据来源" prop="dataSource">
           <el-input v-model="form.dataSource" placeholder="请输入数据来源" />
         </el-form-item>-->
@@ -360,6 +449,42 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 新增：用户选择对话框 -->
+    <el-dialog title="选择用户" :visible.sync="userDialogVisible" width="70%">
+      <el-form :model="userQuery" :inline="true" style="height: auto">
+        <el-form-item label="用户名称">
+          <el-input v-model="userQuery.userName" clearable placeholder="请输入用户名称"/>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleUserSearch">搜索</el-button>
+        </el-form-item>
+      </el-form>
+      <el-table
+        v-loading="userLoading"
+        :data="userList"
+        highlight-current-row
+        @row-click="handleUserRowClick">
+        <el-table-column width="55">
+          <template slot-scope="scope">
+            <el-radio v-model="selectedUserId" :label="scope.row.id">&nbsp;</el-radio>
+          </template>
+        </el-table-column>
+        <el-table-column prop="userName" label="用户名称"/>
+        <el-table-column prop="userCode" label="用户编号"/>
+      </el-table>
+      <pagination
+        v-show="userTotal>0"
+        :total="userTotal"
+        :page.sync="userQuery.pageNum"
+        :limit.sync="userQuery.pageSize"
+        @pagination="getUserList"
+      />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="userDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmUserSelect">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -401,16 +526,32 @@
 </template>
 
 <script>
-import { listMp, getMp, delMp, addMp, updateMp } from "@/api/sc/mp";
+import { listMp, getMp, delMp, addMp, updateMp,getResoucesByUserAndType } from "@/api/sc/mp";
 import { getAreaTree } from "@/api/sc/corporation";
 import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
 import { listCp } from "@/api/sc/cp";
+import { listCorporation } from "@/api/sc/corporation";
 export default {
   name: "Mp",
   components: { LabelTitle },
-  dicts: ['meter_switch_status', 'measurement_type', 'measurement_mode', 'ct_ratio', 'sys_yes_no', 'measurement_direction', 'wiring_mode', 'pt_ratio', 'operational_status'],
+  dicts: ['issue_status','measure_type_new','meter_switch_status', 'measurement_type', 'measurement_mode', 'ct_ratio', 'sys_yes_no', 'measurement_direction', 'wiring_mode', 'pt_ratio', 'operational_status'],
   data() {
     return {
+      // 新增用户相关数据
+      userDialogVisible: false,
+      userList: [],
+      userTotal: 0,
+      userLoading: false,
+      userQuery: {
+        pageNum: 1,
+        pageSize: 10,
+        userName: undefined
+      },
+      selectedUserId: null,
+
+      // 关联资源相关数据
+      resourceOptions: [],
+      resourceLoading: false,
       cpDialogVisible: false,
       cpList: [],
       cpTotal: 0,
@@ -477,66 +618,18 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        measureType: [
+          { required: true, message: "关联资源类型不能为空", trigger: "blur" }
+        ],
         cjMeterName: [
           { required: true, message: "测量点名称不能为空", trigger: "blur" }
-        ],
-        areaId: [
-          { required: true, message: "所属区域不能为空", trigger: "blur" }
-        ],
-        mpType: [
-          { required: true, message: "测量类型不能为空", trigger: "change" }
         ],
         assetNo: [
           { required: true, message: "电能表资产编号不能为空", trigger: "blur" }
         ],
-        cjCpNo: [
-          { required: true, message: "采集点标识不能为空", trigger: "blur" }
-        ],
-        innerId: [
-          { required: true, message: "在终端内的测量点号不能为空", trigger: "blur" }
-        ],
-        mpParaTmpId: [
-          { required: true, message: "测量点通讯参数模板标识不能为空", trigger: "blur" }
-        ],
         commAddr: [
           { required: true, message: "电表通信地址不能为空", trigger: "blur" }
         ],
-        meterSwitchStatus: [
-          { required: true, message: "电表开关状态不能为空", trigger: "change" }
-        ],
-        meterModelId: [
-          { required: true, message: "电表型号不能为空", trigger: "blur" }
-        ],
-        wiringMode: [
-          { required: true, message: "接线方式不能为空", trigger: "change" }
-        ],
-        measMode: [
-          { required: true, message: "计量方式不能为空", trigger: "change" }
-        ],
-        bothWayCalc: [
-          { required: true, message: "计量方向不能为空", trigger: "change" }
-        ],
-        cjConsId: [
-          { required: true, message: "用户标识不能为空", trigger: "blur" }
-        ],
-        cjTgTotal: [
-          { required: true, message: "是否总表不能为空", trigger: "change" }
-        ],
-        instLoc: [
-          { required: true, message: "安装位置不能为空", trigger: "blur" }
-        ],
-        instDate: [
-          { required: true, message: "安装日期不能为空", trigger: "blur" }
-        ],
-        installerNo: [
-          { required: true, message: "安装人不能为空", trigger: "blur" }
-        ],
-        runDate: [
-          { required: true, message: "投运日期不能为空", trigger: "blur" }
-        ],
-        remark: [
-          { required: true, message: "备注不能为空", trigger: "blur" }
-        ]
       }
     };
   },
@@ -565,8 +658,117 @@ export default {
   mounted() {
     // 初始化采集点列表
     this.getCpList();
+    this.getUserList();
   },
   methods: {
+    // 处理关联资源类型变化
+    handleMeasureTypeChange(value) {
+      // 类型为1时隐藏所有相关字段
+      if (value === '1') {
+        this.form.reserved2 = null;
+        this.form.cjConsId = null;
+        this.form.reserved3 = null;
+        this.form.resourcesId = null;
+      }
+      // 类型为2时只显示所属用户
+      else if (value === '2') {
+        this.form.reserved3 = null;
+        this.form.resourcesId = null;
+      }
+      // 其他类型时显示所属用户和关联资源
+      else {
+        // 如果已有用户，加载关联资源
+        if (this.form.cjConsId) {
+          this.loadResources();
+        }
+      }
+    },
+
+    // 加载关联资源
+    async loadResources() {
+      if (!this.form.measureType || !this.form.cjConsId) return;
+
+      this.resourceLoading = true;
+      try {
+        const params = {
+          measureType: this.form.measureType,
+          cjConsId: this.form.cjConsId
+        };
+        const response = await getResoucesByUserAndType(params);
+        if (response.code === 200) {
+          this.resourceOptions = response.data || [];
+        }
+      } catch (error) {
+        console.error('加载关联资源失败', error);
+      } finally {
+        this.resourceLoading = false;
+      }
+    },
+
+    // 处理关联资源选择
+    handleResourceChange(value) {
+      const selected = this.resourceOptions.find(item => item.value === value);
+      if (selected) {
+        this.form.reserved3 = selected.label;
+      }
+    },
+
+    // 用户搜索
+    handleUserSearch() {
+      this.userQuery.pageNum = 1;
+      this.getUserList();
+    },
+
+    // 获取用户列表
+    async getUserList() {
+      this.userLoading = true;
+      try {
+        const response = await listCorporation(this.userQuery);
+        if (response.code === 200) {
+          this.userList = response.rows;
+          this.userTotal = response.total;
+        }
+      } catch (error) {
+        console.error('获取用户列表失败', error);
+      } finally {
+        this.userLoading = false;
+      }
+    },
+
+    // 点击用户行
+    handleUserRowClick(row) {
+      this.selectedUserId = row.id;
+    },
+
+    // 确认选择用户
+    confirmUserSelect() {
+      if (!this.selectedUserId) {
+        this.$message.warning('请选择一个用户');
+        return;
+      }
+
+      const selectedUser = this.userList.find(user => user.id === this.selectedUserId);
+      if (selectedUser) {
+        this.form.cjConsId = selectedUser.id;
+        this.form.reserved2 = selectedUser.userName;
+
+        // 如果关联资源类型需要显示关联资源，则加载资源
+        if (this.form.measureType && this.form.measureType !== '1' && this.form.measureType !== '2') {
+          this.loadResources();
+        }
+
+        this.userDialogVisible = false;
+      }
+    },
+
+    // 清空用户选择
+    clearUser() {
+      this.form.cjConsId = null;
+      this.form.reserved2 = null;
+      // 同时清空关联资源
+      this.form.reserved3 = null;
+      this.form.resourcesId = null;
+    },
     handleCpSearch() {
       this.cpQuery.pageNum = 1;
       this.getCpList();
