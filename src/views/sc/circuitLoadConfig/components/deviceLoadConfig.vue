@@ -11,6 +11,7 @@
         ref="form"
         class="add-form"
         size="small"
+        :rules="rules"
         :inline="true"
         v-show="showSearch"
         label-width="150px"
@@ -318,7 +319,17 @@ export default {
       // 表单参数
       form: JSON.parse(JSON.stringify(default_form)),
       // 表单校验
-      rules: {},
+      rules: {
+        deviceId: [
+          { required: true, message: "所属设备不能为空", trigger: "change" }
+        ],
+        adjustMethod: [
+          { required: true, message: "调节方式不能为空", trigger: "change" }
+        ],
+        isAdjustable: [
+          { required: true, message: "是否可调节不能为空", trigger: "change" }
+        ],
+      },
       isEdit: false,
       deviceOptions: [],
     };

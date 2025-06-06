@@ -40,7 +40,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row> -->
         <div class="table-container">
-            <el-table v-loading="loading" height="100%" :data="corporationList" class="custom-table"
+            <el-table v-loading="loading" height="100%" ref="scrollTableRef" :data="corporationList" class="custom-table"
                 @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
                 <!-- <el-table-column type="selection" width="50" fixed align="center" /> -->
                 <el-table-column type="index" label="序号" width="50" fixed align="center" />
@@ -120,9 +120,10 @@
 
 <script>
 import { listCorporation, getCorporation, delCorporation, addCorporation, updateCorporation } from "@/api/sc/corporation";
-
+import autoScroll from '@/mixins/auto-scroll.js';
 export default {
     name: "SettlementRank",
+    mixins: [autoScroll],
     dicts: ['supply_voltage', 'industry_type', 'sys_yes_no', 'collection_state', 'electricity_state', 'corporation_state'],
     data() {
         return {

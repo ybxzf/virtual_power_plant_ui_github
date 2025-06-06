@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" :rules="rules" label-width="100px" :inline="true"
+    <el-form ref="form" :model="form" :rules="rules" label-width="110px" :inline="true"
       style="max-height: 65vh;overflow: auto;margin-bottom: 10px;">
       <el-form-item label="所属用户ID" prop="userId">
         <el-input v-model="form.userId" disabled placeholder="请输入所属用户ID" />
@@ -158,14 +158,14 @@ export default {
       },
       // 表单校验
       rules: {
-        userName: [
-          { required: true, message: "用户名称不能为空", trigger: "blur" }
+        circuitName: [
+          { required: true, message: "配电回路名称不能为空", trigger: "blur" }
         ],
-        creditCode: [
-          { required: true, message: "统一社会信用代码不能为空", trigger: "blur" }
+        distributionRoom: [
+          { required: true, message: "配电室名称不能为空", trigger: "blur" }
         ],
-        isDemandResponse: [
-          { required: true, message: "是否需求响应签约用户不能为空", trigger: "change" }
+        isControllable: [
+          { required: true, message: "是否可控回路不能为空", trigger: "change" }
         ],
       },
       form: JSON.parse(JSON.stringify(default_form)),
