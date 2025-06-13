@@ -11,7 +11,6 @@
         ref="form"
         size="small"
         class="add-form"
-        :rules="rules"
         :inline="true"
         v-show="showSearch"
         label-width="150px"
@@ -400,17 +399,7 @@ export default {
       // 表单参数
       form: JSON.parse(JSON.stringify(default_form)),
       // 表单校验
-      rules: {
-        circuitId: [
-          { required: true, message: "所属回路不能为空", trigger: "change" }
-        ],
-        maxLoad: [
-          { required: true, message: "最大负荷不能为空", trigger: "blur" }
-        ],
-        isControllable: [
-          { required: true, message: "是否可控制不能为空", trigger: "change" }
-        ],
-      },
+      rules: {},
       isEdit: false,
       circuitOptions: [],
     };

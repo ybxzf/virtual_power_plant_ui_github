@@ -185,14 +185,10 @@ export default {
       loading: false,
       // 表单校验
       rules: {
-        runningCapacity: [
-          { required: true, message: "运行容量不能为空", trigger: "blur" }
-        ],
-        annualElectricity: [
-          { required: true, message: "年用电量不能为空", trigger: "blur" }
-        ],
-        contractCapacity: [
-          { required: true, message: "合同容量不能为空", trigger: "blur" }
+        userName: [{ required: true, message: "用户名称不能为空", trigger: "blur" }],
+        creditCode: [{ required: true, message: "统一社会信用代码不能为空", trigger: "blur" }],
+        isDemandResponse: [
+          { required: true, message: "是否需求响应签约用户不能为空", trigger: "change" },
         ],
       },
       form: JSON.parse(JSON.stringify(default_form)),

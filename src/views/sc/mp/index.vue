@@ -276,14 +276,14 @@
           v-if="form.measureType && form.measureType !== '1'"
           label="所属用户"
           prop="reserved2"
-          :rules="{ required: !form.reserved2, message: '所属用户不能为空', trigger: 'blur' }"
+          :required="form.measureType !== '1'"
         >
           <el-input
             v-model="form.reserved2"
             placeholder="请选择用户"
             readonly
+            clearable
             @click.native="userDialogVisible = true"
-            @change="$forceUpdate()"
             @clear="clearUser"
           >
             <i slot="suffix" class="el-icon-search" @click.stop="userDialogVisible = true"></i>
@@ -298,8 +298,8 @@
         <el-form-item
           v-if="form.measureType && form.measureType !== '1' && form.measureType !== '2'"
           label="关联资源"
-          prop="resourcesId"
-          :rules="{ required: !form.resourcesId, message: '关联资源不能为空', trigger: 'change' }"
+          prop="reserved3"
+          :required="form.measureType !== '1' && form.measureType !== '2'"
         >
           <el-select
             v-model="form.resourcesId"
@@ -624,12 +624,6 @@ export default {
         cjMeterName: [
           { required: true, message: "测量点名称不能为空", trigger: "blur" }
         ],
-        // reserved2: [
-        //   { required: true, message: "所属用户不能为空", trigger: "blur" },
-        // ],
-        // resourcesId: [
-        //   { required: true, message: "关联资源不能为空", trigger: "change" }
-        // ],
         assetNo: [
           { required: true, message: "电能表资产编号不能为空", trigger: "blur" }
         ],
@@ -671,14 +665,14 @@ export default {
     handleMeasureTypeChange(value) {
       // 类型为1时隐藏所有相关字段
       if (value === '1') {
-        this.form.reserved2 = "";
+        this.form.reserved2 = null;
         this.form.cjConsId = null;
-        this.form.reserved3 = "";
+        this.form.reserved3 = null;
         this.form.resourcesId = null;
       }
       // 类型为2时只显示所属用户
       else if (value === '2') {
-        this.form.reserved3 = "";
+        this.form.reserved3 = null;
         this.form.resourcesId = null;
       }
       // 其他类型时显示所属用户和关联资源
@@ -716,7 +710,6 @@ export default {
       const selected = this.resourceOptions.find(item => item.value === value);
       if (selected) {
         this.form.reserved3 = selected.label;
-        this.$forceUpdate();
       }
     },
 
@@ -758,7 +751,7 @@ export default {
       if (selectedUser) {
         this.form.cjConsId = selectedUser.id;
         this.form.reserved2 = selectedUser.userName;
-        this.$refs.form.clearValidate();
+
         // 如果关联资源类型需要显示关联资源，则加载资源
         if (this.form.measureType && this.form.measureType !== '1' && this.form.measureType !== '2') {
           this.loadResources();
@@ -771,9 +764,9 @@ export default {
     // 清空用户选择
     clearUser() {
       this.form.cjConsId = null;
-      this.form.reserved2 = "";
+      this.form.reserved2 = null;
       // 同时清空关联资源
-      this.form.reserved3 = "";
+      this.form.reserved3 = null;
       this.form.resourcesId = null;
     },
     handleCpSearch() {
@@ -913,20 +906,6 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      // if(this.form.measureType && this.form.measureType !== '1') {
-      //   if (this.form.reserved2) {
-      //     this.rules.reserved2[0].required = false;
-      //   }else {
-      //     this.rules.reserved2[0].required = true;
-      //   }
-      // }
-      // if (this.form.measureType && this.form.measureType !== '1' && this.form.measureType !== '2') {
-      //   if (this.form.resourcesId) {
-      //     this.rules.resourcesId[0].required = false;
-      //   }else {
-      //     this.rules.resourcesId[0].required = true;
-      //   }
-      // }
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.cjMpId != null) {
@@ -944,8 +923,6 @@ export default {
           }
         }
       });
-      // });
-
     },
     /** 删除按钮操作 */
     handleDelete(row) {
