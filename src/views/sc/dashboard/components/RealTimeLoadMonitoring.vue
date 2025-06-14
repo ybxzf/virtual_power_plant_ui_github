@@ -215,7 +215,7 @@ export default {
       position: absolute;
       top: 50%;
       left: 8%;
-      transform: translateY(-50%);
+      transform: translateY(-60%);
       background-image:-webkit-linear-gradient(top, #ffffff,#597ba1);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
