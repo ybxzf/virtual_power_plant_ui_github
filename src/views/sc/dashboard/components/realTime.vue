@@ -43,8 +43,8 @@ export default {
 .current-time {
     position: absolute;
     right: 8%;
-    top: 4px;
-    color: #959aa7;
+    top: 0.5%;
+    color: #ffffff;
     font-family: monospace;
     /* 等宽字体显示时间更整齐 */
     font-size: 14px;

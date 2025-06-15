@@ -10,23 +10,23 @@
       </div>
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="7">
-          <el-col class="col-item">1</el-col>
-          <el-col class="col-item">2</el-col>
+          <el-col class="col-item"></el-col>
+          <el-col class="col-item"></el-col>
           <el-col class="col-item">
             <RealTimeLoadMonitoring class="real-time-load-monitoring" />
           </el-col>
         </el-col>
         <el-col :span="10">
-          <el-col class="col-item mid-top">4</el-col>
-          <el-col class="col-item map">5</el-col>
+          <el-col class="col-item mid-top"></el-col>
+          <el-col class="col-item map"></el-col>
           <el-col class="col-item trend-analysis">
             <TrendAnalysis />
           </el-col>
         </el-col>
         <el-col :span="7">
-          <el-col class="col-item">7</el-col>
-          <el-col class="col-item">8</el-col>
-          <el-col class="col-item">9</el-col>
+          <el-col class="col-item"></el-col>
+          <el-col class="col-item"></el-col>
+          <el-col class="col-item"></el-col>
         </el-col>
       </el-row>
     </template>
@@ -52,8 +52,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .dash-container {
-  //background: url('../../../assets/images/bigScreen.png') no-repeat;
-  background: #081621;
+  background: url('../../../assets/images/bigScreen.png') no-repeat;
+  // background: #081621;
   // height: calc(100vh - 84px);
   background-size: 100% 100%;
   position: relative;

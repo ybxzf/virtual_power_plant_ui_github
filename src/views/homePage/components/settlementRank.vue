@@ -289,14 +289,14 @@ export default {
 }
 
 .table-container {
-    height: calc(100% - 30px);
+    height: calc(100% - 70px);
     display: flex;
     flex-direction: column;
     overflow: auto;
 }
 
 .pagination-container {
-    margin-top: 0;
+    margin-top: 5px;
 }
 
 /* 确保表格填满容器 */
