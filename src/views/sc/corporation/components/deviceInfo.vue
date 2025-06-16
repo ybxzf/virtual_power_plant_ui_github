@@ -136,14 +136,14 @@ export default {
       },
       // 表单校验
       rules: {
-        userName: [
-          { required: true, message: "用户名称不能为空", trigger: "blur" }
+        deviceName: [
+          { required: true, message: "设备名称不能为空", trigger: "blur" }
         ],
-        creditCode: [
-          { required: true, message: "统一社会信用代码不能为空", trigger: "blur" }
+        deviceType: [
+          { required: true, message: "设备类别不能为空", trigger: "blur" }
         ],
-        isDemandResponse: [
-          { required: true, message: "是否需求响应签约用户不能为空", trigger: "change" }
+        ratedVoltage: [
+          { required: true, message: "额定电压不能为空", trigger: "change" }
         ],
       },
       form: JSON.parse(JSON.stringify(default_form)),

@@ -7,6 +7,9 @@
       <el-form-item label="用户编号" prop="userCode">
         <el-input v-model="form.userCode" placeholder="请输入用户编号" />
       </el-form-item>
+      <el-form-item label="交易代码" prop="extend2">
+        <el-input v-model="form.extend2" placeholder="请输入交易代码" />
+      </el-form-item>
       <el-form-item label="统一社会信用代码" prop="creditCode">
         <el-input v-model="form.creditCode" placeholder="请输入统一社会信用代码" />
       </el-form-item>
