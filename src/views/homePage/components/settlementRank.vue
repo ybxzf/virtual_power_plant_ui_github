@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" @click="pushUrl()">
         <!-- <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="用户名称" prop="userName">
         <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter.native="handleQuery" />
@@ -180,6 +180,9 @@ export default {
         this.getList();
     },
     methods: {
+        pushUrl() {
+            this.$router.push({ path: '/peoples/corporation' })
+        },
         /** 查询企业用户信息列表 */
         getList() {
             this.loading = true;
@@ -286,6 +289,7 @@ export default {
 .app-container {
     height: 96%;
     margin: 4% 1% 0 2%;
+    cursor: pointer;
 }
 
 .table-container {

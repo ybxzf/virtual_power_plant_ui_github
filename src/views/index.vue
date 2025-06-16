@@ -40,6 +40,7 @@ import RealTimeLoadMonitoring from "./homePage/components/RealTimeLoadMonitoring
 import HistoryData from "./homePage/components/historyData.vue";
 import AggregationTypeRank from "./homePage/components/aggregationTypeRank.vue";
 import SettlementRank from './homePage/components/settlementRank.vue';
+import { getStatisticsData } from '@/api/index.js'
 
 export default {
   name: "Index",
@@ -52,13 +53,16 @@ export default {
   data() {
     return {
       statisticsData: [//统计信息
-        { label: '聚合负荷', value: 45.4, unit: 'MW', color: '#000000', path: '/resmanage/dlresource' },
-        { label: '可调负荷', value: 30.3, unit: 'MW', color: '#000000', path: '/peoples/circuitLoadConfig' },
-        { label: '接入聚合商', value: 1, unit: '家', color: '#000000', path: '/peoples/company' },
-        { label: '接入用户', value: 170, unit: '户', color: '#000000', path: '/peoples/corporation' },
+        { label: '聚合负荷', value: 0, unit: 'MW', color: '#000000', path: '/resmanage/dlresource' },
+        { label: '可调负荷', value: 0, unit: 'MW', color: '#000000', path: '/peoples/circuitLoadConfig' },
+        { label: '接入聚合商', value: 0, unit: '家', color: '#000000', path: '/peoples/company' },
+        { label: '接入用户', value: 0, unit: '户', color: '#000000', path: '/peoples/corporation' },
       ],
       chartType: 'realTimeLoadMonitoring'//图表类型
     };
+  },
+  mounted() {
+    this.getStatisticsData();
   },
   methods: {
     //点击统计项
@@ -68,6 +72,17 @@ export default {
     // 切换图表类型
     changeChartType(type) {
       this.chartType = type;
+    },
+    //获取统计信息
+    getStatisticsData() {
+      getStatisticsData().then(res => {
+        if (res.code == 200) {
+          this.statisticsData[0].value = res.data['聚合负荷'];
+          this.statisticsData[1].value = res.data['可调负荷'];
+          this.statisticsData[2].value = res.data['接入聚合商'];
+          this.statisticsData[3].value = res.data['接入用户'];
+        }
+      })
     },
   }
 };

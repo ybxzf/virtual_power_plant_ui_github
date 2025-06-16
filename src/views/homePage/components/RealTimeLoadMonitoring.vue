@@ -1,13 +1,75 @@
 <script>
 import DataEmpty from "@/views/sc/dashboard/components/Empty.vue";
 import * as echarts from "echarts";
+import { getLoadMonitorData } from '@/api/index.js'
 export default {
   name: "RealTimeLoadMonitoring",
   components: { DataEmpty },
   props: {
-    chartData: {
-      type: Object,
-      default: () => ({
+    // chartData: {
+    //   type: Object,
+    //   default: () => ({
+    //     xData: [
+    //       "00:00",
+    //       "00:30",
+    //       "01:00",
+    //       "01:30",
+    //       "02:00",
+    //       "02:30",
+    //       "03:00",
+    //       "03:30",
+    //       "04:00",
+    //       "04:30",
+    //       "05:00",
+    //       "05:30",
+    //       "06:00",
+    //       "06:30",
+    //       "07:00",
+    //       "07:30",
+    //       "08:00",
+    //       "08:30",
+    //       "09:00",
+    //       "09:30",
+    //       "10:00",
+    //       "10:30",
+    //       "11:00",
+    //       "11:30",
+    //       "12:00",
+    //       "12:30",
+    //       "13:00",
+    //       "13:30",
+    //       "14:00",
+    //       "14:30",
+    //       "15:00",
+    //       "15:30",
+    //       "16:00",
+    //       "16:30",
+    //       "17:00",
+    //       "17:30",
+    //       "18:00",
+    //       "18:30",
+    //       "19:00",
+    //       "19:30",
+    //       "20:00",
+    //       "20:30",
+    //       "21:00",
+    //       "21:30",
+    //       "22:00",
+    //       "22:30",
+    //       "23:00",
+    //       "23:30"
+    //     ],
+    //     yData: [45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 85, 125, 110,],
+    //     yData1: [60, 58, 62, 78, 95, 100, 115, 105, 75, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115,],
+    //     legendData: [],
+    //     title: "",
+    //   }),
+    // },
+  },
+  data() {
+    return {
+      myChart: null,
+      chartData: {
         xData: [
           "00:00",
           "00:30",
@@ -60,18 +122,17 @@ export default {
         ],
         yData: [45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 45, 38, 30, 85, 125, 110, 185, 160, 70, 85, 125, 110,],
         yData1: [60, 58, 62, 78, 95, 100, 115, 105, 75, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115, 105, 60, 58, 62, 78, 95, 100, 115,],
+        // xData: [],
+        // yData: [],
+        // yData1: [],
         legendData: [],
         title: "",
-      }),
-    },
-  },
-  data() {
-    return {
-      myChart: null,
+      },
     };
   },
   mounted() {
-    this.chartData.xData.length && this.drawChart(this.chartData.xData);
+    this.getLoadMonitorData();
+
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.handleResize);
@@ -79,10 +140,26 @@ export default {
     this.myChart = null;
   },
   methods: {
+    // 获取负荷监测信息
+    getLoadMonitorData() {
+      getLoadMonitorData().then((res) => {
+        const { code, data } = res;
+        if (code === 200) {
+          this.chartData.xData = data.timePoints;
+          this.chartData.yData = data.realTimeLoad;
+          this.chartData.yData1 = data.baselineLoad;
+          this.chartData.xData.length && this.drawChart(this.chartData.xData);
+        }
+      })
+    },
+    // 监听窗口大小变化
     handleResize() {
       this.myChart.resize();
     },
+    // 绘制图表
     drawChart() {
+      console.log();
+
       this.myChart = echarts.init(document.getElementById("loadMonitoring"));
       const option = {
         backgroundColor: "transparent",
@@ -136,7 +213,7 @@ export default {
             },
           },
           axisLabel: {
-            interval: 0,
+            interval: 1,
             rotate: 45,  // 旋转角度
             color: "#000000",
             fontSize: 12,
@@ -161,8 +238,8 @@ export default {
             padding: [0, 0, 0, 10],
           },
           min: 0,
-          max: 200,
-          interval: 20,
+          // max: 200,
+          // interval: 20,
           axisLine: {
             show: false,
             lineStyle: {

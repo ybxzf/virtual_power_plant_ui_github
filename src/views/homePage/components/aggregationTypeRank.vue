@@ -1,33 +1,46 @@
 <script>
 import DataEmpty from "@/views/sc/dashboard/components/Empty.vue";
 import * as echarts from "echarts";
+import { getTop3Data } from '@/api/index.js'
 export default {
   name: "AggregationTypeRank",
   components: { DataEmpty },
   props: {
-    chartData: {
-      type: Object,
-      default: () => ({
-        sData: [
-          { value: 20, percent: 45, name: '储能', itemStyle: { borderColor: '#1D87FB', color: '#1D87FB' }, },
-          { value: 10, percent: 22, name: '光伏', itemStyle: { borderColor: '#15D1DF', color: '#15D1DF' }, },
-          { value: 10, percent: 22, name: '空调', itemStyle: { borderColor: '#62D6FF', color: '#62D6FF' }, },
-          { value: 5, percent: 10, name: '充电桩', itemStyle: { borderColor: '#A0BFFF', color: '#A0BFFF' }, },
-          { value: 0, percent: 0, name: '5G基站', itemStyle: { borderColor: '#A5F3BB', color: '#A5F3BB' }, },
-          { value: 0.4, percent: 1, name: '其他', itemStyle: { borderColor: '#B0A0FF', color: '#B0A0FF' }, }
-        ],
-        legendData: [],
-        title: "",
-      }),
-    },
+    // chartData: {
+    //   type: Object,
+    //   default: () => ({
+    //     sData: [
+    //       { value: 20, percent: 45, name: '储能', itemStyle: { borderColor: '#1D87FB', color: '#1D87FB' }, },
+    //       { value: 10, percent: 22, name: '光伏', itemStyle: { borderColor: '#15D1DF', color: '#15D1DF' }, },
+    //       { value: 10, percent: 22, name: '空调', itemStyle: { borderColor: '#62D6FF', color: '#62D6FF' }, },
+    //       { value: 5, percent: 10, name: '充电桩', itemStyle: { borderColor: '#A0BFFF', color: '#A0BFFF' }, },
+    //       { value: 0, percent: 0, name: '5G基站', itemStyle: { borderColor: '#A5F3BB', color: '#A5F3BB' }, },
+    //       { value: 0.4, percent: 1, name: '其他', itemStyle: { borderColor: '#B0A0FF', color: '#B0A0FF' }, }
+    //     ],
+    //     legendData: [],
+    //     title: "",
+    //   }),
+    // },
   },
   data() {
     return {
       myChart: null,
+      chartData: {
+        sData: [
+          { value: 0, percent: 0, name: '储能', itemStyle: { borderColor: '#1D87FB', color: '#1D87FB' }, },
+          { value: 0, percent: 0, name: '光伏', itemStyle: { borderColor: '#15D1DF', color: '#15D1DF' }, },
+          { value: 0, percent: 0, name: '空调', itemStyle: { borderColor: '#62D6FF', color: '#62D6FF' }, },
+          { value: 0, percent: 0, name: '充电桩', itemStyle: { borderColor: '#A0BFFF', color: '#A0BFFF' }, },
+          { value: 0, percent: 0, name: '5G基站', itemStyle: { borderColor: '#A5F3BB', color: '#A5F3BB' }, },
+          { value: 0, percent: 0, name: '其它', itemStyle: { borderColor: '#B0A0FF', color: '#B0A0FF' }, }
+        ],
+        legendData: [],
+        title: "",
+      },
     };
   },
   mounted() {
-    this.chartData.sData.length && this.drawChart(this.chartData.sData);
+    this.getTop3Data();
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.handleResize);
@@ -35,9 +48,28 @@ export default {
     this.myChart = null;
   },
   methods: {
+    // 获取前3数据
+    getTop3Data() {
+      getTop3Data().then((res) => {
+        const { code, data } = res;
+        console.log('data', data);
+
+        if (code === 200) {
+          const total = Object.values(data).reduce((sum, value) => sum + value, 0) || 0;
+          this.chartData.sData.forEach(item => {
+            item.value = data[item.name] || 0;
+            item.percent = Number(data[item.name] / total * 100).toFixed(2) || 0;
+          });;
+
+          this.chartData.sData.length && this.drawChart(this.chartData.sData);
+        }
+      })
+    },
+    // 监听窗口变化
     handleResize() {
       this.myChart.resize();
     },
+    // 绘制图表
     drawChart() {
       this.myChart = echarts.init(document.getElementById("rank"));
       const option = {
