@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container" @click="pushUrl()">
+    <div class="app-container">
         <!-- <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="用户名称" prop="userName">
         <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter.native="handleQuery" />
@@ -39,7 +39,7 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row> -->
-        <div class="table-container">
+        <div class="table-container" @click="pushUrl()">
             <el-table v-loading="loading" height="100%" ref="scrollTableRef" :data="corporationList"
                 class="custom-table" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
                 <!-- <el-table-column type="selection" width="50" fixed align="center" /> -->
@@ -53,7 +53,7 @@
                 <el-table-column show-overflow-tooltip label="用电地址" align="center" prop="powerAddress"
                     min-width="120" />
                 <!--        <el-table-column show-overflow-tooltip label="注册资金(万元)" align="center" prop="registeredCapital"
-          min-width="120" />-->
+                min-width="120" />-->
                 <el-table-column show-overflow-tooltip label="行业分类" align="center" prop="industryCategory"
                     min-width="80">
                     <template slot-scope="scope">
@@ -85,22 +85,22 @@
                 </el-table-column>
 
                 <!--        <el-table-column show-overflow-tooltip label="合约生效日期" align="center" prop="contractStart" width="100">
-          <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.contractStart, '{y}-{m}-{d}') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip label="邮箱" align="center" prop="email" min-width="80" />
-        <el-table-column show-overflow-tooltip label="所属虚拟电厂id" align="center" prop="virtualPlant" min-width="120" />
-        <el-table-column show-overflow-tooltip label="所属线路" align="center" prop="circuit" min-width="80" />
-        <el-table-column show-overflow-tooltip label="用户采集分类" align="center" prop="collectCategory" min-width="100">
-          <template slot-scope="scope">
-            <dict-tag :options="dict.type.collection_state" :value="scope.row.collectCategory" />
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip label="行业小类" align="center" prop="industrySubclass" min-width="80" />
-        <el-table-column show-overflow-tooltip label="合约有效期(年)" align="center" prop="contractPeriod" min-width="110" />
-        <el-table-column show-overflow-tooltip label="所属变电站" align="center" prop="substation" min-width="90" />
-        <el-table-column show-overflow-tooltip label="所属虚拟电厂" align="center" prop="extend1" min-width="100" />-->
+                    <template slot-scope="scope">
+                        <span>{{ parseTime(scope.row.contractStart, '{y}-{m}-{d}') }}</span>
+                    </template>
+                    </el-table-column>
+                    <el-table-column show-overflow-tooltip label="邮箱" align="center" prop="email" min-width="80" />
+                    <el-table-column show-overflow-tooltip label="所属虚拟电厂id" align="center" prop="virtualPlant" min-width="120" />
+                    <el-table-column show-overflow-tooltip label="所属线路" align="center" prop="circuit" min-width="80" />
+                    <el-table-column show-overflow-tooltip label="用户采集分类" align="center" prop="collectCategory" min-width="100">
+                    <template slot-scope="scope">
+                        <dict-tag :options="dict.type.collection_state" :value="scope.row.collectCategory" />
+                    </template>
+                    </el-table-column>
+                    <el-table-column show-overflow-tooltip label="行业小类" align="center" prop="industrySubclass" min-width="80" />
+                    <el-table-column show-overflow-tooltip label="合约有效期(年)" align="center" prop="contractPeriod" min-width="110" />
+                    <el-table-column show-overflow-tooltip label="所属变电站" align="center" prop="substation" min-width="90" />
+                    <el-table-column show-overflow-tooltip label="所属虚拟电厂" align="center" prop="extend1" min-width="100" />-->
                 <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right"
                     min-width="150">
                     <template slot-scope="scope">
