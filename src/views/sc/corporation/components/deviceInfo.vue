@@ -58,7 +58,7 @@
 <!--      <el-table-column label="主键ID" align="center" prop="id" />
       <el-table-column label="所属用户ID" align="center" prop="userId" />-->
       <el-table-column label="设备名称" align="center" prop="deviceName" />
-      <el-table-column label="所属区域" align="center" prop="area" />
+<!--      <el-table-column label="所属区域" align="center" prop="area" />-->
       <el-table-column label="设备类别" align="center" prop="deviceType" />
       <el-table-column label="额定电压(kV)" align="center" prop="ratedVoltage">
         <template slot-scope="scope">

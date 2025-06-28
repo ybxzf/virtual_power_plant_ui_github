@@ -68,9 +68,9 @@
 <!--      <el-table-column label="主键ID" align="center" prop="id" />
       <el-table-column label="所属用户ID" align="center" prop="userId" />-->
       <el-table-column label="配电回路名称" align="center" prop="circuitName" />
-      <el-table-column label="所属区域" align="center" prop="area" />
+<!--      <el-table-column label="所属区域" align="center" prop="area" />-->
       <el-table-column label="配电室名称" align="center" prop="distributionRoom" />
-      <el-table-column label="配电室类型" align="center" prop="roomType" />
+<!--      <el-table-column label="配电室类型" align="center" prop="roomType" />-->
       <el-table-column label="电压等级" align="center" prop="voltageLevel">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.supply_voltage" :value="scope.row.voltageLevel" />

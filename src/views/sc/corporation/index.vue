@@ -103,6 +103,8 @@
               v-hasPermi="['sc:corporation:edit']">修改</el-button> -->
             <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
               v-hasPermi="['sc:corporation:remove']">删除</el-button>
+<!--            <el-button size="mini" type="text" icon="el-icon-edit"
+                       v-hasPermi="['sc:corporation:fpry']">分配人员</el-button>-->
           </template>
         </el-table-column>
       </el-table>

@@ -140,6 +140,9 @@ export default {
         userName: [
           { required: true, message: "用户名称不能为空", trigger: "blur" }
         ],
+        virtualPlant: [
+          { required: true, message: "所属虚拟电厂不能为空", trigger: "blur" }
+        ],
         userCode: [
           { required: true, message: "用户编号不能为空", trigger: "blur" }
         ],

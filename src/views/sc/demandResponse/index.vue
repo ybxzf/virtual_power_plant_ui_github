@@ -46,17 +46,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['sc:demandResponse:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -79,7 +68,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="demandResponseList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="demandResponseList" @selection-change="handleSelectionChange" @row-dblclick="handleRowDblClick">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="主键ID" align="center" prop="id" />-->
       <el-table-column label="响应起始时间" align="center" prop="startTime" width="180">
@@ -118,13 +107,6 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['sc:demandResponse:edit']"
-          >修改</el-button>
           <el-button
             size="mini"
             type="text"
@@ -197,6 +179,7 @@
           <el-date-picker clearable
             v-model="form.startTime"
             type="datetime"
+            format="yyyy-MM-dd HH:mm"
             value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="请选择响应起始时间">
           </el-date-picker>
@@ -205,6 +188,7 @@
           <el-date-picker clearable
             v-model="form.endTime"
             type="datetime"
+            format="yyyy-MM-dd HH:mm"
             value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="请选择响应结束时间">
           </el-date-picker>
@@ -491,10 +475,20 @@ export default {
       this.open = true;
       this.title = "添加市场交易申报";
     },
+    // 新增双击行处理方法
+    handleRowDblClick(row) {
+      this.handleUpdate(row);
+    },
+
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const id = row.id || this.ids
+      // 确保无论是按钮点击还是行双击都使用row.id
+      const id = row.id || (this.ids.length === 1 ? this.ids[0] : null);
+      if (!id) {
+        this.$modal.msgWarning("请选择一条要修改的数据");
+        return;
+      }
       getDemandResponse(id).then(response => {
         this.form = response.data;
         this.open = true;
