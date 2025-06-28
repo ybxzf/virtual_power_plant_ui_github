@@ -192,7 +192,7 @@ export default {
 <template>
   <div class="rank-container">
     <!-- <div class="title">
-      <span>实时负荷检测</span>
+      <span>实时负荷监测</span>
     </div> -->
     <!-- <div style="
       position: absolute;
