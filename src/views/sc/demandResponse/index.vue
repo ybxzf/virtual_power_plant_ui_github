@@ -1,31 +1,17 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="交易序列名称" prop="tradeSeq">
-        <el-input
-          v-model="queryParams.tradeSeq"
-          placeholder="请输入交易序列名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.tradeSeq" placeholder="请输入交易序列名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="需求类型" prop="demandType">
         <el-select v-model="queryParams.demandType" placeholder="请选择需求类型" clearable>
-          <el-option
-            v-for="dict in dict.type.requirement_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+          <el-option v-for="dict in dict.type.requirement_type" :key="dict.value" :label="dict.label"
+            :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="用户名称" prop="userName">
-        <el-input
-          v-model="queryParams.userName"
-          placeholder="请输入用户名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -35,42 +21,24 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['sc:demandResponse:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['sc:demandResponse:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['sc:demandResponse:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['sc:demandResponse:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['sc:demandResponse:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['sc:demandResponse:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="demandResponseList" @selection-change="handleSelectionChange" @row-dblclick="handleRowDblClick">
+    <el-table v-loading="loading" :data="demandResponseList" @selection-change="handleSelectionChange"
+      @row-dblclick="handleRowDblClick">
       <el-table-column type="selection" width="55" align="center" />
-<!--      <el-table-column label="主键ID" align="center" prop="id" />-->
+      <!--      <el-table-column label="主键ID" align="center" prop="id" />-->
       <el-table-column label="响应起始时间" align="center" prop="startTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.startTime, '{y}-{m}-{d}') }}</span>
@@ -81,7 +49,7 @@
           <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="响应日期" align="center" prop="respDate" width="180">
+      <!--      <el-table-column label="响应日期" align="center" prop="respDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.respDate, '{y}-{m}-{d}') }}</span>
         </template>
@@ -90,11 +58,11 @@
       <el-table-column label="交易序列名称" align="center" prop="tradeSeq" />
       <el-table-column label="需求类型" align="center" prop="demandType">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.requirement_type" :value="scope.row.demandType"/>
+          <dict-tag :options="dict.type.requirement_type" :value="scope.row.demandType" />
         </template>
       </el-table-column>
       <el-table-column label="响应地区" align="center" prop="region" />
-<!--      <el-table-column label="用户ID" align="center" prop="userId" />-->
+      <!--      <el-table-column label="用户ID" align="center" prop="userId" />-->
       <el-table-column label="用户名称" align="center" prop="userName" />
       <el-table-column label="用户代码" align="center" prop="userCode" />
       <el-table-column label="用户户号" align="center" prop="accountNo" />
@@ -102,71 +70,44 @@
       <el-table-column label="上报容量(kW)" align="center" prop="bidCapacity" />
       <el-table-column label="交易状态" align="center" prop="reserved1">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.transaction_status" :value="scope.row.reserved1"/>
+          <dict-tag :options="dict.type.transaction_status" :value="scope.row.reserved1" />
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['sc:demandResponse:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['sc:demandResponse:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 用户选择对话框 -->
-    <el-dialog
-      title="选择用户"
-      :visible.sync="userDialogVisible"
-      width="70%"
-      append-to-body
-      class="user-select-dialog">
+    <el-dialog title="选择用户" :visible.sync="userDialogVisible" width="70%" append-to-body class="user-select-dialog">
       <el-form :model="userQuery" :inline="true">
         <el-form-item label="用户名称">
-          <el-input
-            v-model="userQuery.userName"
-            clearable
-            placeholder="请输入用户名称"
-            @keyup.enter.native="handleUserSearch"/>
+          <el-input v-model="userQuery.userName" clearable placeholder="请输入用户名称"
+            @keyup.enter.native="handleUserSearch" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleUserSearch">搜索</el-button>
           <el-button @click="resetUserSearch">重置</el-button>
         </el-form-item>
       </el-form>
-      <el-table
-        v-loading="userLoading"
-        :data="userList"
-        highlight-current-row
-        @row-click="handleUserRowClick">
+      <el-table v-loading="userLoading" :data="userList" highlight-current-row @row-click="handleUserRowClick">
         <el-table-column width="55">
           <template slot-scope="scope">
             <el-radio v-model="selectedUser" :label="scope.row">&nbsp;</el-radio>
           </template>
         </el-table-column>
-        <el-table-column prop="userName" label="用户名称" min-width="200"/>
-        <el-table-column prop="userCode" label="用户代码" width="150"/>
-        <el-table-column prop="extend2" label="用户户号" width="150"/>
+        <el-table-column prop="userName" label="用户名称" min-width="200" />
+        <el-table-column prop="userCode" label="用户代码" width="150" />
+        <el-table-column prop="extend2" label="用户户号" width="150" />
       </el-table>
-      <pagination
-        v-show="userTotal>0"
-        :total="userTotal"
-        :page.sync="userQuery.pageNum"
-        :limit.sync="userQuery.pageSize"
-        @pagination="getUserList"
-      />
+      <pagination v-show="userTotal > 0" :total="userTotal" :page.sync="userQuery.pageNum"
+        :limit.sync="userQuery.pageSize" @pagination="getUserList" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="userDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirmUserSelect">确 定</el-button>
@@ -174,26 +115,41 @@
     </el-dialog>
     <!-- 添加或修改市场交易申报对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1380px" append-to-body>
+      <!-- <el-row :gutter="10">
+        <el-col :span="3"></el-col>
+        <el-col :span="3"></el-col>
+        <el-col :span="3"></el-col>
+        <el-col :span="3"></el-col>
+        <el-col :span="3"></el-col>
+        <el-col :span="3"></el-col>
+        <el-col :span="3"></el-col>
+        <el-col :span="3"></el-col>
+      </el-row> -->
+      <div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: space-between;">
+        <el-card class="box-card" v-for="(it, i) in cardList" :key="i"
+          style="height: 100px; width: calc(20% - 10px); margin-bottom: 20px;position: relative; ">
+          <div slot="header" class="clearfix">
+            <span>{{ it.label }}</span>
+          </div>
+          <div>
+            <span class="card-value">{{ it.value }}</span>
+            <el-image :src="it.icon"
+              style="width: 60px; height: 60px;position: absolute;right: 20px;top: 50%;transform: translateY(-50%)"></el-image>
+          </div>
+        </el-card>
+      </div>
       <el-form ref="form" :model="form" :rules="rules" :inline="true" label-width="160px">
         <el-form-item label="响应起始时间" prop="startTime">
-          <el-date-picker clearable
-            v-model="form.startTime"
-            type="datetime"
-            format="yyyy-MM-dd HH:mm"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="请选择响应起始时间">
+          <el-date-picker clearable v-model="form.startTime" type="datetime" format="yyyy-MM-dd HH:mm"
+            value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择响应起始时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="响应结束时间" prop="endTime">
-          <el-date-picker clearable
-            v-model="form.endTime"
-            type="datetime"
-            format="yyyy-MM-dd HH:mm"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="请选择响应结束时间">
+          <el-date-picker clearable v-model="form.endTime" type="datetime" format="yyyy-MM-dd HH:mm"
+            value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择响应结束时间">
           </el-date-picker>
         </el-form-item>
-<!--        <el-form-item label="响应日期" prop="respDate">
+        <!--        <el-form-item label="响应日期" prop="respDate">
           <el-date-picker clearable
             v-model="form.respDate"
             type="date"
@@ -209,35 +165,22 @@
         </el-form-item>
         <el-form-item label="需求类型" prop="demandType">
           <el-select v-model="form.demandType" placeholder="请选择需求类型">
-            <el-option
-              v-for="dict in dict.type.requirement_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
+            <el-option v-for="dict in dict.type.requirement_type" :key="dict.value" :label="dict.label"
+              :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="响应地区" prop="region">
           <el-input v-model="form.region" placeholder="请输入响应地区" />
         </el-form-item>
-<!--        <el-form-item label="用户ID" prop="userId">
+        <!--        <el-form-item label="用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户ID" />
         </el-form-item>-->
         <el-form-item label="用户名称" prop="userName">
           <div class="input-with-select">
-            <el-input
-              v-model="form.userName"
-              placeholder="请选择用户"
-              readonly
-              @click.native="openUserSelect">
+            <el-input v-model="form.userName" placeholder="请选择用户" readonly @click.native="openUserSelect">
               <i slot="suffix" class="el-icon-search"></i>
             </el-input>
-            <el-button
-              v-if="form.userName"
-              class="clear-btn"
-              icon="el-icon-close"
-              circle
-              @click="clearUser"
+            <el-button v-if="form.userName" class="clear-btn" icon="el-icon-close" circle @click="clearUser"
               title="清空"></el-button>
           </div>
         </el-form-item>
@@ -257,10 +200,10 @@
         <el-form-item label="上报容量(kW)" prop="bidCapacity">
           <el-input v-model="form.bidCapacity" placeholder="请输入上报容量(kW)" />
         </el-form-item>
-<!--        <el-form-item label="备注" prop="remark">
+        <!--        <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>-->
-<!--        <el-form-item label="交易状态" prop="reserved1">
+        <!--        <el-form-item label="交易状态" prop="reserved1">
           <el-select v-model="form.reserved1" placeholder="请选择交易状态">
             <el-option
               v-for="dict in dict.type.transaction_status"
@@ -270,7 +213,7 @@
             ></el-option>
           </el-select>
         </el-form-item>-->
-<!--        <el-form-item label="扩展2" prop="reserved2">
+        <!--        <el-form-item label="扩展2" prop="reserved2">
           <el-input v-model="form.reserved2" placeholder="请输入扩展2" />
         </el-form-item>-->
       </el-form>
@@ -327,6 +270,22 @@ export default {
         demandType: null,
         userName: null,
       },
+      cardList: [
+        { label: '用户', value: '12户', icon: "/img/icons/icon_1.png" },
+        { label: '运行容量(KVA)', value: '30', icon: "/img/icons/icon_2.png" },
+        { label: '回路', value: '2条', icon: "/img/icons/icon_3.png" },
+        { label: '回路运行容量(KVA)', value: '30', icon: "/img/icons/icon_4.png" },
+        { label: '设备', value: '8个', icon: "/img/icons/icon_5.png" },
+        { label: '额定功率(kW)', value: '20', icon: "/img/icons/icon_6.png" },
+        { label: '自备电厂数量', value: '12', icon: "/img/icons/icon_7.png" },
+        { label: '装机容量(KVA)', value: '12', icon: "/img/icons/icon_8.png" },
+        { label: '储能数量', value: '12', icon: "/img/icons/icon_9.png" },
+        { label: '装机容量(KVA)', value: '12', icon: "/img/icons/icon_10.png" },
+        { label: '分布式光伏数量', value: '12', icon: "/img/icons/icon_11.png" },
+        { label: '装机容量(KVA)', value: '12', icon: "/img/icons/icon_12.png" },
+        { label: '充电桩数量', value: '12', icon: "/img/icons/icon_13.png" },
+        { label: '充电桩功率(kW)', value: '20', icon: "/img/icons/icon_14.png" },
+      ],
       // 表单参数
       form: {},
       // 表单校验
@@ -466,7 +425,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -518,12 +477,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除市场交易申报编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除市场交易申报编号为"' + ids + '"的数据项？').then(function () {
         return delDemandResponse(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -554,12 +513,12 @@ export default {
 }
 
 /* 调整输入框样式 */
-.el-input >>> .el-input__inner {
+.el-input>>>.el-input__inner {
   padding-right: 30px;
 }
 
 /* 隐藏单选按钮的标签内容 */
-/deep/ .el-radio__label {
+::v-deep .el-radio__label {
   display: none !important;
 }
 
@@ -570,5 +529,31 @@ export default {
 
 .user-select-dialog .el-dialog {
   margin-top: 5vh !important;
+}
+
+::v-deep .el-card__header {
+  border-bottom: none;
+}
+
+.card-value {
+  font-weight: 600;
+  font-size: 24px;
+  /* 倾斜效果 */
+  transform: skewX(-15deg);
+  /* 水平倾斜15度 */
+  display: inline-block;
+  /* 必须设置为行内块元素 */
+
+  /* 渐变背景 */
+  background: linear-gradient(to bottom, #1E90FF, #00FF7F);
+  /* 从道奇蓝到春绿色 */
+
+  /* 文字渐变关键步骤 */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* 可选：添加阴影增强立体感 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -112,7 +112,7 @@ export default {
               font-weight: 600;
             "
           >
-            170户
+            12户
           </div>
         </div>
         <div style="width: 2%"></div>
@@ -150,7 +150,7 @@ export default {
               "
             >
               <div>当前运行总容量</div>
-              <div>70MW</div>
+              <div>0.7MW</div>
             </div>
             <el-progress
               class="progress-total"
@@ -162,7 +162,7 @@ export default {
               class="progress-used"
               :text-inside="true"
               :stroke-width="16"
-              :percentage="70"
+              :percentage="60"
             ></el-progress>
             <div
               style="
@@ -173,7 +173,7 @@ export default {
               "
             >
               <div>可相应容量</div>
-              <div>70MW</div>
+              <div>0.6MW</div>
             </div>
           </div>
         </div>

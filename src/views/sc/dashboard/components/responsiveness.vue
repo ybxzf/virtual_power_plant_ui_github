@@ -22,7 +22,7 @@ export default {
     <div class="title">
       <span>响应能力</span>
     </div>
-    <div style="height: 70%; display: flex; justify-content: center; align-items: center">
+    <div style="display: flex; justify-content: center; align-items: center">
       <div style="width: 100%; height: 70%">
         <div
           style="
@@ -44,7 +44,7 @@ export default {
               align-items: center;
             "
           >
-            <div class="value">45.4MW</div>
+            <div class="value">0.454MW</div>
             <div class="label">最大响应能力</div>
           </div>
           <div
@@ -56,7 +56,7 @@ export default {
               align-items: center;
             "
           >
-            <div class="value">15.4MW</div>
+            <div class="value">0.154MW</div>
             <div class="label">最小响应能力</div>
           </div>
         </div>

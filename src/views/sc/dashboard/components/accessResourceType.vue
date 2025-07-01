@@ -82,9 +82,9 @@ export default {
             height: 18%;
           "
         >
-          <div style="padding-left: 15%; width: 33.33%">10MW</div>
-          <div style="padding-left: 15%; width: 33.33%">10MW</div>
-          <div style="padding-left: 15%; width: 33.33%">10MW</div>
+          <div style="padding-left: 15%; width: 33.33%">0.4MW</div>
+          <div style="padding-left: 15%; width: 33.33%">0.5MW</div>
+          <div style="padding-left: 15%; width: 33.33%">0.4MW</div>
         </div>
         <div
           style="
@@ -108,9 +108,9 @@ export default {
             height: 19%;
           "
         >
-          <div style="padding-left: 15%; width: 33.33%">10MW</div>
-          <div style="padding-left: 15%; width: 33.33%">10MW</div>
-          <div style="padding-left: 15%; width: 33.33%">10MW</div>
+          <div style="padding-left: 15%; width: 33.33%">0.4MW</div>
+          <div style="padding-left: 15%; width: 33.33%">0.5MW</div>
+          <div style="padding-left: 15%; width: 33.33%">0.4MW</div>
         </div>
       </div>
     </div>

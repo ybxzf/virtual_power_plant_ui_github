@@ -13,9 +13,9 @@ export default {
   data() {
     return {
       totalList: [
-        { label: "接入负荷", value: 45.4, unit: "MW" },
-        { label: "可调负荷", value: 30.2, unit: "MW" },
-        { label: "最大可调", value: 40, unit: "MW" },
+        { label: "接入负荷", value: 0.45, unit: "MW" },
+        { label: "可调负荷", value: 0.30, unit: "MW" },
+        { label: "最大可调", value: 0.40, unit: "MW" },
       ],
     };
   },

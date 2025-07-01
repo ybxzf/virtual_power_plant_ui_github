@@ -38,8 +38,8 @@ export default {
               position: 'center'
             },
             data: [
-              { value: 5.4, name: '邀约型用户', itemStyle: { color: '#FAF662' } },
-              { value: 12.4, name: '聚合型用户', itemStyle: { color: '#FF786E' } }
+              { value: 0.54, name: '邀约型用户', itemStyle: { color: '#FAF662' } },
+              { value: 0.124, name: '聚合型用户', itemStyle: { color: '#FF786E' } }
             ]
           },
           {
@@ -52,8 +52,8 @@ export default {
               position: 'center'
             },
             data: [
-              { value: 15.4, name: '可调节', itemStyle: { color: '#0078FF' } },
-              { value: 10.4, name: '可中断', itemStyle: { color: '#33FFF2' } }
+              { value: 0.154, name: '可调节', itemStyle: { color: '#0078FF' } },
+              { value: 0.104, name: '可中断', itemStyle: { color: '#33FFF2' } }
             ]
           }
         ]
@@ -90,7 +90,7 @@ export default {
             style="display: flex;flex-direction: column;justify-content: space-between;align-items: center;width: 33%">
             <div class="label">邀约型用户</div>
             <div style="display: flex;height: 25px;width: 100%;align-items: center;justify-content: center;">
-              <div class='value'>5.4MW</div>
+              <div class='value'>0.54MW</div>
               <div class="rect" style="background: #FAF662;margin-left: 10px"></div>
             </div>
           </div>
@@ -99,7 +99,7 @@ export default {
             <div class="label">聚合型用户</div>
             <div style="display: flex;height: 25px;width: 100%;align-items: center;justify-content: center;">
               <div class="rect" style="background: #FF786E;margin-right: 10px"> </div>
-              <div class='value'>12.4MW</div>
+              <div class='value'>0.124MW</div>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default {
           <div
             style="display: flex;flex-direction: column;justify-content: space-between;align-items: center;width: 33%">
             <div style="display: flex;height: 25px;width: 100%;align-items: center;justify-content: center;">
-              <div class='value'>15.4MW</div>
+              <div class='value'>0.154MW</div>
               <div class="rect" style="background: #0078FF;margin-left: 10px"></div>
             </div>
             <div class="label">可调节</div>
@@ -116,7 +116,7 @@ export default {
             style="display: flex;flex-direction: column;justify-content: space-between;align-items: center;width: 33%">
             <div style="display: flex;height: 25px;width: 100%;align-items: center;justify-content: center;">
               <div class="rect" style="background: #33FFF2;margin-right: 10px"> </div>
-              <div class='value'>10.4MW</div>
+              <div class='value'>0.104MW</div>
             </div>
             <div class="label">可中断</div>
           </div>

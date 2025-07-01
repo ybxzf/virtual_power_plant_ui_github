@@ -32,7 +32,7 @@ export default {
           position: relative;
         "
       >
-        <div class="total-value">300.2万元</div>
+        <div class="total-value">3.2万元</div>
         <div class="total-label">总收益</div>
         <div
           style="
@@ -87,7 +87,7 @@ export default {
             padding: 0 14%;
           "
         >
-          <div class="value value3">300.3万</div>
+          <div class="value value3">3.3万</div>
           <div class="value value4">0元</div>
         </div>
       </div>
