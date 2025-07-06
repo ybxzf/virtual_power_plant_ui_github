@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div v-if="outFloor" class="app-container">
+    <div v-if="outFloor" class="app-container outFloor">
       <el-row :gutter="10">
         <el-col :span="6">
           <el-card shadow="always" class="left-ctn">
-            <el-card v-for="(it, i) in monitorList" :key="i" style="height: 18%;width: 100%;position: relative;">
+            <div class="card-value" style="width: 100%;text-align: center;">分布式光伏</div>
+            <el-card v-for="(it, i) in monitorList" :key="i" @click.native="pageChange"
+              style="height: 18%;width: 100%;position: relative;cursor: pointer;">
               <div slot="header" class="clearfix">
                 <span>{{ it.label }}</span>
               </div>
@@ -17,24 +19,21 @@
           </el-card>
         </el-col>
         <el-col :span="18">
-          <el-card shadow="always" class="chart-card">
+          <el-card shadow="always" class="chart-card-2" style="margin-right: 20px;">
             <div class="chart-title">
-              <span>实时出力曲线</span>
+              <span>并网模式分布</span>
             </div>
-            <div style="position: absolute; right: 5%;top: 3%;z-index: 2;">
-              <el-button size="mini" :type="chartType == 'realTimeLoadMonitoring' ? 'primary' : ''"
-                @click="changeChartType('realTimeLoadMonitoring')">实时负荷</el-button>
-              <el-button size="mini" :type="chartType == 'historyData' ? 'primary' : ''"
-                @click="changeChartType('historyData')">历史数据</el-button>
+            <ModeProfile class="real-time-load-monitoring"></ModeProfile>
+          </el-card>
+          <el-card shadow="always" class="chart-card-2">
+            <div class="chart-title">
+              <span>电压等级分布</span>
             </div>
-            <RealTimeLoadMonitoring v-if="chartType === 'realTimeLoadMonitoring'" class="real-time-load-monitoring">
-            </RealTimeLoadMonitoring>
-            <HistoryData v-else class="real-time-load-monitoring">
-            </HistoryData>
+            <LevelProfile class="real-time-load-monitoring"></LevelProfile>
           </el-card>
           <el-card shadow="always" class="chart-card" style="height: 50%;position: relative;">
             <div class="chart-title">
-              <span>发电量统计</span>
+              <span>出力曲线</span>
             </div>
             <div style="position: absolute; right: 5%;top: 3%;z-index: 2;">
               <el-button size="mini" :type="chartType2 == 'powerGeneration' ? 'primary' : ''"
@@ -52,6 +51,7 @@
     </div>
     <div v-else class="app-container">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+        <el-button type="primary" icon="el-icon-back" size="mini" @click="pageChange">返回</el-button>
         <el-form-item label="采集点名称" prop="cpName">
           <el-input v-model="queryParams.cpName" placeholder="请输入采集点名称" clearable @keyup.enter.native="handleQuery" />
         </el-form-item>
@@ -184,19 +184,21 @@ import LabelTitle from "@/views/sc/circuitLoadConfig/components/LabelTitle.vue";
 import EditDialog from "./editDialog.vue";
 
 import RealTimeLoadMonitoring from "./components/RealTimeLoadMonitoring.vue";
+import ModeProfile from "./components/modeProfile.vue";
+import LevelProfile from "./components/levelProfile.vue";
 import HistoryData from "./components/historyData.vue";
 import PowerGeneration from "./components/powerGeneration.vue";
 import OnGridEnergy from "./components/onGridEnergy.vue";
 
 export default {
   name: "Cp",
-  components: { LabelTitle, EditDialog, RealTimeLoadMonitoring, HistoryData, PowerGeneration, OnGridEnergy, },
+  components: { LabelTitle, EditDialog, RealTimeLoadMonitoring, ModeProfile, LevelProfile, HistoryData, PowerGeneration, OnGridEnergy, },
   dicts: ['sub_protocol_1', 'collection_point_status', 'collection_point_type'],
   data() {
     return {
       outFloor: true, //外层显示
       monitorList: [
-        { label: "2户数", value: '23', icon: "/img/icons/icon_1.png" },
+        { label: "户数", value: '23', icon: "/img/icons/icon_1.png" },
         { label: "装机容量(万kW)", value: '0.43', icon: "/img/icons/icon_2.png" },
         { label: "近12个月累计发电量(亿kW)", value: '0.06', icon: "/img/icons/icon_3.png" },
         { label: "近12个月累计上网电量(亿kWh)", value: '0.01', icon: "/img/icons/icon_4.png" },
@@ -352,6 +354,10 @@ export default {
     this.getList();
   },
   methods: {
+    //页面切换
+    pageChange() {
+      this.outFloor = !this.outFloor;
+    },
     // 切换图表类型
     changeChartType(type) {
       this.chartType = type;
@@ -526,9 +532,12 @@ export default {
   height: calc(100vh - 85px);
 }
 
-.el-row,
-.el-col {
-  height: 100%;
+.outFloor {
+
+  .el-row,
+  .el-col {
+    height: 100%;
+  }
 }
 
 .left-ctn {
@@ -568,6 +577,25 @@ export default {
   }
 }
 
+.chart-card-2 {
+  height: calc(50% - 10px);
+  margin-bottom: 10px;
+  position: relative;
+  width: calc(50% - 10px);
+  display: inline-block;
+
+  ::v-deep .el-card__body {
+    height: 100%;
+  }
+
+  .chart-title {
+    display: inline-block;
+    width: 50%;
+    border-left: 5px solid #409EFF;
+    padding-left: 5px;
+  }
+}
+
 .chart-card {
   height: calc(50% - 10px);
   margin-bottom: 10px;
@@ -585,8 +613,6 @@ export default {
     padding-left: 5px;
   }
 }
-
-
 
 .el-dialog .el-form {
   height: 60vh;

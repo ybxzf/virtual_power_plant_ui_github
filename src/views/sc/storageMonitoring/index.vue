@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div v-if="outFloor" class="app-container">
+    <div v-if="outFloor" class="app-container outFloor">
       <el-row :gutter="10">
         <el-col :span="6">
           <el-card shadow="always" class="left-ctn">
-            <el-card v-for="(it, i) in monitorList" :key="i" style="height: 18%;width: 100%;position: relative;">
+            <div class="card-value" style="width: 100%;text-align: center;">储能监测</div>
+            <el-card v-for="(it, i) in monitorList" :key="i" @click.native="pageChange"
+              style="height: 18%;width: 100%;position: relative;cursor: pointer;">
               <div slot="header" class="clearfix">
                 <span>{{ it.label }}</span>
               </div>
@@ -52,6 +54,7 @@
     </div>
     <div v-else class="app-container">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+        <el-button type="primary" icon="el-icon-back" size="mini" @click="pageChange">返回</el-button>
         <el-form-item label="采集点名称" prop="cpName">
           <el-input v-model="queryParams.cpName" placeholder="请输入采集点名称" clearable @keyup.enter.native="handleQuery" />
         </el-form-item>
@@ -352,6 +355,10 @@ export default {
     this.getList();
   },
   methods: {
+    //页面切换
+    pageChange() {
+      this.outFloor = !this.outFloor;
+    },
     // 切换图表类型
     changeChartType(type) {
       this.chartType = type;
@@ -526,9 +533,12 @@ export default {
   height: calc(100vh - 85px);
 }
 
-.el-row,
-.el-col {
-  height: 100%;
+.outFloor {
+
+  .el-row,
+  .el-col {
+    height: 100%;
+  }
 }
 
 .left-ctn {

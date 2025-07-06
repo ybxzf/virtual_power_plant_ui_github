@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div v-if="outFloor" class="app-container">
+    <div v-if="outFloor" class="app-container outFloor">
       <el-row :gutter="10">
         <el-col :span="6">
           <el-card shadow="always" class="left-ctn">
-            <el-card v-for="(it, i) in monitorList" :key="i" style="height: 18%;width: 100%;position: relative;">
+            <div class="card-value" style="width: 100%;text-align: center;">充电桩监测</div>
+            <el-card v-for="(it, i) in monitorList" :key="i" @click.native="pageChange"
+              style="height: 18%;width: 100%;position: relative;cursor: pointer;">
               <div slot="header" class="clearfix">
                 <span>{{ it.label }}</span>
               </div>
@@ -52,6 +54,7 @@
     </div>
     <div v-else class="app-container">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+        <el-button type="primary" icon="el-icon-back" size="mini" @click="pageChange">返回</el-button>
         <el-form-item label="采集点名称" prop="cpName">
           <el-input v-model="queryParams.cpName" placeholder="请输入采集点名称" clearable @keyup.enter.native="handleQuery" />
         </el-form-item>
@@ -196,11 +199,11 @@ export default {
     return {
       outFloor: true, //外层显示
       monitorList: [
-        { label: "1户数", value: '23', icon: "/img/icons/icon_1.png" },
-        { label: "装机容量(万kW)", value: '0.43', icon: "/img/icons/icon_2.png" },
-        { label: "近12个月累计发电量(亿kW)", value: '0.06', icon: "/img/icons/icon_3.png" },
-        { label: "近12个月累计上网电量(亿kWh)", value: '0.01', icon: "/img/icons/icon_4.png" },
-        { label: "年最大出力(万kW)", value: '0.19', icon: "/img/icons/icon_5.png" },
+        { label: "户数(户)", value: '23', icon: "/img/icons/icon_1.png" },
+        { label: "充电桩数量(台)", value: '613', icon: "/img/icons/icon_2.png" },
+        { label: "装机容量(万kW)", value: '0.6', icon: "/img/icons/icon_3.png" },
+        { label: "昨日最大负荷(万kW)", value: '2.1', icon: "/img/icons/icon_4.png" },
+        { label: "昨日充电量(万kwh)", value: '1.19', icon: "/img/icons/icon_5.png" },
       ],
       chartType: 'realTimeLoadMonitoring',//图表类型
       chartType2: "powerGeneration",
@@ -352,6 +355,10 @@ export default {
     this.getList();
   },
   methods: {
+    //页面切换
+    pageChange() {
+      this.outFloor = !this.outFloor;
+    },
     // 切换图表类型
     changeChartType(type) {
       this.chartType = type;
@@ -526,9 +533,12 @@ export default {
   height: calc(100vh - 85px);
 }
 
-.el-row,
-.el-col {
-  height: 100%;
+.outFloor {
+
+  .el-row,
+  .el-col {
+    height: 100%;
+  }
 }
 
 .left-ctn {

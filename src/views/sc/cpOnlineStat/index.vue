@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="outFloor" class="app-container">
+    <div v-if="outFloor" class="app-container outFloor">
       <el-row :gutter="10">
         <el-col :span="6">
           <el-card shadow="always" class="left-ctn">
@@ -166,14 +166,13 @@
 
       <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
         @pagination="getList" />
-
-      <el-dialog class="device-online-dialog" title="展示" :visible.sync="visible" width="1380px" height="80%"
-        append-to-body @close="tabCancel">
-        <template v-if="visible">
-          <EditDialog @close="tabCancel" :row="currentRow"></EditDialog>
-        </template>
-      </el-dialog>
     </div>
+    <el-dialog class="device-online-dialog" title="展示" :visible.sync="visible" width="1380px" height="80%"
+      append-to-body @close="tabCancel">
+      <template v-if="visible">
+        <EditDialog @close="tabCancel" :row="currentRow"></EditDialog>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -333,7 +332,7 @@ export default {
     form: {
       handler(newVal, oldVal) {
         if (newVal.areaId !== oldVal.areaId) {
-          if (this.areaOptions.length == 0) {
+          if (this.areaOptions && this.areaOptions.length == 0) {
             //获取区域信息
             getAreaTree().then(response => {
               this.areaOptions = response.data;
@@ -526,9 +525,12 @@ export default {
   height: calc(100vh - 85px);
 }
 
-.el-row,
-.el-col {
-  height: 100%;
+.outFloor {
+
+  .el-row,
+  .el-col {
+    height: 100%;
+  }
 }
 
 .left-ctn {
