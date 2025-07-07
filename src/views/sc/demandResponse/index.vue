@@ -125,20 +125,20 @@
         <el-col :span="3"></el-col>
         <el-col :span="3"></el-col>
       </el-row> -->
-      <div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: space-between;">
+      <div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: space-between;padding: 0 40px;">
         <el-card class="box-card" v-for="(it, i) in cardList" :key="i"
-          style="height: 100px; width: calc(20% - 10px); margin-bottom: 20px;position: relative; ">
+          style="height: 80px; width: calc(14% - 10px); margin-bottom: 10px;position: relative; ">
           <div slot="header" class="clearfix">
             <span>{{ it.label }}</span>
           </div>
           <div>
             <span class="card-value">{{ it.value }}</span>
             <el-image :src="it.icon"
-              style="width: 60px; height: 60px;position: absolute;right: 20px;top: 50%;transform: translateY(-50%)"></el-image>
+              style="width: 30px; height: 30px;position: absolute;right: 10px;top: 50%;transform: translateY(-50%)"></el-image>
           </div>
         </el-card>
       </div>
-      <el-form ref="form" :model="form" :rules="rules" :inline="true" label-width="160px">
+      <el-form ref="form" :model="form" :rules="rules" :inline="true" label-width="180px">
         <el-form-item label="响应起始时间" prop="startTime">
           <el-date-picker clearable v-model="form.startTime" type="datetime" format="yyyy-MM-dd HH:mm"
             value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择响应起始时间">
@@ -531,13 +531,17 @@ export default {
   margin-top: 5vh !important;
 }
 
-::v-deep .el-card__header {
+::v-deep.box-card .el-card__header {
   border-bottom: none;
+  padding: 10px 10px 0 10px;
+  min-height: 10px;
+  font-size: 12px;
 }
+
 
 .card-value {
   font-weight: 600;
-  font-size: 24px;
+  font-size: 20px;
   /* 倾斜效果 */
   transform: skewX(-15deg);
   /* 水平倾斜15度 */

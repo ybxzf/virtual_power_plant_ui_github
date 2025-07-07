@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div v-if="outFloor" class="app-container outFloor">
+    <div v-if="!outFloor" class="app-container outFloor">
       <el-row :gutter="10">
         <el-col :span="6">
           <el-card shadow="always" class="left-ctn">
+            <div class="card-value" style="width: 100%;text-align: center;">终端实时监测</div>
             <el-card v-for="(it, i) in monitorList" :key="i" style="height: 18%;width: 100%;position: relative;">
               <div slot="header" class="clearfix">
                 <span>{{ it.label }}</span>
